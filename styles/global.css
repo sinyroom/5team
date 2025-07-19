@@ -28,3 +28,15 @@
 
 	--kakao: #fee500;
 }
+
+ul,
+li {
+	list-style: none;
+}
+
+button {
+	border: none;
+	background: none;
+	border-radius: 0;
+	cursor: pointer;
+}
