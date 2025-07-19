@@ -16,13 +16,20 @@
 }
 
 .footerContents {
-	display: flex;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
 	justify-content: space-between;
+}
+
+.footerInside {
+	display: flex;
+	gap: 10px;
 }
 
 .policies {
 	display: flex;
 	gap: 30px;
+	justify-content: center;
 }
 
 #privacy:hover {
@@ -36,6 +43,7 @@
 .imgDiv {
 	gap: 10px;
 	display: flex;
+	justify-content: right;
 }
 
 .instagramIcon {
@@ -68,7 +76,38 @@
 	color: var(--black);
 }
 
-@media screen and (max-width: 744px) {
+@media screen and (max-width: 965px) {
 	.footer {
+		padding-left: 32px;
+		padding-right: 32px;
+	}
+}
+
+@media screen and (max-width: 375px) {
+	.footer {
+		padding-left: 20px;
+		padding-right: 20px;
+		padding-top: 32px;
+		padding-bottom: 16px;
+		height: 126px;
+		font-size: 14px;
+	}
+	.footerContents {
+		grid-template-rows: 1fr 1fr;
+	}
+	.codeitCops {
+		display: flex;
+		grid-row: 2;
+		flex-direction: column;
+		justify-content: flex-end;
+	}
+	.policies {
+		grid-row: 1;
+		grid-column: 1 / span 2;
+		gap: 30px;
+		justify-content: left;
+	}
+	.imgDiv {
+		grid-column: 3;
 	}
 }

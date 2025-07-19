@@ -11,7 +11,7 @@ export default function Footer() {
 		<>
 			<div className={styles.footer}>
 				<div className={styles.footerContents}>
-					<div>©codeit - 2023</div>
+					<div className={styles.codeitCops}>©codeit - 2023</div>
 					<div className={styles.policies}>
 						<Link id={styles.privacy} href="/">
 							Privacy Policy
