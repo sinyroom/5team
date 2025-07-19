@@ -1,4 +1,4 @@
-.Footer {
+.footer {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -12,17 +12,25 @@
 	font-size: 16px;
 }
 
-.FooterContents {
+.footerContents {
 	display: flex;
 	justify-content: space-between;
 }
 
-.Policies {
+.policies {
 	display: flex;
 	gap: 30px;
 }
 
-.ImgDiv {
+#privacy:hover {
+	color: var(--black);
+}
+
+#faq:hover {
+	color: var(--black);
+}
+
+.imgDiv {
 	gap: 10px;
 	display: flex;
 }
@@ -30,5 +38,29 @@
 .instagramIcon {
 	width: 25px;
 	height: 25px;
-	color: var(--gray50); /* 초기 아이콘 색상 */
+	color: var(--gray40); /* 초기 아이콘 색상 */
+}
+
+.instagramIcon:hover {
+	color: #e91276;
+}
+
+.facebookIcon {
+	width: 25px;
+	height: 25px;
+	color: var(--gray40); /* 초기 아이콘 색상 */
+}
+
+.facebookIcon:hover {
+	color: #2d2de6;
+}
+
+.messageIcon {
+	width: 25px;
+	height: 25px;
+	color: var(--gray40); /* 초기 아이콘 색상 */
+}
+
+.messageIcon:hover {
+	color: var(--black);
 }

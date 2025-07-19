@@ -9,14 +9,18 @@ import styles from './Footer.module.css';
 export default function Footer() {
 	return (
 		<>
-			<div className={styles.Footer}>
-				<div className={styles.FooterContents}>
+			<div className={styles.footer}>
+				<div className={styles.footerContents}>
 					<div>©codeit - 2023</div>
-					<div className={styles.Policies}>
-						<Link href="/">Privacy Policy</Link>
-						<Link href="/">FAQ</Link>
+					<div className={styles.policies}>
+						<Link id={styles.privacy} href="/">
+							Privacy Policy
+						</Link>
+						<Link id={styles.faq} href="/">
+							FAQ
+						</Link>
 					</div>
-					<div className={styles.ImgDiv}>
+					<div className={styles.imgDiv}>
 						<p>
 							<a href="https://www.google.com" target="_blank">
 								<MessageIcon className={styles.messageIcon} />
