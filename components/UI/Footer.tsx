@@ -18,9 +18,7 @@ export default function Footer() {
 					<Image src={facebookIcon} alt="페이스북 아이콘" />
 					<Image src={instagramIcon} alt="인스타그램 아이콘" />
 				</div>
-				<li>
-					<ul>sd</ul>
-				</li>
+				<button>dfdf</button>
 			</div>
 		</>
 	);
