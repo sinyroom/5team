@@ -1,9 +1,27 @@
 .Footer {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 	height: 100px;
 	background-color: var(--gray10);
-	display: flex;
+	color: var(--gray50);
 	padding-top: 37px;
 	padding-right: 238px;
 	padding-bottom: 37px;
 	padding-left: 238px;
+}
+
+.FooterContents {
+	display: flex;
+	justify-content: space-between;
+}
+
+.Policies {
+	display: flex;
+	gap: 30px;
+}
+
+.ImgDiv {
+	gap: 10px;
+	display: flex;
 }
