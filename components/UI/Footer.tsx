@@ -1,8 +1,9 @@
-import Image from 'next/image';
+// import Image from 'next/image'; /* 이거 쓰면 css hover의 컬러 변환이 안이루어짐 */
 import Link from 'next/link';
-import messageIcon from '@/assets/img/messageIcon.png';
-import facebookIcon from '@/assets/img/facebookIcon.png';
-import instagramIcon from '@/assets/img/instagramIcon.png';
+import MessageIcon from '@/assets/img/messageIcon.svg';
+import FacebookIcon from '@/assets/img/facebookIcon.svg';
+import InstagramIcon from '@/assets/img/instagramIcon.svg';
+
 import styles from './Footer.module.css';
 
 export default function Footer() {
@@ -18,17 +19,17 @@ export default function Footer() {
 					<div className={styles.ImgDiv}>
 						<p>
 							<a href="https://www.google.com" target="_blank">
-								<Image src={messageIcon} alt="메세지 아이콘" />
+								<MessageIcon className={styles.messageIcon} />
 							</a>
 						</p>
 						<p>
 							<a href="https://www.facebook.com" target="_blank">
-								<Image src={facebookIcon} alt="페이스북 아이콘" />
+								<FacebookIcon className={styles.facebookIcon} />
 							</a>
 						</p>
 						<p>
 							<a href="https://www.instagram.com" target="_blank">
-								<Image src={instagramIcon} alt="인스타그램 아이콘" />
+								<InstagramIcon className={styles.instagramIcon} />
 							</a>
 						</p>
 					</div>

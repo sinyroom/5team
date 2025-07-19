@@ -26,3 +26,9 @@
 	gap: 10px;
 	display: flex;
 }
+
+.instagramIcon {
+	width: 25px;
+	height: 25px;
+	color: var(--gray50); /* 초기 아이콘 색상 */
+}
