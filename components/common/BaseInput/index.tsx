@@ -26,6 +26,15 @@ export const BaseInput = ({
 		inputClasses += ` ${className}`;
 	}
 
+	// placeholder 기본값 설정
+	const finalPlaceholder = props.placeholder || '입력';
+
+	// label이 시급일 때 input 필드 오른쪽에 '원'표시를 위한 조건
+	const showUnit = label === '시급';
+	if (showUnit) {
+		inputClasses += ` ${styles.withUnitPadding}`;
+	}
+
 	return (
 		<div className={styles.inputContainer}>
 			{label && (
@@ -34,14 +43,19 @@ export const BaseInput = ({
 					{required && <span className={styles.label}>*</span>}
 				</label>
 			)}
-			<input
-				id={id}
-				className={inputClasses}
-				style={{ width }}
-				aria-invalid={!!error}
-				aria-describedby={error ? `${id}-error` : undefined}
-				{...props}
-			/>
+			<div className={styles.inputWrapper}>
+				<input
+					id={id}
+					className={inputClasses}
+					style={{ width }}
+					aria-invalid={!!error}
+					aria-describedby={error ? `${id}-error` : undefined}
+					placeholder={finalPlaceholder}
+					required={required}
+					{...props}
+				/>
+				{showUnit && <span className={styles.unitText}>원</span>}
+			</div>
 			{error && (
 				<p id={`${id}-error`} className={styles.errorMessage} role="alert">
 					{error}
