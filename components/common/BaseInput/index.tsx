@@ -30,7 +30,8 @@ export const BaseInput = ({
 	const finalPlaceholder = props.placeholder || '입력';
 
 	// label이 시급일 때 input 필드 오른쪽에 '원'표시를 위한 조건
-	const showUnit = label === '시급';
+	const showUnit = label === '시급' || label === '업무 시간';
+	const unitTextContent = label === '시급' ? '원' : '시간';
 	if (showUnit) {
 		inputClasses += ` ${styles.withUnitPadding}`;
 	}
@@ -54,7 +55,7 @@ export const BaseInput = ({
 					required={required}
 					{...props}
 				/>
-				{showUnit && <span className={styles.unitText}>원</span>}
+				{showUnit && <span className={styles.unitText}>{unitTextContent}</span>}
 			</div>
 			{error && (
 				<p id={`${id}-error`} className={styles.errorMessage} role="alert">
