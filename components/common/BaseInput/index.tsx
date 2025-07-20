@@ -1,13 +1,23 @@
-import { experimental_taintObjectReference, InputHTMLAttributes } from 'react';
+import { InputHTMLAttributes } from 'react';
 import styles from './BaseInput.module.css';
 
 interface BaseInputProps extends InputHTMLAttributes<HTMLInputElement> {
 	id: string;
 	label?: string;
 	error?: string; // 폼에서 전달
+	width?: string;
+	required?: boolean;
 }
 
-export const BaseInput = ({ id, label, error, className, ...props }: BaseInputProps) => {
+export const BaseInput = ({
+	id,
+	label,
+	error,
+	className,
+	width = '100%',
+	required = false,
+	...props
+}: BaseInputProps) => {
 	let inputClasses = styles.input;
 	if (error) {
 		inputClasses += ` ${styles.errorBorder}`;
@@ -21,11 +31,13 @@ export const BaseInput = ({ id, label, error, className, ...props }: BaseInputPr
 			{label && (
 				<label htmlFor={id} className={styles.label}>
 					{label}
+					{required && <span className={styles.label}>*</span>}
 				</label>
 			)}
 			<input
 				id={id}
 				className={inputClasses}
+				style={{ width }}
 				aria-invalid={!!error}
 				aria-describedby={error ? `${id}-error` : undefined}
 				{...props}
