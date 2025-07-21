@@ -1,7 +1,9 @@
 import { forwardRef, InputHTMLAttributes } from 'react';
 import styles from './InputCore.module.css';
 
-interface InputCoreProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface InputCoreProps extends InputHTMLAttributes<HTMLInputElement> {
+	value: string;
+	onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 	error?: boolean;
 }
 

@@ -1,20 +1,22 @@
 // src/components/DropdownInput.tsx
-import React, { useState, useRef, useEffect, InputHTMLAttributes } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styles from './DropdownInput.module.css';
 
 import { DROPDOWN_OPTIONS_MAP } from '../../../constants/DropdownOptions';
 import { BaseInput } from '../BaseInput';
 import { InputCore } from '../InputCore';
 
-interface DropdownInputProps extends InputHTMLAttributes<HTMLInputElement> {
+interface DropdownInputProps {
 	id: string;
 	label: string;
-	error?: string;
+	value: string;
+	onSelectOption: (value: string) => void;
+	error?: string; // 에러 메시지
 	width?: string;
 	required?: boolean;
-	options?: string[]; // 외부에서 옵션 추가 가능
-	onSelectOption: (value: string) => void;
-	value: string;
+	options?: string[];
+	className?: string;
+	onClick?: React.MouseEventHandler<HTMLInputElement>;
 }
 
 export const DropdownInput = ({

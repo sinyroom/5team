@@ -1,20 +1,23 @@
-import { InputHTMLAttributes } from 'react';
 import styles from './UnitInput.module.css';
 
 import { BaseInput } from '../BaseInput';
 import { InputCore } from '../InputCore';
 
-interface UnitInputProps extends InputHTMLAttributes<HTMLInputElement> {
+interface UnitInputProps {
 	id: string;
 	label: string;
 	error?: string;
 	width?: string;
 	required?: boolean;
+	className?: string;
+	value: string;
+	onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const UnitInput = ({
 	id,
 	label,
+	value,
 	error,
 	width = '100%',
 	required = false,
@@ -36,7 +39,13 @@ export const UnitInput = ({
 	return (
 		<div className={styles.unitInputContainer}>
 			<BaseInput id={id} label={label} error={error} width={width} required={required}>
-				<InputCore id={id} className={finalInputClassName} error={!!error} {...props} />
+				<InputCore
+					id={id}
+					value={value}
+					className={finalInputClassName}
+					error={!!error}
+					{...props}
+				/>
 				{showUnit && unitTextContent && <span className={styles.unitText}>{unitTextContent}</span>}
 			</BaseInput>
 		</div>
