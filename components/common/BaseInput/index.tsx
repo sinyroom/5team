@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import React, { isValidElement, ReactElement, ReactNode } from 'react';
 import styles from './BaseInput.module.css';
 
 interface BaseInputProps {
@@ -10,6 +10,12 @@ interface BaseInputProps {
 	children: ReactNode;
 }
 
+interface ChildInputProps {
+	error?: boolean;
+	id?: string;
+	className?: string;
+}
+
 export const BaseInput = ({
 	id,
 	label,
@@ -19,6 +25,16 @@ export const BaseInput = ({
 	children,
 	...props
 }: BaseInputProps) => {
+	const cloneChildren = React.Children.map(children, child => {
+		if (isValidElement(child)) {
+			return React.cloneElement(child as ReactElement<ChildInputProps>, {
+				id,
+				error: !!error,
+			});
+		}
+		return child;
+	});
+
 	return (
 		<div className={styles.inputContainer} style={{ width }}>
 			{label && (
@@ -27,7 +43,7 @@ export const BaseInput = ({
 					{required && <span className={styles.requiredIndicator}>*</span>}
 				</label>
 			)}
-			<div className={styles.inputWrapper}>{children}</div>
+			<div className={styles.inputWrapper}>{cloneChildren}</div>
 			{error && (
 				<p id={`${id}-error`} className={styles.errorMessage} role="alert">
 					{error}
