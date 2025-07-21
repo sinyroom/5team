@@ -3,8 +3,8 @@ import React, { useState, useRef, useEffect, InputHTMLAttributes } from 'react';
 import styles from './DropdownInput.module.css';
 
 import { DROPDOWN_OPTIONS_MAP } from '../../../constants/DropdownOptions';
-import { BaseInput } from './index';
-import { InputCore } from './InputCore';
+import { BaseInput } from '../BaseInput';
+import { InputCore } from '../InputCore';
 
 interface DropdownInputProps extends InputHTMLAttributes<HTMLInputElement> {
 	id: string;

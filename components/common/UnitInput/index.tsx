@@ -1,8 +1,8 @@
 import { InputHTMLAttributes } from 'react';
 import styles from './UnitInput.module.css';
 
-import { BaseInput } from '.';
-import { InputCore } from './InputCore';
+import { BaseInput } from '../BaseInput';
+import { InputCore } from '../InputCore';
 
 interface UnitInputProps extends InputHTMLAttributes<HTMLInputElement> {
 	id: string;
