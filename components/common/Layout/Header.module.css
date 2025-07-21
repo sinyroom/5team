@@ -37,6 +37,11 @@
 	font-size: 16px;
 }
 
+.headerMenu button {
+	font-weight: 700;
+	font-size: 16px;
+}
+
 .headerSearchBox {
 	display: flex;
 	width: 450px;
@@ -47,6 +52,12 @@
 	font-size: 14px;
 	color: var(--gray40);
 	gap: 10px;
+}
+
+.inputTag {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 }
 
 .notification {

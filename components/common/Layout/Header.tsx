@@ -19,7 +19,7 @@ export default function Header() {
 						</div>
 						<div className={styles.headerSearchBox}>
 							<Search />
-							<div>
+							<div className={styles.inputTag}>
 								<input placeholder="가게 이름으로 찾아보세요" style={{ width: 'auto' }} />
 							</div>
 						</div>
@@ -29,9 +29,9 @@ export default function Header() {
 							<>
 								<button>내 가게</button>
 								<button>로그아웃</button>
-								<div className={styles.notification}>
+								<button className={styles.notification}>
 									<Notification />
-								</div>
+								</button>
 							</>
 						) : (
 							<>
