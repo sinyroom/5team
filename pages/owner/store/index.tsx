@@ -1,6 +1,6 @@
 import { getShopId } from '@/api/getShopId';
-import JopPostCard from '@/components/UI/JopPostCard/JopPostCard';
-import PostCard from '@/components/UI/PostCard/PostCard';
+import JopPostCard from '@/components/common/JopPostCard/JopPostCard';
+import PostCard from '@/components/common/PostCard/PostCard';
 import { Shop } from '@/types/shop';
 import { useEffect, useState } from 'react';
 
