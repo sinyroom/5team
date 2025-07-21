@@ -7,8 +7,13 @@ import Notification from '@/assets/img/notification.svg';
 import Search from '@/assets/img/search.svg';
 
 export default function Header() {
-	const [loginState, setLoginState] = useState(true);
+	const [loginState, setLoginState] = useState(true); //로그인 state <假 데이터>
+	const [InputValue, setInputValue] = useState('');
 
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		console.log(InputValue);
+		setInputValue(e.target.value);
+	};
 	return (
 		<>
 			<div className={styles.header}>
@@ -20,7 +25,16 @@ export default function Header() {
 						<div className={styles.headerSearchBox}>
 							<Search />
 							<div className={styles.inputTag}>
-								<input placeholder="가게 이름으로 찾아보세요" style={{ width: 'auto' }} />
+								<form>
+									<input
+										type="text"
+										name="headerSearch"
+										value={InputValue}
+										onChange={handleChange}
+										placeholder="가게 이름으로 찾아보세요"
+										style={{ width: '400px' }}
+									/>
+								</form>
 							</div>
 						</div>
 					</div>
