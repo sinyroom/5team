@@ -8,36 +8,68 @@ import Search from '@/assets/img/search.svg';
 
 export default function Header() {
 	const [loginState, setLoginState] = useState(true); //로그인 state <假 데이터>
-	const [InputValue, setInputValue] = useState('');
+	const [inputValue, setInputValue] = useState('');
+	const [mobileScreen, setMobileScreen] = useState(false); // 모바일 화면 상태
+
+	const handleResize = () => {
+		if (window.innerWidth <= 730) {
+			setMobileScreen(true);
+		} else {
+			setMobileScreen(false);
+		}
+	};
+
+	window.addEventListener('resize', handleResize);
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		console.log(InputValue);
+		console.log(inputValue);
 		setInputValue(e.target.value);
 	};
 	return (
 		<>
 			<div className={styles.header}>
 				<div className={styles.headerContent}>
-					<div className={styles.headerLogoAndSearch}>
-						<div className={styles.logoStyle}>
-							<LogoImage />
-						</div>
-						<div className={styles.headerSearchBox}>
-							<Search />
-							<div className={styles.inputTag}>
-								<form>
-									<input
-										type="text"
-										name="headerSearch"
-										value={InputValue}
-										onChange={handleChange}
-										placeholder="가게 이름으로 찾아보세요"
-										style={{ width: '400px' }}
-									/>
-								</form>
+					{mobileScreen ? (
+						<>
+							<div className={styles.logoStyle}>
+								<LogoImage />
+							</div>
+							<div className={styles.headerSearchBox}>
+								<Search />
+								<div className={styles.inputTag}>
+									<form>
+										<input
+											type="text"
+											name="headerSearch"
+											value={inputValue}
+											onChange={handleChange}
+											placeholder="가게 이름으로 찾아보세요"
+										/>
+									</form>
+								</div>
+							</div>
+						</>
+					) : (
+						<div className={styles.headerLogoAndSearch}>
+							<div className={styles.logoStyle}>
+								<LogoImage />
+							</div>
+							<div className={styles.headerSearchBox}>
+								<Search />
+								<div className={styles.inputTag}>
+									<form>
+										<input
+											type="text"
+											name="headerSearch"
+											value={inputValue}
+											onChange={handleChange}
+											placeholder="가게 이름으로 찾아보세요"
+										/>
+									</form>
+								</div>
 							</div>
 						</div>
-					</div>
+					)}
 					<div className={styles.headerMenu}>
 						{loginState ? (
 							<>
@@ -49,8 +81,10 @@ export default function Header() {
 							</>
 						) : (
 							<>
-								<button>로그인</button>
-								<button>회원가입</button>
+								<div className={styles.noneLogin}>
+									<button>로그인</button>
+									<button>회원가입</button>
+								</div>
 							</>
 						)}
 					</div>
