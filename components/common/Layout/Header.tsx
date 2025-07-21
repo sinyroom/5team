@@ -33,10 +33,12 @@ export default function Header() {
 					{mobileScreen ? (
 						<>
 							<div className={styles.logoStyle}>
-								<LogoImage />
+								<LogoImage id={styles.logoItem} />
 							</div>
 							<div className={styles.headerSearchBox}>
-								<Search />
+								<div>
+									<Search id={styles.searchItem} />
+								</div>
 								<div className={styles.inputTag}>
 									<form>
 										<input
