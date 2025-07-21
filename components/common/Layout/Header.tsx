@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
+import useWindowWidth from '@/hooks/useWindowWidth.tsx';
 import styles from './Header.module.css';
 import LogoImage from '@/assets/img/logo.svg';
 import LogoImageSmall from '@/assets/img/logoSmall.svg';
@@ -11,15 +11,16 @@ export default function Header() {
 	const [inputValue, setInputValue] = useState('');
 	const [mobileScreen, setMobileScreen] = useState(false); // 모바일 화면 상태
 
-	const handleResize = () => {
-		if (window.innerWidth <= 730) {
+	const windowWidth = useWindowWidth();
+	console.log(windowWidth);
+
+	useEffect(() => {
+		if (windowWidth <= 730) {
 			setMobileScreen(true);
 		} else {
 			setMobileScreen(false);
 		}
-	};
-
-	window.addEventListener('resize', handleResize);
+	}, [windowWidth]);
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		console.log(inputValue);
