@@ -8,8 +8,8 @@ type BaseButtonProps = {
 	children: React.ReactNode;
 	onClick?: () => void;
 	disabled?: boolean;
-	color?: ButtonColor;
-	size?: ButtonSize;
+	color: ButtonColor;
+	size: ButtonSize;
 	type?: ButtonType;
 	className?: string;
 };

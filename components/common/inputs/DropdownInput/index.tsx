@@ -1,6 +1,7 @@
 // src/components/DropdownInput.tsx
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './DropdownInput.module.css';
+import Image from 'next/image';
 
 import { DROPDOWN_OPTIONS_MAP } from '@/constants/DropdownOptions';
 import { BaseInput } from '../_base/BaseInput';
@@ -83,7 +84,11 @@ export const DropdownInput = ({
 					{...props}
 				/>
 				<span className={styles.dropdownArrow} onClick={handleInputClick}>
-					{showOptions ? <ArrowUp /> : <ArrowDown />}
+					{showOptions ? (
+						<Image src="/img/icon/arrowup.svg" alt="닫기" width={13} height={8} />
+					) : (
+						<Image src="/img/icon/arrowdown.svg" alt="열기" width={13} height={8} />
+					)}
 				</span>
 			</BaseInput>
 
