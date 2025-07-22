@@ -1,7 +1,7 @@
 import styles from './BaseButton.module.css';
 
 type ButtonColor = 'red' | 'white' | 'gray';
-type ButtonSize = 'small' | 'medium' | 'large' | 'grayMedium' | 'grayLarge';
+type ButtonSize = 'small' | 'medium' | 'large' | 'grayMedium' | 'grayLarge' | 'noneSize';
 type ButtonType = 'button' | 'submit' | 'reset';
 
 type BaseButtonProps = {
