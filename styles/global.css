@@ -34,6 +34,17 @@
 	--green10: #d4f7d4;
 
 	--kakao: #fee500;
+
+	/* header, footer 높이 */
+	--headerHeight: 102px;
+	--footerHeight: 126px;
+}
+
+@media (min-width: 768) {
+	:root {
+		--headerHeight: 70px;
+		--footerHeight: 100px;
+	}
 }
 
 ul,
