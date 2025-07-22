@@ -20,8 +20,8 @@
 	width: 100%;
 	max-height: 200px;
 	overflow-y: auto;
-	background-color: white;
-	border: 1px solid #d1d5db;
+	background-color: var(--white);
+	border: 1px solid var(--gray30);
 	border-radius: 6px;
 	list-style: none;
 	padding: 0;
@@ -33,16 +33,16 @@
 .dropdownList li {
 	padding: 12px 20px;
 	font-size: 16px;
-	color: black;
+	color: var(--black);
 	cursor: pointer;
 }
 
 .dropdownList li:hover {
-	background-color: #f3f4f6;
+	background-color: var(--gray20);
 }
 
 .dropdownList .noOptions {
-	color: #6b7280;
+	color: var(--gray50);
 	padding: 12px 20px;
 	text-align: center;
 }

@@ -16,10 +16,10 @@
 }
 
 .errorBorder {
-	border-color: #ef4444;
+	border-color: var(--red40);
 }
 
 .errorBorder:focus {
-	border-color: #ef4444;
+	border-color: var(--red40);
 	box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.25);
 }
