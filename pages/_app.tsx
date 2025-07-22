@@ -1,12 +1,14 @@
-import '@/styles/global.css';
 
+//import Layout from '@/components/common/Layout/Layout.tsx';
+import '@/styles/global.css';
 import { AuthProvider } from "@/contexts/auth-context";
 import type { AppProps } from "next/app";
 
 export default function App({ Component, pageProps }: AppProps) {
-  return (
-    <AuthProvider>
-      <Component {...pageProps} />;
-    </AuthProvider>
-  )
+
+	return (
+		<Layout>
+			<Component {...pageProps} />
+		</Layout>
+	);
 }

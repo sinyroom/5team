@@ -1,0 +1,21 @@
+.content {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 16px;
+}
+
+.buttonGroup {
+	display: flex;
+	gap: 8px;
+}
+
+.button {
+	width: 80px;
+	height: 37px;
+}
+
+.Icon {
+	width: 24px;
+	height: 24px;
+}

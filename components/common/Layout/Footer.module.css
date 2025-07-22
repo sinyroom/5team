@@ -92,21 +92,25 @@
 		height: 126px;
 		font-size: 14px;
 	}
+
 	.footerContents {
 		grid-template-rows: 1fr 1fr;
 	}
+
 	.codeitCops {
 		display: flex;
 		grid-row: 2;
 		flex-direction: column;
 		justify-content: flex-end;
 	}
+
 	.policies {
 		grid-row: 1;
 		grid-column: 1 / span 2;
 		gap: 30px;
 		justify-content: left;
 	}
+
 	.imgDiv {
 		grid-column: 3;
 	}

@@ -1,0 +1,43 @@
+.card {
+	background: var(--white);
+	border-radius: 5px;
+	padding: 16px 18px 16px 12px;
+	border: 1px solid #e5e4e7;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.dotBlue {
+	background-color: #3b82f6;
+	width: 5px;
+	height: 5px;
+	border-radius: 50%;
+}
+
+.dotRed {
+	background-color: #ef4444;
+	width: 5px;
+	height: 5px;
+	border-radius: 50%;
+}
+
+.approved {
+	color: #3b82f6;
+}
+
+.rejected {
+	color: #ef4444;
+}
+
+.ago {
+	color: var(--gray40);
+	font-size: 12px;
+	line-height: 16px;
+}
+
+.result {
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 22px;
+}

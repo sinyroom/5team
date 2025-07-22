@@ -1,15 +1,15 @@
 import styles from './BaseButton.module.css';
 
 type ButtonColor = 'red' | 'white' | 'gray';
-type ButtonSize = 'small' | 'medium' | 'large' | 'grayMedium' | 'grayLarge';
+type ButtonSize = 'small' | 'medium' | 'large' | 'grayMedium' | 'grayLarge' | 'noneSize';
 type ButtonType = 'button' | 'submit' | 'reset';
 
 type BaseButtonProps = {
 	children: React.ReactNode;
 	onClick?: () => void;
 	disabled?: boolean;
-	color?: ButtonColor;
-	size?: ButtonSize;
+	color: ButtonColor;
+	size: ButtonSize;
 	type?: ButtonType;
 	className?: string;
 };
