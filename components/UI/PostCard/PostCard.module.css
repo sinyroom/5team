@@ -41,3 +41,10 @@
 	line-height: 22px;
 	color: #000000;
 }
+
+.buttonGruop {
+	display: flex;
+	gap: 8px;
+	height: 38px;
+	margin-top: 24px;
+}
