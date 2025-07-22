@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import Image from 'next/image';
 import { Geist, Geist_Mono } from 'next/font/google';
-import Layout from '@/components/UI/Layout.tsx';
+import Layout from '@/components/common/Layout/Layout.tsx';
 
 const geistSans = Geist({
 	variable: '--font-geist-sans',
@@ -14,9 +14,5 @@ const geistMono = Geist_Mono({
 });
 
 export default function Home() {
-	return (
-		<>
-			<Layout />
-		</>
-	);
+	return <></>;
 }
