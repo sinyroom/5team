@@ -1,0 +1,33 @@
+.inputContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.label {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	font-size: 16px;
+	font-weight: 400;
+	color: black;
+}
+
+.requiredIndicator {
+	color: black;
+	font-size: 16px;
+}
+
+.inputWrapper {
+	position: relative;
+	width: 100%;
+	display: flex;
+	align-items: center;
+}
+
+.errorMessage {
+	margin-left: 8px;
+	font-size: 12px;
+	line-height: 16px;
+	color: #ef4444;
+}
