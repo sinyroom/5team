@@ -2,9 +2,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './DropdownInput.module.css';
 
-import { DROPDOWN_OPTIONS_MAP } from '../../../constants/DropdownOptions';
-import { BaseInput } from '../BaseInput';
-import { InputCore } from '../InputCore';
+import { DROPDOWN_OPTIONS_MAP } from '@/constants/DropdownOptions';
+import { BaseInput } from '../_base/BaseInput';
+import { InputCore } from '../_base/InputCore';
 
 interface DropdownInputProps {
 	id: string;

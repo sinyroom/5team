@@ -1,7 +1,7 @@
 import styles from './UnitInput.module.css';
 
-import { BaseInput } from '../BaseInput';
-import { InputCore } from '../InputCore';
+import { BaseInput } from '../_base/BaseInput';
+import { InputCore } from '../_base/InputCore';
 
 interface UnitInputProps {
 	id: string;
