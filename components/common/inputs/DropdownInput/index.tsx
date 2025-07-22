@@ -16,6 +16,7 @@ interface DropdownInputProps {
 	required?: boolean;
 	options?: string[];
 	className?: string;
+	placeholder?: string;
 	onClick?: React.MouseEventHandler<HTMLInputElement>;
 }
 

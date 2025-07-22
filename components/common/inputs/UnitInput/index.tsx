@@ -11,6 +11,8 @@ interface UnitInputProps {
 	required?: boolean;
 	className?: string;
 	value: string;
+	type?: string;
+	placeholder?: string;
 	onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
