@@ -1,0 +1,22 @@
+.message {
+	font-weight: 500;
+	font-size: 16px;
+	line-height: 100%;
+}
+
+.button {
+	width: 138px;
+	height: 42px;
+}
+
+@media screen and (min-width: 768px) {
+	.message {
+		font-size: 18px;
+	}
+
+	.button {
+		width: 120px;
+		height: 48px;
+		align-self: flex-end;
+	}
+}
