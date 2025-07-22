@@ -1,0 +1,35 @@
+.notification {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+#icon {
+	width: 24px;
+	height: 24px;
+}
+
+.dropDownMenu {
+	background-color: var(--red10);
+	position: absolute;
+	top: 80%;
+	width: 368px;
+	height: 419px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: var(--gray30);
+	border-radius: 10px;
+	padding: 24px 20px;
+}
+
+.dropDownMenu div {
+	font-size: 20px;
+	font-weight: 700;
+}
+
+@media screen and (max-width: 730px) {
+	#icon {
+		width: 20px;
+		height: 20px;
+	}
+}

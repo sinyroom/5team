@@ -1,10 +1,15 @@
+//Hook
 import React, { useState, useEffect } from 'react';
 import useWindowWidth from '@/hooks/useWindowWidth.tsx';
+
+//style and svg
 import styles from './Header.module.css';
 import LogoImage from '@/assets/img/logo.svg';
 import LogoImageSmall from '@/assets/img/logoSmall.svg';
-import Notification from '@/assets/img/notification.svg';
 import Search from '@/assets/img/search.svg';
+
+//Components
+import DropDownNotification from './DropDownNotification.tsx';
 
 export default function Header() {
 	const [loginState, setLoginState] = useState(true); //로그인 state <假 데이터>
@@ -78,9 +83,7 @@ export default function Header() {
 							<>
 								<button>내 가게</button>
 								<button>로그아웃</button>
-								<button className={styles.notification}>
-									<Notification />
-								</button>
+								<DropDownNotification />
 							</>
 						) : (
 							<>
