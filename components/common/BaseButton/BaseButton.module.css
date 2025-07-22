@@ -15,20 +15,20 @@
 
 /* === 색상 === */
 .red {
-	background-color: red;
-	color: white;
+	background-color: var(--primary);
+	color: var(--white);
 	border: 0;
 }
 
 .white {
-	background-color: white;
-	color: red;
-	border: 1px solid red;
+	background-color: var(--white);
+	color: var(--primary);
+	border: 1px solid var(--primary);
 }
 
 .gray {
-	background-color: gray;
-	color: white;
+	background-color: var(--gray40);
+	color: var(--white);
 	border: 0;
 }
 
@@ -38,6 +38,7 @@
 	height: 32px;
 	padding: 8px 12px;
 	font-size: 14px;
+	font-weight: 400;
 }
 
 .medium {
@@ -45,6 +46,7 @@
 	height: 37px;
 	padding: 10px 20px;
 	font-size: 16px;
+	font-weight: 700;
 }
 
 .large {
@@ -52,6 +54,7 @@
 	height: 48px;
 	padding: 14px 136px;
 	font-size: 18px;
+	font-weight: 700;
 }
 
 /* 예외 스타일 - gray 계열은 크기별 오버라이드 */
@@ -60,6 +63,7 @@
 	height: 37px;
 	padding: 10px 20px;
 	font-size: 16px;
+	font-weight: 700;
 }
 
 .grayLarge {
@@ -67,4 +71,5 @@
 	height: 48px;
 	padding: 14px 136px;
 	font-size: 18px;
+	font-weight: 700;
 }
