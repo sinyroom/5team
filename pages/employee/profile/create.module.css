@@ -16,6 +16,12 @@
 	font-weight: 700;
 }
 
+.form {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
 .inputWrapper {
 	display: flex;
 	flex-direction: column;
