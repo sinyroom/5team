@@ -4,7 +4,7 @@ import { BaseInput } from '../_base/BaseInput';
 import { InputCore } from '../_base/InputCore';
 import { formatNumberWithComma, sanitizeNumber } from '@/utils/farmatNumber';
 
-interface UnitInputProps {
+interface NumberInputProps {
 	id: string;
 	label: string;
 	error?: string;
@@ -18,7 +18,7 @@ interface UnitInputProps {
 	unitText: string;
 }
 
-export const UnitInput = ({
+export const NumberInput = ({
 	id,
 	label,
 	value,
@@ -29,7 +29,7 @@ export const UnitInput = ({
 	onChange,
 	unitText = '원',
 	...props
-}: UnitInputProps) => {
+}: NumberInputProps) => {
 	const withUnit = !!unitText;
 	const inputWithUnitClass = withUnit ? styles.withUnitPadding : '';
 	const finalInputClassName = className ? `${className} ${inputWithUnitClass}` : inputWithUnitClass;
