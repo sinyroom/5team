@@ -4,11 +4,6 @@
 	justify-content: center;
 }
 
-.notificationLocation {
-	position: absolute;
-	top: 80%;
-}
-
 #icon {
 	width: 24px;
 	height: 24px;

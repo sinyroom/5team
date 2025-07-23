@@ -24,7 +24,7 @@ export default function DropDownMenu() {
 			status: '승인',
 			ago: '1시간 전',
 		},
-	];
+	]; // 하드 코딩 아님. 테스트를 위한 목 데이터 임 .
 
 	const toggleDropdown = () => {
 		setDropdownVisible(prev => !prev);
@@ -36,11 +36,7 @@ export default function DropDownMenu() {
 				<Notification id={styles.icon} />
 			</button>
 
-			{dropdownVisible && (
-				<div className={styles.notificationLocation}>
-					<NotificationCard notifications={mok} onClose={toggleDropdown} />
-				</div>
-			)}
+			{dropdownVisible && <NotificationCard notifications={mok} onClose={toggleDropdown} />}
 		</>
 	);
 }
