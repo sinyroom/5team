@@ -15,7 +15,7 @@ interface UnitInputProps {
 	type?: string;
 	placeholder?: string;
 	onChange?: (rawValue: string) => void;
-	unitText?: string;
+	unitText: string;
 }
 
 export const UnitInput = ({
@@ -27,7 +27,7 @@ export const UnitInput = ({
 	required = false,
 	className,
 	onChange,
-	unitText,
+	unitText = '원',
 	...props
 }: UnitInputProps) => {
 	const withUnit = !!unitText;
