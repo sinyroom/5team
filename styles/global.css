@@ -38,6 +38,13 @@
 	/* header, footer 높이 */
 	--headerHeight: 102px;
 	--footerHeight: 126px;
+
+	--font-size-xs: 12px;
+	--font-size-sm: 14px;
+	--font-size-base: 16px;
+	--font-size-lg: 18px;
+	--font-size-xl: 20px;
+	--font-size-xxl: 24px;
 }
 
 @media (min-width: 768) {
@@ -47,6 +54,7 @@
 	}
 }
 
+/* 기본 스타일 제거 */
 ul,
 li {
 	list-style: none;
