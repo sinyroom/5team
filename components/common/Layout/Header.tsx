@@ -31,6 +31,7 @@ export default function Header() {
 		//console.log(inputValue);
 		setInputValue(e.target.value);
 	};
+
 	return (
 		<>
 			<div className={styles.header}>

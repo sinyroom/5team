@@ -11,6 +11,7 @@
 	justify-content: center;
 	top: 0;
 	background-color: var(--white);
+	z-index: 100;
 }
 
 .headerContent {
@@ -36,6 +37,10 @@
 	gap: 40px;
 	font-weight: 700;
 	font-size: 16px;
+}
+
+.headerMenu {
+	position: relative;
 }
 
 .headerMenu button {
@@ -97,9 +102,9 @@
 
 @media screen and (max-width: 730px) {
 	.header {
-		height: 102px;
+		height: 110px;
 		padding-top: 15.5px;
-		padding-bottom: 10px;
+		padding-bottom: 20px;
 		padding-right: 20px;
 		padding-left: 20px;
 	}
