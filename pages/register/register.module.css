@@ -1,7 +1,12 @@
 .container {
-  padding: 1rem;
   max-width: 375px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  min-height: 100vh;
 }
 
 .imgcontainer{
@@ -78,13 +83,13 @@
 }
 
 .submitButton {
-  padding: 0.9rem;
+  padding: 0.8rem;
   background-color: #e5381d;
   color: white;
+  font-size: 16px;
+  font-weight: 700;
   border: none;
   border-radius: 6px;
-  font-size: 1rem;
-  font-weight: bold;
   cursor: pointer;
   margin-bottom: 1.5rem;
 }

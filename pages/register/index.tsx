@@ -2,6 +2,8 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import styles from "@/pages/register/register.module.css";
 import Logo from '@/assets/img/logo.svg';
+import { TextInput } from "@/components/common/inputs/TextInput";
+import { BaseButton } from "@/components/common/BaseButton";
 
 export default function Register() {
   const router = useRouter();
@@ -64,61 +66,88 @@ export default function Register() {
       <div className={styles.imgcontainer}>
         <Logo/>
       </div>
-      <div className={styles.form}>
-        <label className={styles.label}>이메일</label>
-        <input
-          className={`${styles.input} ${error.email && styles.error}`}
-          placeholder="입력"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          onBlur={validateEmail}
-        />
-        {error.email && <p className={styles.errorText}>{error.email}</p>}
 
-        <label className={styles.label}>비밀번호</label>
-        <input
+      <div className={styles.form} id="registerForm">
+        <TextInput
+        id="email"
+        label="이메일"
+        value={email}
+        onChange={(e)=> setEmail(e.target.value)}
+        // onBlur={validateEmail}
+        //error={error.email}
+        placeholder="입력"
+        width="350px"
+        required
+        />
+
+        <TextInput
+          id="password"
+          label="비밀번호"
           type="password"
-          className={`${styles.input} ${error.password && styles.error}`}
-          placeholder="입력"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e)=> setPassword(e.target.value)}
           onBlur={validatePassword}
-        />
-        {error.password && <p className={styles.errorText}>{error.password}</p>}
-
-        <label className={styles.label}>비밀번호 확인</label>
-        <input
-          type="password"
-          className={`${styles.input} ${error.confirm && styles.error}`}
+          //error={error.password}
           placeholder="입력"
+          width="350px"
+          required
+          />
+
+        <TextInput
+          id="confirmPassword"
+          label="비밀번호 확인"
+          type="password"
           value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          onBlur={validateConfirm}
+          onChange={(e)=>setConfirmPassword(e.target.value)}
+          // onBlur={validateConfirm}
+          //  error={error.confirm}
+          placeholder="입력"
+          width="350px"
+          required
         />
-        {error.confirm && <p className={styles.errorText}>{error.confirm}</p>}
 
         <div className={styles.userTypeSection}>
           <span className={styles.label}>회원 유형</span>
           <div className={styles.userTypeToggle}>
-            <button
+            {/* <button
               className={`${styles.typeButton} ${userType === "worker" ? styles.selected : ""}`}
               onClick={() => setUserType("worker")}
             >
               알바님
-            </button>
-            <button
+            </button> */}
+            <BaseButton
+              onClick={()=> setUserType("worker")}
+              color = "white"
+              size = "small"
+              className={`${styles.typeButton} ${userType === "worker" ? styles.selected : "" }`}
+              >알바님
+              </BaseButton>
+
+            {/* <button
               className={`${styles.typeButton} ${userType === "owner" ? styles.selected : ""}`}
               onClick={() => setUserType("owner")}
             >
               사장님
-            </button>
+            </button> */}
+            <BaseButton
+            onClick={()=> setUserType("owner")}
+            color="white"
+            size="small"
+            className ={`${styles.typeButton} ${userType === "owner" ? styles.selected : ""}`}
+            >사장님
+            </BaseButton>
           </div>
         </div>
 
-        <button onClick={handleSubmit} className={styles.submitButton}>
-          가입하기
-        </button>
-
+        <BaseButton
+          type="submit"
+          onClick={handleSubmit}
+          color='red'
+          size="medium"
+          className={styles.submitButton}
+          >
+            가입하기
+        </BaseButton>
         <p className={styles.loginText}>
           이미 가입하셨나요?{" "}
           <span className={styles.loginLink} onClick={() => router.push("/login")}>
