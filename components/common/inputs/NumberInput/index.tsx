@@ -1,9 +1,10 @@
-import styles from './UnitInput.module.css';
+import styles from './NumberInput.module.css';
 
 import { BaseInput } from '../_base/BaseInput';
 import { InputCore } from '../_base/InputCore';
+import { formatNumberWithComma, sanitizeNumber } from '@/utils/farmatNumber';
 
-interface UnitInputProps {
+interface NumberInputProps {
 	id: string;
 	label: string;
 	error?: string;
@@ -13,10 +14,11 @@ interface UnitInputProps {
 	value: string;
 	type?: string;
 	placeholder?: string;
-	onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	onChange?: (rawValue: string) => void;
+	unitText: string;
 }
 
-export const UnitInput = ({
+export const NumberInput = ({
 	id,
 	label,
 	value,
@@ -24,31 +26,33 @@ export const UnitInput = ({
 	width = '100%',
 	required = false,
 	className,
+	onChange,
+	unitText = '원',
 	...props
-}: UnitInputProps) => {
-	// label 값에 따른 텍스트 단위 변경
-	const showUnit = label === '시급' || label === '업무 시간' || label === '금액';
-	let unitTextContent;
-	if (label === '시급' || label === '금액') {
-		unitTextContent = '원';
-	} else if (label === '업무 시간') {
-		unitTextContent = '시간';
-	}
-
-	const inputWithUnitClass = showUnit ? styles.withUnitPadding : '';
+}: NumberInputProps) => {
+	const withUnit = !!unitText;
+	const inputWithUnitClass = withUnit ? styles.withUnitPadding : '';
 	const finalInputClassName = className ? `${className} ${inputWithUnitClass}` : inputWithUnitClass;
+
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const raw = sanitizeNumber(e.target.value);
+		onChange?.(raw);
+	};
 
 	return (
 		<div className={styles.unitInputContainer}>
 			<BaseInput id={id} label={label} error={error} width={width} required={required}>
 				<InputCore
 					id={id}
-					value={value}
 					className={finalInputClassName}
 					error={!!error}
 					{...props}
+					type="text"
+					inputMode="numeric"
+					value={formatNumberWithComma(value)}
+					onChange={handleChange}
 				/>
-				{showUnit && unitTextContent && <span className={styles.unitText}>{unitTextContent}</span>}
+				{unitText && <span className={styles.unitText}>{unitText}</span>}
 			</BaseInput>
 		</div>
 	);
