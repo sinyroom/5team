@@ -1,0 +1,24 @@
+.profileTitle {
+	font-weight: bold;
+	font-size: 28px;
+}
+
+.profileBlock {
+	padding-top: 60px;
+	padding-bottom: 60px;
+	padding-left: 238px;
+	padding-right: 245px;
+	display: flex;
+	justify-content: space-between;
+	gap: 180px;
+}
+
+.profileDetailed {
+	width: 665px;
+	height: 256px;
+	display: flex;
+	justify-content: space-between;
+	padding: 32px;
+	background-color: var(--red10);
+	border-radius: 12px;
+}
