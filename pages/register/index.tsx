@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
 import styles from "@/pages/register/register.module.css";
-import Image from "next/image";
+import Logo from '@/assets/img/logo.svg';
 
 export default function Register() {
   const router = useRouter();
@@ -61,9 +61,9 @@ export default function Register() {
 
   return (
     <div className={styles.container}>
-       <Image
-              src="@/assets/img/icon/logo.svg" alt='로고이미지'/>
-
+      <div className={styles.imgcontainer}>
+        <Logo/>
+      </div>
       <div className={styles.form}>
         <label className={styles.label}>이메일</label>
         <input

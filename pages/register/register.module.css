@@ -4,12 +4,21 @@
   margin: 0 auto;
 }
 
-.logo {
-  text-align: center;
-  font-size: 2rem;
-  color: #e5381d;
-  font-weight: bold;
-  margin-bottom: 2rem;
+.imgcontainer{
+    position:relative;
+    width:350px;
+    height: 38px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+}
+
+
+@media  screen and (min-width:744px) {
+  .imgcontainer{
+    width:248px;
+    height: 45px;
+  }
 }
 
 .form {
