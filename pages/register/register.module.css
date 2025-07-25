@@ -11,22 +11,34 @@
 
 .imgcontainer{
     position:relative;
-    width:350px;
+    width:208px;
     height: 38px;
     margin: 0 auto;
     display: flex;
     justify-content: center;
+    margin-bottom: 28px;
+}
+
+.imgcontainer svg{
+  width: 100%;
+  height: 100%;
+}
+
+.formBox > button { 
+  width:350px;
+  height: 48px;
+  margin-bottom: 20px;
 }
 
 
-@media  screen and (min-width:744px) {
+@media  screen and (min-width:768px) {
   .imgcontainer{
     width:248px;
     height: 45px;
   }
 }
 
-.form {
+.formBox {
   display: flex;
   flex-direction: column;
 }

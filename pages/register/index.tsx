@@ -7,7 +7,6 @@ import { BaseButton } from "@/components/common/BaseButton";
 
 export default function Register() {
   const router = useRouter();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -67,14 +66,14 @@ export default function Register() {
         <Logo/>
       </div>
 
-      <div className={styles.form} id="registerForm">
+      <form className={styles.formBox}>
         <TextInput
         id="email"
         label="이메일"
         value={email}
         onChange={(e)=> setEmail(e.target.value)}
-        // onBlur={validateEmail}
-        //error={error.email}
+        onBlur={validateEmail}
+        error={error.email}
         placeholder="입력"
         width="350px"
         required
@@ -87,7 +86,7 @@ export default function Register() {
           value={password}
           onChange={(e)=> setPassword(e.target.value)}
           onBlur={validatePassword}
-          //error={error.password}
+          error={error.password}
           placeholder="입력"
           width="350px"
           required
@@ -99,8 +98,8 @@ export default function Register() {
           type="password"
           value={confirmPassword}
           onChange={(e)=>setConfirmPassword(e.target.value)}
-          // onBlur={validateConfirm}
-          //  error={error.confirm}
+          onBlur={validateConfirm}
+          error={error.confirm}
           placeholder="입력"
           width="350px"
           required
@@ -109,12 +108,7 @@ export default function Register() {
         <div className={styles.userTypeSection}>
           <span className={styles.label}>회원 유형</span>
           <div className={styles.userTypeToggle}>
-            {/* <button
-              className={`${styles.typeButton} ${userType === "worker" ? styles.selected : ""}`}
-              onClick={() => setUserType("worker")}
-            >
-              알바님
-            </button> */}
+            
             <BaseButton
               onClick={()=> setUserType("worker")}
               color = "white"
@@ -123,12 +117,6 @@ export default function Register() {
               >알바님
               </BaseButton>
 
-            {/* <button
-              className={`${styles.typeButton} ${userType === "owner" ? styles.selected : ""}`}
-              onClick={() => setUserType("owner")}
-            >
-              사장님
-            </button> */}
             <BaseButton
             onClick={()=> setUserType("owner")}
             color="white"
@@ -148,13 +136,14 @@ export default function Register() {
           >
             가입하기
         </BaseButton>
+
         <p className={styles.loginText}>
           이미 가입하셨나요?{" "}
           <span className={styles.loginLink} onClick={() => router.push("/login")}>
             로그인하기
           </span>
         </p>
-      </div>
+      </form>
     </div>
   );
 }
