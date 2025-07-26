@@ -9,6 +9,8 @@
 }
 
 .disabled {
+	background-color: var(--gray50);
+	color: var(--white);
 	opacity: 0.5;
 	cursor: not-allowed;
 }
