@@ -66,6 +66,7 @@ export default function Login() {
       <div className={styles.imgcontainer}>
         <Logo />
       </div>
+      
       <form className={styles.formBox} onSubmit={handleLogin}>
         <TextInput
           id="email"
