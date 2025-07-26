@@ -28,8 +28,12 @@
   width:350px;
   height: 48px;
   margin-bottom: 20px;
+  border-radius: 6px  ;
 }
 
+.forms {
+  margin-bottom: 28px;
+}
 
 @media  screen and (min-width:768px) {
   .imgcontainer{
@@ -72,6 +76,12 @@
   margin-bottom: 1.5rem;
 }
 
+.userTypeSection .userTypeToggle > input{
+  width : 167px;
+  height: 50px;
+  border-radius: 9999px;
+}
+
 .userTypeToggle {
   display: flex;
   gap: 0.5rem;
@@ -79,24 +89,45 @@
 }
 
 .typeButton {
-  flex: 1;
-  padding: 0.6rem;
+  flex:1;
+  display: flex;
+  align-items: center;
+  gap:8px;
+  padding :10px 20px;
+  border: 1px solid #CBC9CF ;
   border-radius: 9999px;
-  border: 1.5px solid #ccc;
-  background-color: #fff;
-  font-weight: 500;
-  cursor: pointer;
+  cursor : pointer;
+  justify-content: center;
+  width:167px;
+  height: 50px;
+  font-weight: 400;
+  font-size: 14px;
+  gap :10px;
 }
 
-.selected {
-  background-color: #e5381d;
-  color: white;
-  border-color: #e5381d;
+
+.typeButton span{
+  width:20px;
+  height: 20px;
+  border-radius: 50%;
+  border:1px solid #CBC9CF;
+  display: flex;
+  align-items: center;
+  justify-content: center;  
+}
+
+.typeButton.selected {
+  border-color:#EA3C12;
+}
+
+.typeButton.selected .CheckImg{
+  width:12px;
+  height: 12px;
 }
 
 .submitButton {
   padding: 0.8rem;
-  background-color: #e5381d;
+  background-color: #EA3C12;
   color: white;
   font-size: 16px;
   font-weight: 700;
