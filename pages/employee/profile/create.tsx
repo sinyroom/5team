@@ -135,7 +135,7 @@ const Create = ({ userData }: { userData: any }) => {
 						<div className={styles.input}>
 							<TextInput
 								id="phone"
-								label="연락처"
+								label="연락처 (010-0000-0000) "
 								value={phone}
 								onChange={e => setPhone(e.target.value)}
 								placeholder="입력"
