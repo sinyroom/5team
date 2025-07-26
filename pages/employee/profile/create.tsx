@@ -1,19 +1,18 @@
+import { GetServerSideProps } from 'next';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import buttonStyle from '@/components/common/BaseButton/BaseButton.module.css';
-import styles from './create.module.css';
+import { useRouter } from 'next/router';
+import Cookies from 'js-cookie';
 
 import { TextInput } from '@/components/common/inputs/TextInput';
 import { DropdownInput } from '@/components/common/inputs/DropdownInput';
 import { TextareaInput } from '@/components/common/inputs/TextareaInput';
 import Alert from '@/components/Modal/Alert/Alert';
-import { useRouter } from 'next/router';
-import { GetServerSideProps } from 'next';
-import axiosInstance from '@/api/settings/axiosInstance';
-import Cookies from 'js-cookie';
-import axios from 'axios';
 import { getUser } from '@/api/users/getUser';
 import { updateUser } from '@/api/users/updateUser';
+
+import buttonStyle from '@/components/common/BaseButton/BaseButton.module.css';
+import styles from './create.module.css';
 
 export const getServerSideProps: GetServerSideProps = async context => {
 	const { userId, token } = context.req.cookies;
@@ -22,7 +21,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
 	// let { userId, token } = context.req.cookies;
 	// userId = '7d36a348-c505-4452-8f29-a6c1fa1d01c6';
 	// token =
-	// 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3ZDM2YTM0OC1jNTA1LTQ0NTItOGYyOS1hNmMxZmExZDAxYzYiLCJpYXQiOjE3NTMzNDgzODJ9.G6VJdK55gx8jRPu-eAD0nEdFxCfmv4NRgdniJYffBUo';
+	// 	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3ZDM2YTM0OC1jNTA1LTQ0NTItOGYyOS1hNmMxZmExZDAxYzYiLCJpYXQiOjE3NTMzNDgzODJ9.G6VJdK55gx8jRPu-eAD0nEdFxCfmv4NRgdniJYffBUo';
 
 	// 디버깅용 코드
 	// console.log('서버사이드 쿠키:', context.req.cookies);
@@ -112,6 +111,8 @@ const Create = ({ userData }: { userData: any }) => {
 		setIsAlertOpen(false);
 	};
 
+	const isDisabled: boolean = !name || !phone || !address || !bio;
+
 	return (
 		<>
 			<div className={styles.container}>
@@ -129,7 +130,6 @@ const Create = ({ userData }: { userData: any }) => {
 								onChange={e => setName(e.target.value)}
 								placeholder="입력"
 								required
-								// error={!name ? '카테고리를 선택해주세요' : ''}
 							/>
 						</div>
 						<div className={styles.input}>
@@ -149,7 +149,6 @@ const Create = ({ userData }: { userData: any }) => {
 								value={address}
 								onSelectOption={value => setAddress(value)}
 								placeholder="선택"
-								// error={!address ? '카테고리를 선택해주세요' : ''}
 							/>
 						</div>
 					</div>
@@ -160,13 +159,15 @@ const Create = ({ userData }: { userData: any }) => {
 							value={bio}
 							onChange={e => setBio(e.target.value)}
 							placeholder="입력"
-							// error={!bio ? '카테고리를 선택해주세요' : ''}
 						/>
 					</div>
 					<div className={styles.buttonWrapper}>
 						<button
 							type="submit"
-							className={`${buttonStyle.button} ${buttonStyle.red} ${styles.button}`}
+							disabled={isDisabled}
+							className={`${buttonStyle.button} ${
+								isDisabled ? buttonStyle.disabled : buttonStyle.red
+							} ${styles.button}`}
 						>
 							등록하기
 						</button>
