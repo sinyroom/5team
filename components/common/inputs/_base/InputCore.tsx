@@ -2,7 +2,7 @@ import { forwardRef, InputHTMLAttributes } from 'react';
 import styles from './InputCore.module.css';
 
 export interface InputCoreProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'error'> {
-	value: string;
+	value?: string;
 	onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 	error?: boolean;
 }

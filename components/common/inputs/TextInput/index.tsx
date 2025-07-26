@@ -6,7 +6,7 @@ import { InputCore } from '../_base/InputCore';
 interface TextInputProps {
 	id: string;
 	label: string;
-	value: string;
+	value?: string;
 	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 	onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
 	error?: string;
