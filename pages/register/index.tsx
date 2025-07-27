@@ -5,6 +5,8 @@ import Logo from '@/assets/img/logo.svg';
 import CheckedImg from '@/assets/img/checking.svg';
 import { TextInput } from "@/components/common/inputs/TextInput";
 import { BaseButton } from "@/components/common/BaseButton";
+import axios from "axios";
+import axiosInstance from "@/api/settings/axiosInstance";
 
 export default function Register() {
   const router = useRouter();
@@ -44,22 +46,47 @@ export default function Register() {
     }
   };
 
-  const handleSubmit = () => {
-    const isEmailValid = validateEmail();
-    const isPasswordValid = validatePassword();
-    const isConfirmValid = validateConfirm();
+const handleSubmit = async () => {
+  const isEmailValid = validateEmail();
+  const isPasswordValid = validatePassword();
+  const isConfirmValid = validateConfirm();
 
-    if (!isEmailValid || !isPasswordValid || !isConfirmValid) return;
-
-    // 임시 중복 이메일 확인
-    if (email === "test@example.com") {
-      alert("이미 사용중인 이메일입니다");
-      return;
+  if (!isEmailValid || !isPasswordValid || !isConfirmValid || !userType) {
+    if (!userType) {
+      setError((prev) => ({ ...prev, userType: "회원 유형을 선택해 주세요." }));
     }
+    return;
+  }
 
-    alert("가입이 완료되었습니다");
-    router.push("/login");
-  };
+  try {
+    const res = await axiosInstance.post("/users", {
+      email,
+      password,
+      type: userType === "worker" ? "employee" : "employer", // ✅ 변환
+    });
+
+    if (res.status === 201) {
+      alert("가입이 완료되었습니다.");
+      router.push("/login");
+    }
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      const status = error.response?.status;
+      const message = error.response?.data?.message;
+
+      if (status === 400) {
+        alert(message || "요청 형식이 올바르지 않습니다.");
+      } else if (status === 409) {
+        alert("이미 존재하는 이메일입니다.");
+      } else {
+        alert("회원가입 중 문제가 발생했습니다.");
+      }
+    } else {
+      alert("알 수 없는 오류가 발생했습니다.");
+    }
+  }
+};
+
 
   return (
     <div className={styles.container}>
