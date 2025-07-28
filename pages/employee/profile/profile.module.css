@@ -1,4 +1,4 @@
-.profileTitle {
+.Title {
 	font-weight: bold;
 	font-size: 28px;
 }
@@ -21,4 +21,46 @@
 	padding: 32px;
 	background-color: var(--red10);
 	border-radius: 12px;
+}
+
+#name {
+	color: var(--primary);
+	font-weight: bold;
+	font-size: 16px;
+}
+
+#profileName {
+	font-weight: bold;
+	color: var(--black);
+	font-size: 28px;
+}
+
+#phoneNumber {
+	color: var(--gray50);
+	display: flex;
+	gap: 6px;
+}
+
+#preferLocation {
+	color: var(--gray50);
+	display: flex;
+	gap: 6px;
+}
+
+.applyListBlock {
+	padding: 60px 238px 120px 238px;
+}
+
+.applyListContent {
+	width: 964px;
+	height: 217px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding-top: 60px;
+	padding-bottom: 60px;
+	border: solid;
+	border-width: 1px;
+	border-radius: 12px;
+	border-color: var(--gray20);
 }

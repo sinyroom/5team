@@ -1,5 +1,5 @@
 //hook
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 //style
 import styles from './profile.module.css';
@@ -8,32 +8,95 @@ import styles from './profile.module.css';
 import PathIcon from '@/assets/img/pathIcon.svg';
 import SmartPhoneIcon from '@/assets/img/smartPhoneIcon.svg';
 
+//Components
+import { BaseButton } from '@/components/common/BaseButton/index.tsx';
+
+//api
+import { getUser } from '@/api/users/getUser.ts';
+
+//받아올 값 : 이름 ,전화번호 ,주소 , 소개
 //employee/profile
 export default function ProfilePage() {
-	const [applyList, setApplyList] = useState(false); // 신청 내역 여부입니다. default, false.
+	const [userData, setUserData] = useState(null); //實 데이터 상태
+	const [applyList, setApplyList] = useState(true); // 신청 내역 여부입니다. default: false.
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
+
+	/****************************************************** */
+	/* 테스트 환경 */
+	const currentUserId = '7d36a348-c505-4452-8f29-a6c1fa1d01c6'; // 실제 사용자 ID
+	const userToken =
+		'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3ZDM2YTM0OC1jNTA1LTQ0NTItOGYyOS1hNmMxZmExZDAxYzYiLCJpYXQiOjE3NTMzNDgzODJ9.G6VJdK55gx8jRPu-eAD0nEdFxCfmv4NRgdniJYffBUo'; // 실제 인증 토큰
+	/****************************************************** */
+
+	useEffect(() => {
+		const fetchUserData = async () => {
+			setLoading(true);
+			setError(null);
+			try {
+				// getUser 함수 호출
+				const user = await getUser(currentUserId, userToken);
+				setUserData(user);
+			} catch (err) {
+				setError('사용자 정보를 가져오는데 실패했습니다.');
+				console.error(err);
+			} finally {
+				setLoading(false);
+			}
+		};
+	}, [currentUserId, userToken]);
+	console.log(userData);
 
 	return (
 		<>
 			<div className={styles.profileBlock}>
-				<div className={styles.profileTitle}>내 프로필</div>
+				<div className={styles.Title}>내 프로필</div>
 				<div className={styles.profileDetailed}>
-					<div>
-						<div id={styles.name}>이름</div>
-						<div id={styles.profileName}>홍길동</div>
-						<div id={styles.phoneNumber}>
-							<SmartPhoneIcon style={{ width: '20px', height: '20px' }} />
-							010-0000-0000
-						</div>
-						<div id={styles.preferLocation}>
-							<PathIcon style={{ objectFit: 'contain', width: '20px', height: '20px' }} />
-							선호 지역: 서울시 도봉구
+					<div
+						style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
+					>
+						<div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+							<div>
+								<div id={styles.name}>이름</div>
+								<div id={styles.profileName}>최민준</div> {/* 이름 값 넣기 */}
+							</div>
+							<div id={styles.phoneNumber}>
+								<SmartPhoneIcon style={{ width: '20px', height: '20px' }} />
+								010-0000-0000 {/* 전화번호 값 넣기 */}
+							</div>
+							<div id={styles.preferLocation}>
+								<PathIcon style={{ objectFit: 'contain', width: '20px', height: '20px' }} />
+								선호 지역: 서울시 도봉구 {/* 선호지역 값 넣기 */}
+							</div>
 						</div>
 						<div id={styles.profileIntroduce}>열심히 일 하겠습니다.</div>
 					</div>
-					<div> 편집하기</div>
+					<div>
+						<BaseButton color="white" size="medium">
+							{' '}
+							{/*사이즈 조절 가능한지 여쭤보기 */}
+							편집하기
+						</BaseButton>
+					</div>
 				</div>
 			</div>
-			<div className={styles.applyListBlock}>신청 내역</div>
+			<div className={styles.applyListBlock}>
+				<div className={styles.Title} style={{ marginBottom: '32px' }}>
+					신청 내역
+				</div>
+				{applyList ? (
+					<div className={styles.applyListContent}>
+						<div style={{ display: 'flex', justifyContent: 'center' }}>
+							아직 신청 내역이 없어요.
+						</div>
+						<div style={{ display: 'flex', justifyContent: 'center' }}>
+							<BaseButton size="large">공고 보러가기</BaseButton>
+						</div>
+					</div>
+				) : (
+					<div>테이블</div>
+				)}
+			</div>
 		</>
 	);
 }
