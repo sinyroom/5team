@@ -1,19 +1,19 @@
+import { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import styles from './posts.module.css';
 import { useEffect, useState } from 'react';
 
+import { Notice, GetNoticeResponse } from '@/types/userNotice';
+import { fetchNoticeList } from '@/api/users/getNotice';
+import SmallNoticePoastCard from '@/components/common/NoticePostCard/SmallNoticePoastCard';
 import ArrowRight from '@/assets/img/rightIcon.svg';
 import ArrowLeft from '@/assets/img/leftIcon.svg';
-import { Notice, GetNoticeResponse } from '@/types/userNotice';
-import SmallNoticePoastCard from '@/components/common/NoticePostCard/SmallNoticePoastCard';
-import { fetchNoticeList } from '@/api/users/getNotice';
-import { GetServerSideProps } from 'next';
 
 const PAGE_LIMIT = 6;
 
-type Props = {
+interface Props {
 	initialNotices: GetNoticeResponse;
-};
+}
 
 export const getServerSideProps: GetServerSideProps = async () => {
 	const initialNotices = await fetchNoticeList({ offset: 0, limit: PAGE_LIMIT });
