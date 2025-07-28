@@ -1,13 +1,13 @@
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
+import { format } from 'date-fns';
+import { NoticeItem } from '@/types';
 
-dayjs.extend(utc);
-dayjs.extend(timezone);
+export function formatNoticeTimes(notice: NoticeItem): string {
+	const start = new Date(notice.startsAt);
+	const end = new Date(start.getTime() + notice.workhour * 60 * 60 * 1000);
 
-/**
- * ISO 날짜를 KST 기준으로 'YYYY-MM-DD HH:mm' 포맷으로 변환
- */
-export const formatKSTDateTime = (isoDateString: string): string => {
-	return dayjs(isoDateString).tz('Asia/Seoul').format('YYYY-MM-DD HH:mm');
-};
+	const startDate = format(start, 'yyyy-MM-dd');
+	const startTime = format(start, 'HH:mm');
+	const endTime = format(end, 'HH:mm');
+
+	return `${startDate} ${startTime}~${endTime}(${notice.workhour}시간)`;
+}
