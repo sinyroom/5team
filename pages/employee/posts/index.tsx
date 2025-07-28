@@ -10,6 +10,12 @@ import ArrowRight from '@/assets/img/rightIcon.svg';
 import ArrowLeft from '@/assets/img/leftIcon.svg';
 
 const PAGE_LIMIT = 6;
+const sortOptions = [
+	{ label: '마감임박순', value: 'time' },
+	{ label: '시급많은순', value: 'pay' },
+	{ label: '시간적은순', value: 'hour' },
+	{ label: '가나다순', value: 'shop' },
+];
 
 interface Props {
 	initialNotices: GetNoticeResponse;
@@ -26,6 +32,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
 const Posts = ({ initialNotices }: Props) => {
 	const [showFilter, setShowFilter] = useState(false);
+	const [sortOption, setSortOption] = useState<'time' | 'pay' | 'hour' | 'shop'>('time');
 
 	// 페이지네이션
 	const [notices, setNotices] = useState(initialNotices.items);
@@ -40,16 +47,20 @@ const Posts = ({ initialNotices }: Props) => {
 	const isLastPage = currentPage === totalPages;
 
 	useEffect(() => {
-		if (offset === initialNotices.offset) return;
-
+		if (offset === initialNotices.offset && sortOption === 'time') return;
+		const queryParams = {
+			offset,
+			limit: PAGE_LIMIT,
+			sort: sortOption,
+		};
 		const fetchNotice = async () => {
-			const data = await fetchNoticeList({ offset, limit: PAGE_LIMIT });
+			const data = await fetchNoticeList(queryParams);
 			setNotices(data.items);
 			setTotalCount(data.count);
 			setHasNext(data.hasNext);
 		};
 		fetchNotice();
-	}, [offset]);
+	}, [offset, sortOption]);
 
 	const handlePageClick = (page: number) => {
 		setOffset((page - 1) * PAGE_LIMIT);
@@ -75,8 +86,8 @@ const Posts = ({ initialNotices }: Props) => {
 					<div className={styles.allPostWrapper}>
 						<p className={styles.title}>전체 공고</p>
 						<div className={styles.filterWrapper}>
-							<button className={styles.filter}>
-								<p>마감임박순</p>
+							<button className={styles.filter} onClick={() => setShowFilter(prev => !prev)}>
+								<p>{sortOptions.find(opt => opt.value === sortOption)?.label}</p>
 								<Image
 									src={`/img/icon/${showFilter ? 'arrowup' : 'arrowdown'}.svg`}
 									alt="필터"
@@ -84,6 +95,26 @@ const Posts = ({ initialNotices }: Props) => {
 									height={8}
 								/>
 							</button>
+
+							{showFilter && (
+								<ul className={styles.dropdown}>
+									{sortOptions.map(({ label, value }) => (
+										<li
+											key={value}
+											className={styles.dropdownItem}
+											onClick={() => {
+												console.log('선택된 정렬 옵션:', value);
+												setSortOption(value as 'time' | 'pay' | 'hour' | 'shop');
+												setOffset(0); // 페이지 초기화
+												setShowFilter(false);
+											}}
+										>
+											{label}
+										</li>
+									))}
+								</ul>
+							)}
+
 							<button className={styles.detailFilter}>
 								<p>상세 필터</p>
 							</button>
