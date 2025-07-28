@@ -1,54 +1,41 @@
-//로그인 여부 전역상태로 유지하는 컨텍스트 파일
+import { createContext, useContext, useState } from "react";
 
+interface User {
+  id: string;
+  email: string;
+  type: "employee" | "employer";
+  name?: string;
+  phone?: string;
+  address?: string;
+  bio?: string;
+}
 
-// import { createContext, useContext, useEffect, useState } from "react";
+interface UserContextType {
+  user: User | null;
+  setUser: (user: User | null) => void;
+}
 
-// type AuthContextType = {
-//   isAuthenticated: boolean;
-//   accessToken: string | null;
-//   login: (token: string) => void;
-//   logout: () => void;
-// };
+const UserContext = createContext<UserContextType | undefined>(undefined);
 
-// const AuthContext = createContext<AuthContextType>({
-//   isAuthenticated: false,
-//   accessToken: null,
-//   login: () => {},
-//   logout: () => {},
-// });
+export const UserProvider = ({
+  children,
+  initialUser = null,
+}: {
+  children: React.ReactNode;
+  initialUser?: User | null;
+}) => {
+  const [user, setUser] = useState<User | null>(initialUser);
+  return (
+    <UserContext.Provider value={{ user, setUser }}>
+      {children}
+    </UserContext.Provider>
+  );
+};
 
-// export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-//   const [accessToken, setAccessToken] = useState<string | null>(null);
-
-//   useEffect(() => {
-//     const token = localStorage.getItem("accessToken");
-//     if (token) {
-//       setAccessToken(token);
-//     }
-//   }, []);
-
-//   const login = (token: string) => {
-//     localStorage.setItem("accessToken", token);
-//     setAccessToken(token);
-//   };
-
-//   const logout = () => {
-//     localStorage.removeItem("accessToken");
-//     setAccessToken(null);
-//   };
-
-//   return (
-//     <AuthContext.Provider
-//       value={{
-//         isAuthenticated: !!accessToken,
-//         accessToken,
-//         login,
-//         logout,
-//       }}
-//     >
-//       {children}
-//     </AuthContext.Provider>
-//   );
-// };
-
-// export const useAuth = () => useContext(AuthContext);
+export const useUserContext = () => {
+  const context = useContext(UserContext);
+  if (!context) {
+    throw new Error("useUserContext must be used within a UserProvider");
+  }
+  return context;
+};
