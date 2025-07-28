@@ -1,51 +1,54 @@
-import { createContext, useContext, useEffect, useState } from "react";
+//로그인 여부 전역상태로 유지하는 컨텍스트 파일
 
-type AuthContextType = {
-  isAuthenticated: boolean;
-  accessToken: string | null;
-  login: (token: string) => void;
-  logout: () => void;
-};
 
-const AuthContext = createContext<AuthContextType>({
-  isAuthenticated: false,
-  accessToken: null,
-  login: () => {},
-  logout: () => {},
-});
+// import { createContext, useContext, useEffect, useState } from "react";
 
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [accessToken, setAccessToken] = useState<string | null>(null);
+// type AuthContextType = {
+//   isAuthenticated: boolean;
+//   accessToken: string | null;
+//   login: (token: string) => void;
+//   logout: () => void;
+// };
 
-  useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    if (token) {
-      setAccessToken(token);
-    }
-  }, []);
+// const AuthContext = createContext<AuthContextType>({
+//   isAuthenticated: false,
+//   accessToken: null,
+//   login: () => {},
+//   logout: () => {},
+// });
 
-  const login = (token: string) => {
-    localStorage.setItem("accessToken", token);
-    setAccessToken(token);
-  };
+// export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+//   const [accessToken, setAccessToken] = useState<string | null>(null);
 
-  const logout = () => {
-    localStorage.removeItem("accessToken");
-    setAccessToken(null);
-  };
+//   useEffect(() => {
+//     const token = localStorage.getItem("accessToken");
+//     if (token) {
+//       setAccessToken(token);
+//     }
+//   }, []);
 
-  return (
-    <AuthContext.Provider
-      value={{
-        isAuthenticated: !!accessToken,
-        accessToken,
-        login,
-        logout,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
-  );
-};
+//   const login = (token: string) => {
+//     localStorage.setItem("accessToken", token);
+//     setAccessToken(token);
+//   };
 
-export const useAuth = () => useContext(AuthContext);
+//   const logout = () => {
+//     localStorage.removeItem("accessToken");
+//     setAccessToken(null);
+//   };
+
+//   return (
+//     <AuthContext.Provider
+//       value={{
+//         isAuthenticated: !!accessToken,
+//         accessToken,
+//         login,
+//         logout,
+//       }}
+//     >
+//       {children}
+//     </AuthContext.Provider>
+//   );
+// };
+
+// export const useAuth = () => useContext(AuthContext);

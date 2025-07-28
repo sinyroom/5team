@@ -29,7 +29,7 @@ export const BaseInput = ({
 		if (isValidElement(child)) {
 			return React.cloneElement(child as ReactElement<ChildInputProps>, {
 				id,
-				error: !!error,
+				error: error ? true : undefined,
 			});
 		}
 		return child;

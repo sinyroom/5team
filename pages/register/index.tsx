@@ -1,15 +1,19 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
 import styles from "@/pages/register/register.module.css";
-import Image from "next/image";
+import Logo from '@/assets/img/logo.svg';
+import CheckedImg from '@/assets/img/checking.svg';
+import { TextInput } from "@/components/common/inputs/TextInput";
+import { BaseButton } from "@/components/common/BaseButton";
+import axios from "axios";
+import axiosInstance from "@/api/settings/axiosInstance";
 
 export default function Register() {
   const router = useRouter();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [userType, setUserType] = useState<"worker" | "owner">("worker");
+  const [userType, setUserType] = useState<"worker" | "owner" | null>(null);
   const [error, setError] = useState<{ [key: string]: string }>({});
 
   const validateEmail = () => {
@@ -42,82 +46,131 @@ export default function Register() {
     }
   };
 
-  const handleSubmit = () => {
-    const isEmailValid = validateEmail();
-    const isPasswordValid = validatePassword();
-    const isConfirmValid = validateConfirm();
+const handleSubmit = async () => {
+  const isEmailValid = validateEmail();
+  const isPasswordValid = validatePassword();
+  const isConfirmValid = validateConfirm();
 
-    if (!isEmailValid || !isPasswordValid || !isConfirmValid) return;
-
-    // 임시 중복 이메일 확인
-    if (email === "test@example.com") {
-      alert("이미 사용중인 이메일입니다");
-      return;
+  if (!isEmailValid || !isPasswordValid || !isConfirmValid || !userType) {
+    if (!userType) {
+      setError((prev) => ({ ...prev, userType: "회원 유형을 선택해 주세요." }));
     }
+    return;
+  }
 
-    alert("가입이 완료되었습니다");
-    router.push("/login");
-  };
+  try {
+    const res = await axiosInstance.post("/users", {
+      email,
+      password,
+      type: userType === "worker" ? "employee" : "employer", // ✅ 변환
+    });
+
+    if (res.status === 201) {
+      alert("가입이 완료되었습니다.");
+      router.push("/login");
+    }
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      const status = error.response?.status;
+      const message = error.response?.data?.message;
+
+      if (status === 400) {
+        alert(message || "요청 형식이 올바르지 않습니다.");
+      } else if (status === 409) {
+        alert("이미 존재하는 이메일입니다.");
+      } else {
+        alert("회원가입 중 문제가 발생했습니다.");
+      }
+    } else {
+      alert("알 수 없는 오류가 발생했습니다.");
+    }
+  }
+};
+
 
   return (
     <div className={styles.container}>
-       <Image
-              src="@/assets/img/icon/logo.svg" alt='로고이미지'/>
+      <div className={styles.imgcontainer}>
+        <Logo/>
+      </div>
 
-      <div className={styles.form}>
-        <label className={styles.label}>이메일</label>
-        <input
-          className={`${styles.input} ${error.email && styles.error}`}
-          placeholder="입력"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          onBlur={validateEmail}
+      <form className={styles.formBox}>
+        <TextInput
+        id="email"
+        label="이메일"
+        value={email}
+        onChange={(e)=> setEmail(e.target.value)}
+        onBlur={validateEmail}
+        error={error.email}
+        placeholder="입력"
+        width="350px"
+        required
+        className={styles.forms}
         />
-        {error.email && <p className={styles.errorText}>{error.email}</p>}
 
-        <label className={styles.label}>비밀번호</label>
-        <input
+        <TextInput
+          id="password"
+          label="비밀번호"
           type="password"
-          className={`${styles.input} ${error.password && styles.error}`}
-          placeholder="입력"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e)=> setPassword(e.target.value)}
           onBlur={validatePassword}
-        />
-        {error.password && <p className={styles.errorText}>{error.password}</p>}
-
-        <label className={styles.label}>비밀번호 확인</label>
-        <input
-          type="password"
-          className={`${styles.input} ${error.confirm && styles.error}`}
+          error={error.password}
           placeholder="입력"
+          width="350px"
+          required
+          className={styles.forms}
+          />
+
+        <TextInput
+          id="confirmPassword"
+          label="비밀번호 확인"
+          type="password"
           value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
+          onChange={(e)=>setConfirmPassword(e.target.value)}
           onBlur={validateConfirm}
+          error={error.confirm}
+          placeholder="입력"
+          width="350px"
+          required
+          className={styles.forms}
         />
-        {error.confirm && <p className={styles.errorText}>{error.confirm}</p>}
 
         <div className={styles.userTypeSection}>
           <span className={styles.label}>회원 유형</span>
           <div className={styles.userTypeToggle}>
+            
             <button
-              className={`${styles.typeButton} ${userType === "worker" ? styles.selected : ""}`}
-              onClick={() => setUserType("worker")}
-            >
+              type="button"
+              onClick={()=> setUserType("worker")}
+              className={`${styles.typeButton} ${userType === "worker" ? styles.selected : "" }`}
+              >
+             
+                {userType === 'worker' ? <CheckedImg/> : <span className="cirlce"></span>}
+              
               알바님
-            </button>
+              </button>
+
             <button
-              className={`${styles.typeButton} ${userType === "owner" ? styles.selected : ""}`}
-              onClick={() => setUserType("owner")}
+            type="button"
+            onClick={()=> setUserType("owner")}
+            className ={`${styles.typeButton} ${userType === "owner" ? styles.selected : ""}`}
             >
-              사장님
+            {userType === "owner" ? <CheckedImg/> : <span className="circle"></span>}
+           사장님
             </button>
           </div>
         </div>
 
-        <button onClick={handleSubmit} className={styles.submitButton}>
-          가입하기
-        </button>
+        <BaseButton
+          type="submit"
+          onClick={handleSubmit}
+          color='red'
+          size="medium"
+          className={styles.submitButton}
+          >
+            가입하기
+        </BaseButton>
 
         <p className={styles.loginText}>
           이미 가입하셨나요?{" "}
@@ -125,7 +178,7 @@ export default function Register() {
             로그인하기
           </span>
         </p>
-      </div>
+      </form>
     </div>
   );
 }

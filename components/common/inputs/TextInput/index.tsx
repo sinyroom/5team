@@ -6,8 +6,9 @@ import { InputCore } from '../_base/InputCore';
 interface TextInputProps {
 	id: string;
 	label: string;
-	value: string;
+	value?: string;
 	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
 	error?: string;
 	width?: string;
 	required?: boolean;
@@ -21,6 +22,7 @@ export const TextInput = ({
 	label,
 	value,
 	onChange,
+	onBlur,
 	error,
 	width = '100%',
 	required = false,
@@ -37,6 +39,7 @@ export const TextInput = ({
 					type={type}
 					value={value}
 					onChange={onChange}
+					onBlur={onBlur}
 					className={className}
 					error={!!error}
 					placeholder={placeholder}

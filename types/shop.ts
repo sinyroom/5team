@@ -8,3 +8,8 @@ export type Shop = {
 	imageUrl: string;
 	originalHourlyPay: number;
 };
+
+export interface ShopWrapper {
+	item: Shop;
+	href: string;
+}
