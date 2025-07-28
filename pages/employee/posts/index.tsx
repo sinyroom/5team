@@ -4,20 +4,34 @@ import { useEffect, useState } from 'react';
 
 import ArrowRight from '@/assets/img/rightIcon.svg';
 import ArrowLeft from '@/assets/img/leftIcon.svg';
-import axiosInstance from '@/api/settings/axiosInstance';
 import { Notice, GetNoticeResponse } from '@/types/userNotice';
 import SmallNoticePoastCard from '@/components/common/NoticePostCard/SmallNoticePoastCard';
+import { fetchNoticeList } from '@/api/users/getNotice';
+import { GetServerSideProps } from 'next';
 
 const PAGE_LIMIT = 6;
 
-const Posts = () => {
+type Props = {
+	initialNotices: GetNoticeResponse;
+};
+
+export const getServerSideProps: GetServerSideProps = async () => {
+	const initialNotices = await fetchNoticeList({ offset: 0, limit: PAGE_LIMIT });
+	return {
+		props: {
+			initialNotices,
+		},
+	};
+};
+
+const Posts = ({ initialNotices }: Props) => {
 	const [showFilter, setShowFilter] = useState(false);
 
 	// 페이지네이션
-	const [notices, setNotices] = useState<GetNoticeResponse['items']>([]);
-	const [offset, setOffset] = useState(0);
-	const [hasNext, setHasNext] = useState(false);
-	const [totalCount, setTotalCount] = useState(0);
+	const [notices, setNotices] = useState(initialNotices.items);
+	const [offset, setOffset] = useState(initialNotices.offset);
+	const [hasNext, setHasNext] = useState(initialNotices.hasNext);
+	const [totalCount, setTotalCount] = useState(initialNotices.count);
 
 	const currentPage = Math.floor(offset / PAGE_LIMIT) + 1;
 	const totalPages = Math.ceil(totalCount / PAGE_LIMIT);
@@ -26,18 +40,13 @@ const Posts = () => {
 	const isLastPage = currentPage === totalPages;
 
 	useEffect(() => {
-		const fetchNotice = async () => {
-			try {
-				const res = await axiosInstance.get(`/notices?offset=${offset}&limit=${PAGE_LIMIT}`);
-				const data = await res.data;
+		if (offset === initialNotices.offset) return;
 
-				console.log('API 응답:', data);
-				setNotices(data.items);
-				setTotalCount(data.count);
-				setHasNext(data.hasNext);
-			} catch (err) {
-				console.error('notice fetch error', err);
-			}
+		const fetchNotice = async () => {
+			const data = await fetchNoticeList({ offset, limit: PAGE_LIMIT });
+			setNotices(data.items);
+			setTotalCount(data.count);
+			setHasNext(data.hasNext);
 		};
 		fetchNotice();
 	}, [offset]);
@@ -53,7 +62,7 @@ const Posts = () => {
 					<div className={styles.personalPostWrapper}>
 						<p className={styles.title}>맞춤 공고</p>
 						<div className={styles.personalPost}>
-							{notices.map(({ item }, idx) => (
+							{notices.map(({ item }: { item: Notice }, idx: number) => (
 								<SmallNoticePoastCard key={idx} notice={item} />
 							))}
 						</div>
@@ -81,7 +90,7 @@ const Posts = () => {
 						</div>
 					</div>
 					<div className={styles.allPost}>
-						{notices.map(({ item }, idx) => (
+						{notices.map(({ item }: { item: Notice }, idx: number) => (
 							<SmallNoticePoastCard key={idx} notice={item} />
 						))}
 					</div>
