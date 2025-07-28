@@ -6,6 +6,7 @@ import ArrowRight from '@/assets/img/rightIcon.svg';
 import ArrowLeft from '@/assets/img/leftIcon.svg';
 import axiosInstance from '@/api/settings/axiosInstance';
 import { Notice, GetNoticeResponse } from '@/types/userNotice';
+import SmallNoticePoastCard from '@/components/common/NoticePostCard/SmallNoticePoastCard';
 
 const PAGE_LIMIT = 6;
 
@@ -53,7 +54,7 @@ const Posts = () => {
 						<p className={styles.title}>맞춤 공고</p>
 						<div className={styles.personalPost}>
 							{notices.map(({ item }, idx) => (
-								<div key={idx}>{item.shop.item.name}</div>
+								<SmallNoticePoastCard key={idx} notice={item} />
 							))}
 						</div>
 					</div>
@@ -81,7 +82,7 @@ const Posts = () => {
 					</div>
 					<div className={styles.allPost}>
 						{notices.map(({ item }, idx) => (
-							<div key={idx}>{item.shop.item.name}</div>
+							<SmallNoticePoastCard key={idx} notice={item} />
 						))}
 					</div>
 
