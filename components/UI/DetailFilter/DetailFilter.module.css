@@ -67,6 +67,44 @@
 	gap: 20px;
 }
 
+.scroller > ul > li {
+	cursor: pointer;
+}
+
+.selected {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.selectedItem {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 4px;
+	width: fit-content;
+	padding: 6px 10px;
+	background-color: var(--red10);
+	border-radius: 20px;
+}
+
+.selectedItem > span {
+	color: var(--primary);
+	font-weight: 700;
+}
+
+.close {
+	display: flex;
+	align-items: center;
+	filter: invert(41%) sepia(57%) saturate(7172%) hue-rotate(355deg) brightness(94%) contrast(95%);
+}
+
+.close > img {
+	width: 20px;
+	height: 20px;
+	cursor: pointer;
+}
+
 .devider {
 	height: 2px;
 	background-color: var(--gray10);

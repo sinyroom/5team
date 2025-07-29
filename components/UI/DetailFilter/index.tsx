@@ -13,8 +13,19 @@ interface DetailFilterProps {
 const DetailFilter = ({ onClose }: DetailFilterProps) => {
 	const [startsAtGte, setStartsAtGte] = useState('');
 	const [hourlyPayGte, setHourlyPayGte] = useState('');
+	const [selectedAddresses, setSelectedAddresses] = useState<string[]>([]);
 
 	const options = DROPDOWN_OPTIONS_MAP['주소'];
+
+	const handleAddressClick = (address: string) => {
+		if (!selectedAddresses.includes(address)) {
+			setSelectedAddresses(prev => [...prev, address]);
+		}
+	};
+
+	const handleRemoveAddress = (address: string) => {
+		setSelectedAddresses(prev => prev.filter(item => item !== address));
+	};
 
 	return (
 		<div className={styles.container}>
@@ -36,11 +47,25 @@ const DetailFilter = ({ onClose }: DetailFilterProps) => {
 						<div className={styles.scroller}>
 							<ul>
 								{options.map((item, idx) => (
-									<li key={idx}>{item}</li>
+									<li key={idx} onClick={() => handleAddressClick(item)}>
+										{item}
+									</li>
 								))}
 							</ul>
 						</div>
+
+						<div className={styles.selected}>
+							{selectedAddresses.map((address, idx) => (
+								<div key={idx} className={styles.selectedItem}>
+									<span>{address}</span>
+									<div className={styles.close} onClick={() => handleRemoveAddress(address)}>
+										<img src="/img/icon/closeIcon.svg" alt="주소선택 취소" />
+									</div>
+								</div>
+							))}
+						</div>
 					</div>
+
 					<div className={styles.devider}></div>
 					<div className={styles.gap2x}>
 						<TextInput
