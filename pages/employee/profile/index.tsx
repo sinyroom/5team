@@ -18,7 +18,7 @@ import { getUser } from '@/api/users/getUser.ts';
 //employee/profile
 export default function ProfilePage() {
 	const [userData, setUserData] = useState(null); //實 데이터 상태
-	const [applyList, setApplyList] = useState(); // 신청 내역 여부입니다. default: false.
+	//const [applyList, setApplyList] = useState(); // 신청 내역 여부입니다. default: false.
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 
@@ -53,14 +53,8 @@ export default function ProfilePage() {
 			}
 		};
 		fetchUserData();
-		const userId = Cookies.get('userId');
-
-		/*
-		if (userData.shop == null) {
-			setApplyList(true);
-		}*/
 	}, []);
-
+	const applyList = userData?.shop || false;
 	return (
 		<>
 			<div className={styles.profileBlock}>
@@ -101,6 +95,8 @@ export default function ProfilePage() {
 					신청 내역
 				</div>
 				{applyList ? (
+					<div>테이블</div>
+				) : (
 					<div className={styles.applyListContent}>
 						<div style={{ display: 'flex', justifyContent: 'center' }}>
 							아직 신청 내역이 없어요.
@@ -109,8 +105,6 @@ export default function ProfilePage() {
 							<BaseButton size="large">공고 보러가기</BaseButton>
 						</div>
 					</div>
-				) : (
-					<div>테이블</div>
 				)}
 			</div>
 		</>
