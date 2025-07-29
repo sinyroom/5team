@@ -1,142 +1,135 @@
-import { useState } from "react";
-import { useRouter } from "next/router";
-import axios from "axios";
-import axiosInstance from "@/api/settings/axiosInstance";
-import styles from "@/pages/login/login.module.css";
+import { useState } from 'react';
+import { useRouter } from 'next/router';
+import axios from 'axios';
+import axiosInstance from '@/api/settings/axiosInstance';
+import styles from '@/pages/login/login.module.css';
 import Logo from '@/assets/img/logo.svg';
-import Link from "next/link";
+import Link from 'next/link';
 import { isValidEmail, isValidPassword } from '@/utils/validators';
-import { TextInput } from "@/components/common/inputs/TextInput";
-import { BaseButton } from "@/components/common/BaseButton";
-import { useUserContext } from "@/contexts/auth-context";
+import { TextInput } from '@/components/common/inputs/TextInput';
+import { BaseButton } from '@/components/common/BaseButton';
+import { useUserContext } from '@/contexts/auth-context';
 
 export default function Login() {
-  const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [loading,setLoading] = useState(false);
-  const { setUser } = useUserContext();
+	const router = useRouter();
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [emailError, setEmailError] = useState('');
+	const [passwordError, setPasswordError] = useState('');
+	const [loading, setLoading] = useState(false);
+	const { setUser } = useUserContext();
 
-  const validateForm = () => {
-    let isValid = true;
+	const validateForm = () => {
+		let isValid = true;
 
-    if (!isValidEmail(email)) {
-      setEmailError("이메일 형식으로 작성해주세요");
-      isValid = false;
-    } else {
-      setEmailError("");
-    }
+		if (!isValidEmail(email)) {
+			setEmailError('이메일 형식으로 작성해주세요');
+			isValid = false;
+		} else {
+			setEmailError('');
+		}
 
-    if (!isValidPassword(password)) {
-      setPasswordError("비밀번호는 8자 이상이어야 합니다");
-      isValid = false;
-    } else {
-      setPasswordError("");
-    }
+		if (!isValidPassword(password)) {
+			setPasswordError('비밀번호는 8자 이상이어야 합니다');
+			isValid = false;
+		} else {
+			setPasswordError('');
+		}
 
-    return isValid;
-  };
+		return isValid;
+	};
 
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+	const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
 
-    const isFormValid = validateForm();
-    if (!isFormValid) return;
+		const isFormValid = validateForm();
+		if (!isFormValid) return;
 
-    try {
-      setLoading(true);
-      const res = await axiosInstance.post("/token", 
-        { email,password },
-      ); 
+		try {
+			setLoading(true);
+			const res = await axiosInstance.post('/token', { email, password });
 
-      const token = res.data.item.token;
-      localStorage.setItem("token",token); //JWT토큰 저장
+			const token = res.data.item.token;
+			localStorage.setItem('token', token); //JWT토큰 저장
 
-      const userData = res.data.item.user.item;
-      setUser(userData); //유저 정보 Context에 저장
+			const userData = res.data.item.user.item;
+			setUser(userData); //유저 정보 Context에 저장
 
-      alert("로그인 성공");
-      router.push('/');
+			alert('로그인 성공');
+			router.push('/');
+		} catch (error: unknown) {
+			if (axios.isAxiosError(error)) {
+				const status = error.response?.status;
+				const message = error.response?.data?.message;
 
-    } catch (error:unknown) {
-      if (axios.isAxiosError(error)) {
-        const status = error.response?.status;
-        const message = error.response?.data?.message;
+				if (status === 404) {
+					alert(message || '이메일 또는 비밀번호가 틀렸습니다.');
+				} else {
+					alert('로그인 중 오류가 발생했습니다.');
+				}
+			} else {
+				alert('예상치 못한 오류가 발생했습니다.');
+			}
+		} finally {
+			setLoading(false);
+		}
+	};
+	return (
+		<div className={styles.container}>
+			<div className={styles.imgcontainer}>
+				<Logo />
+			</div>
 
-        if (status === 404) {
-          alert(message || "이메일 또는 비밀번호가 틀렸습니다.");
-        } else {
-          alert("로그인 중 오류가 발생했습니다.");
-        }
-      } else {
-        alert("예상치 못한 오류가 발생했습니다.");
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-  return (
-    <div className={styles.container}>
-      <div className={styles.imgcontainer}>
-        <Logo />
-      </div>
-      
-      <form className={styles.formBox} onSubmit={handleLogin}>
-        <TextInput
-          id="email"
-          label="이메일"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          onBlur={(e) =>
-            setEmailError(
-              isValidEmail(e.target.value) ? "" : "이메일 형식으로 작성해주세요"
-            )
-          }
-          error={emailError}
-          placeholder="입력"
-          className="emailInput"
-          width="350px"
-          required
-        />
+			<form className={styles.formBox} onSubmit={handleLogin}>
+				<TextInput
+					id="email"
+					label="이메일"
+					type="email"
+					value={email}
+					onChange={e => setEmail(e.target.value)}
+					onBlur={e =>
+						setEmailError(isValidEmail(e.target.value) ? '' : '이메일 형식으로 작성해주세요')
+					}
+					error={emailError}
+					placeholder="입력"
+					className="emailInput"
+					width="350px"
+					required
+				/>
 
-        <TextInput
-          id="password"
-          label="비밀번호"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          onBlur={(e) =>
-            setPasswordError(
-              isValidPassword(e.target.value)
-                ? ""
-                : "비밀번호는 8자 이상이어야 합니다"
-            )
-          }
-          error={passwordError}
-          placeholder="입력"
-          width="350px"
-          required
-        />
+				<TextInput
+					id="password"
+					label="비밀번호"
+					type="password"
+					value={password}
+					onChange={e => setPassword(e.target.value)}
+					onBlur={e =>
+						setPasswordError(
+							isValidPassword(e.target.value) ? '' : '비밀번호는 8자 이상이어야 합니다'
+						)
+					}
+					error={passwordError}
+					placeholder="입력"
+					width="350px"
+					required
+				/>
 
-        <BaseButton
-          type="submit"
-          color='red'
-          size="medium"
-          className={styles.loginButton}
-          disabled={loading}
-          >
-          { loading ? "로그인하는중" : "로그인하기" }
-        </BaseButton>
-        <p className={styles.signupText}>
-          회원이 아니신가요?{" "}
-          <Link href="/register" className={styles.signupLink}>
-            회원가입하기
-          </Link>
-        </p>
-      </form>
-    </div>
-  );
+				<BaseButton
+					type="submit"
+					color="red"
+					size="medium"
+					className={styles.loginButton}
+					disabled={loading}
+				>
+					{loading ? '로그인하는중' : '로그인하기'}
+				</BaseButton>
+				<p className={styles.signupText}>
+					회원이 아니신가요?{' '}
+					<Link href="/register" className={styles.signupLink}>
+						회원가입하기
+					</Link>
+				</p>
+			</form>
+		</div>
+	);
 }
