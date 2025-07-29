@@ -21,6 +21,7 @@ export default function ProfilePage() {
 	//const [applyList, setApplyList] = useState(); // 신청 내역 여부입니다. default: false.
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
+	const [existProfile, setExistProfile] = useState(true);
 
 	/****************************************************** */
 	/* 테스트 환경 */
@@ -40,6 +41,11 @@ export default function ProfilePage() {
 				const res = await getUser(currentUserId, userToken);
 				console.log(res.item);
 				setUserData(res.item);
+
+				if (userData == null) {
+					setExistProfile(false);
+				}
+
 				return {
 					props: {
 						userData,
@@ -55,58 +61,83 @@ export default function ProfilePage() {
 		fetchUserData();
 	}, []);
 	const applyList = userData?.shop || false;
+
 	return (
 		<>
-			<div className={styles.profileBlock}>
-				<div className={styles.Title}>내 프로필</div>
-				<div className={styles.profileDetailed}>
-					<div
-						style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
-					>
-						<div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+			{existProfile ? (
+				<>
+					<div className={styles.profileBlock}>
+						<div className={styles.Title}>내 프로필</div>
+						<div className={styles.profileDetailed}>
+							<div
+								style={{
+									display: 'flex',
+									flexDirection: 'column',
+									justifyContent: 'space-between',
+								}}
+							>
+								<div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+									<div>
+										<div id={styles.name}>이름</div>
+										<div id={styles.profileName}>{userData?.name || '정보 없음'}</div>{' '}
+										{/* 이름 값 넣기 */}
+									</div>
+									<div id={styles.phoneNumber}>
+										<SmartPhoneIcon style={{ width: '20px', height: '20px' }} />
+										{userData?.phone || 'Data 를 불러오지 못했습니다.'} {/* 전화번호 값 넣기 */}
+									</div>
+									<div id={styles.preferLocation}>
+										<PathIcon style={{ objectFit: 'contain', width: '20px', height: '20px' }} />
+										{userData?.address || 'Data 를 불러오지 못했습니다.'}
+									</div>
+								</div>
+								<div id={styles.profileIntroduce}>
+									{userData?.bio || 'Data 를 불러오지 못했습니다.'}
+								</div>
+							</div>
 							<div>
-								<div id={styles.name}>이름</div>
-								<div id={styles.profileName}>{userData?.name || '정보 없음'}</div>{' '}
-								{/* 이름 값 넣기 */}
-							</div>
-							<div id={styles.phoneNumber}>
-								<SmartPhoneIcon style={{ width: '20px', height: '20px' }} />
-								{userData?.phone || 'Data 를 불러오지 못했습니다.'} {/* 전화번호 값 넣기 */}
-							</div>
-							<div id={styles.preferLocation}>
-								<PathIcon style={{ objectFit: 'contain', width: '20px', height: '20px' }} />
-								{userData?.address || 'Data 를 불러오지 못했습니다.'}
+								<BaseButton color="white" size="medium">
+									{/*사이즈 조절 가능한지 여쭤보기 */}
+									편집하기
+								</BaseButton>
 							</div>
 						</div>
-						<div id={styles.profileIntroduce}>
-							{userData?.bio || 'Data 를 불러오지 못했습니다.'}
+					</div>
+					<div className={styles.applyListBlock}>
+						<div className={styles.Title} style={{ marginBottom: '32px' }}>
+							신청 내역
+						</div>
+						{applyList ? (
+							<div>테이블</div>
+						) : (
+							<div className={styles.applyListContent}>
+								<div style={{ display: 'flex', justifyContent: 'center' }}>
+									아직 신청 내역이 없어요.
+								</div>
+								<div style={{ display: 'flex', justifyContent: 'center' }}>
+									<BaseButton size="large">공고 보러가기</BaseButton>
+								</div>
+							</div>
+						)}
+					</div>
+				</>
+			) : (
+				<>
+					<div className={styles.applyListBlock}>
+						<div className={styles.Title} style={{ marginBottom: '32px' }}>
+							내 프로필
+						</div>
+						<div className={styles.applyListContent}>
+							<div style={{ display: 'flex', justifyContent: 'center' }}>
+								내 프로필을 등록하고 원하는 가게에 지원해 보세요.
+							</div>
+							<div style={{ display: 'flex', justifyContent: 'center' }}>
+								<BaseButton size="large">내 프로필 등록하기</BaseButton>
+							</div>
 						</div>
 					</div>
-					<div>
-						<BaseButton color="white" size="medium">
-							{/*사이즈 조절 가능한지 여쭤보기 */}
-							편집하기
-						</BaseButton>
-					</div>
-				</div>
-			</div>
-			<div className={styles.applyListBlock}>
-				<div className={styles.Title} style={{ marginBottom: '32px' }}>
-					신청 내역
-				</div>
-				{applyList ? (
-					<div>테이블</div>
-				) : (
-					<div className={styles.applyListContent}>
-						<div style={{ display: 'flex', justifyContent: 'center' }}>
-							아직 신청 내역이 없어요.
-						</div>
-						<div style={{ display: 'flex', justifyContent: 'center' }}>
-							<BaseButton size="large">공고 보러가기</BaseButton>
-						</div>
-					</div>
-				)}
-			</div>
+				</>
+			)}
 		</>
 	);
 }

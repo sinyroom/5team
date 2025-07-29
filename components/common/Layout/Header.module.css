@@ -22,6 +22,9 @@
 .headerLogoAndSearch {
 	display: flex;
 	gap: 40px;
+
+	width: 80%;
+	padding-right: 40px;
 }
 
 .logoStyle {
@@ -37,10 +40,14 @@
 	gap: 40px;
 	font-weight: 700;
 	font-size: 16px;
+
+	width: 144px;
 }
 
 .headerMenu {
 	position: relative;
+
+	width: 100%;
 }
 
 .headerMenu button {
@@ -50,7 +57,6 @@
 
 .headerSearchBox {
 	display: flex;
-	width: 100%;
 	height: 40px;
 	background-color: var(--gray10);
 	border-radius: 10px;
@@ -75,7 +81,7 @@
 	height: 20px;
 }
 
-@media screen and (max-width: 1250px) {
+@media screen and (max-width: 1023px) {
 	.header {
 		padding-left: 32px;
 		padding-right: 32px;
