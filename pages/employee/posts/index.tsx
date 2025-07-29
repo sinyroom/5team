@@ -217,8 +217,9 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 							onClick={() => {
 								setOffset(offset - NOTICE_LIMIT);
 							}}
+							className={styles.arrowButton}
 						>
-							<ArrowLeft style={{ fill: isFirstPage ? '#ccc' : '#000' }} />
+							<img src="/img/icon/leftIcon.svg" alt="이전페이지" />
 						</button>
 
 						{Array.from({ length: pageCount }).map((_, i) => {
@@ -240,7 +241,7 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 							onClick={() => setOffset(offset + NOTICE_LIMIT)}
 							className={styles.arrowButton}
 						>
-							<ArrowRight style={{ fill: isLastPage ? '#ccc' : '#000' }} />
+							<img src="/img/icon/rightIcon.svg" alt="다음페이지" />
 						</button>
 					</div>
 				</div>
