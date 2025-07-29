@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { Notice, GetNoticeResponse } from '@/types/userNotice';
 import { fetchNoticeList } from '@/api/users/getNotice';
 import SmallNoticePoastCard from '@/components/common/NoticePostCard/SmallNoticePoastCard';
+import DetailFilter from '@/components/UI/DetailFilter';
 import ArrowRight from '@/assets/img/rightIcon.svg';
 import ArrowLeft from '@/assets/img/leftIcon.svg';
 
@@ -33,6 +34,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 const Posts = ({ initialNotices }: Props) => {
 	const [showFilter, setShowFilter] = useState(false);
 	const [sortOption, setSortOption] = useState<'time' | 'pay' | 'hour' | 'shop'>('time');
+	const [showDetailFilter, setShowDetailFilter] = useState(false);
 
 	// 페이지네이션
 	const [notices, setNotices] = useState(initialNotices.items);
@@ -62,9 +64,9 @@ const Posts = ({ initialNotices }: Props) => {
 		fetchNotice();
 	}, [offset, sortOption]);
 
-	const handlePageClick = (page: number) => {
-		setOffset((page - 1) * PAGE_LIMIT);
-	};
+	// const handlePageClick = (page: number) => {
+	// 	setOffset((page - 1) * PAGE_LIMIT);
+	// };
 
 	return (
 		<>
@@ -115,9 +117,14 @@ const Posts = ({ initialNotices }: Props) => {
 								</ul>
 							)}
 
-							<button className={styles.detailFilter}>
+							<button
+								className={styles.detailFilter}
+								onClick={() => setShowDetailFilter(prev => !prev)}
+							>
 								<p>상세 필터</p>
 							</button>
+
+							{showDetailFilter && <DetailFilter onClose={() => setShowDetailFilter(false)} />}
 						</div>
 					</div>
 					<div className={styles.allPost}>
