@@ -130,6 +130,14 @@
 	color: var(--white);
 }
 
+.arrowButton > img {
+	filter: invert(6%) sepia(10%) saturate(3375%) hue-rotate(195deg) brightness(93%) contrast(96%);
+}
+
+.arrowButton:disabled > img {
+	filter: invert(72%) sepia(2%) saturate(748%) hue-rotate(218deg) brightness(88%) contrast(99%);
+}
+
 @media (min-width: 768px) {
 	.innerContent {
 		padding: 60px 32px;
