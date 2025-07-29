@@ -1,16 +1,18 @@
-"use client";
-
 import { useState } from "react";
+import { useRouter } from "next/router";
+import axios from "axios";
+import axiosInstance from "@/api/settings/axiosInstance";
 import styles from "@/pages/login/login.module.css";
 import Logo from '@/assets/img/logo.svg';
 import Link from "next/link";
 import { isValidEmail, isValidPassword } from '@/utils/validators';
-import { useRouter } from "next/router";
 import { TextInput } from "@/components/common/inputs/TextInput";
 import { BaseButton } from "@/components/common/BaseButton";
+import { useUserContext } from "@/contexts/auth-context";
 
 export default function Login() {
   const router = useRouter();
+  const { setUser } = useUserContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -43,24 +45,31 @@ export default function Login() {
     if (!isFormValid) return;
 
     try {
-      const res = await fetch("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include", // 쿠키 포함
-        body: JSON.stringify({ email, password }),
-      });
+      const res = await axiosInstance.post("/token", 
+        { email,password },
+        { withCredentials:true } 
+      );
+      const userData = res.data.item.user.item;
 
-      if (res.ok) {
-        router.push("/");
+      setUser(userData);
+      alert("로그인 성공");
+      router.push('/');
+
+    } catch (error:unknown) {
+      if (axios.isAxiosError(error)) {
+        const status = error.response?.status;
+        const message = error.response?.data?.message;
+
+        if (status === 404) {
+          alert(message || "이메일 또는 비밀번호가 틀렸습니다.");
+        } else {
+          alert("로그인 중 오류가 발생했습니다.");
+        }
       } else {
-        alert("로그인 실패");
+        alert("예상치 못한 오류가 발생했습니다.");
       }
-    } catch (err) {
-      console.error("로그인 요청 실패:", err);
-      alert("서버 오류");
     }
   };
-
   return (
     <div className={styles.container}>
       <div className={styles.imgcontainer}>
