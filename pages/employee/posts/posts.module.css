@@ -90,7 +90,7 @@
 }
 
 .detailFilter {
-	width: 79px;
+	width: fit-content;
 	height: 30px;
 	border-radius: 5px;
 	padding: 6.5px 12px;
@@ -150,6 +150,12 @@
 	}
 
 	.allPost {
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
+		gap: 16px;
+	}
+
+	.personalPost {
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;
 		gap: 16px;
