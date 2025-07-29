@@ -1,6 +1,6 @@
 //hook
 import { useState, useEffect } from 'react';
-
+import Cookies from 'js-cookie';
 //style
 import styles from './profile.module.css';
 
@@ -18,7 +18,7 @@ import { getUser } from '@/api/users/getUser.ts';
 //employee/profile
 export default function ProfilePage() {
 	const [userData, setUserData] = useState(null); //實 데이터 상태
-	const [applyList, setApplyList] = useState(true); // 신청 내역 여부입니다. default: false.
+	const [applyList, setApplyList] = useState(); // 신청 내역 여부입니다. default: false.
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 
@@ -30,13 +30,21 @@ export default function ProfilePage() {
 	/****************************************************** */
 
 	useEffect(() => {
+		console.log('useEffect가 실행되었습니다!');
+
 		const fetchUserData = async () => {
 			setLoading(true);
 			setError(null);
 			try {
 				// getUser 함수 호출
-				const user = await getUser(currentUserId, userToken);
-				setUserData(user);
+				const res = await getUser(currentUserId, userToken);
+				console.log(res.item);
+				setUserData(res.item);
+				return {
+					props: {
+						userData,
+					},
+				};
 			} catch (err) {
 				setError('사용자 정보를 가져오는데 실패했습니다.');
 				console.error(err);
@@ -44,8 +52,14 @@ export default function ProfilePage() {
 				setLoading(false);
 			}
 		};
-	}, [currentUserId, userToken]);
-	console.log(userData);
+		fetchUserData();
+		const userId = Cookies.get('userId');
+
+		/*
+		if (userData.shop == null) {
+			setApplyList(true);
+		}*/
+	}, []);
 
 	return (
 		<>
@@ -58,22 +72,24 @@ export default function ProfilePage() {
 						<div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
 							<div>
 								<div id={styles.name}>이름</div>
-								<div id={styles.profileName}>최민준</div> {/* 이름 값 넣기 */}
+								<div id={styles.profileName}>{userData?.name || '정보 없음'}</div>{' '}
+								{/* 이름 값 넣기 */}
 							</div>
 							<div id={styles.phoneNumber}>
 								<SmartPhoneIcon style={{ width: '20px', height: '20px' }} />
-								010-0000-0000 {/* 전화번호 값 넣기 */}
+								{userData?.phone || 'Data 를 불러오지 못했습니다.'} {/* 전화번호 값 넣기 */}
 							</div>
 							<div id={styles.preferLocation}>
 								<PathIcon style={{ objectFit: 'contain', width: '20px', height: '20px' }} />
-								선호 지역: 서울시 도봉구 {/* 선호지역 값 넣기 */}
+								{userData?.address || 'Data 를 불러오지 못했습니다.'}
 							</div>
 						</div>
-						<div id={styles.profileIntroduce}>열심히 일 하겠습니다.</div>
+						<div id={styles.profileIntroduce}>
+							{userData?.bio || 'Data 를 불러오지 못했습니다.'}
+						</div>
 					</div>
 					<div>
 						<BaseButton color="white" size="medium">
-							{' '}
 							{/*사이즈 조절 가능한지 여쭤보기 */}
 							편집하기
 						</BaseButton>
