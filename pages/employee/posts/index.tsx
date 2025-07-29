@@ -9,8 +9,10 @@ import SmallNoticePoastCard from '@/components/common/NoticePostCard/SmallNotice
 import DetailFilter from '@/components/UI/DetailFilter';
 import ArrowRight from '@/assets/img/rightIcon.svg';
 import ArrowLeft from '@/assets/img/leftIcon.svg';
+import { getUser } from '@/api/users/getUser';
 
-const PAGE_LIMIT = 6;
+const PERSONAL_NOTICE_LIMIT = 3;
+const NOTICE_LIMIT = 6;
 const sortOptions = [
 	{ label: '마감임박순', value: 'time' },
 	{ label: '시급많은순', value: 'pay' },
@@ -19,22 +21,32 @@ const sortOptions = [
 ];
 
 interface Props {
+	personalNotices: GetNoticeResponse;
 	initialNotices: GetNoticeResponse;
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
-	const initialNotices = await fetchNoticeList({ offset: 0, limit: PAGE_LIMIT });
+	const address = '서울시 마포구'; // 로그인 안했을 때 기본값
+
+	const personalNotices = await fetchNoticeList({
+		offset: 0,
+		limit: PERSONAL_NOTICE_LIMIT,
+		address,
+	});
+	const initialNotices = await fetchNoticeList({ offset: 0, limit: NOTICE_LIMIT });
 	return {
 		props: {
+			personalNotices,
 			initialNotices,
 		},
 	};
 };
 
-const Posts = ({ initialNotices }: Props) => {
+const Posts = ({ personalNotices, initialNotices }: Props) => {
 	const [showFilter, setShowFilter] = useState(false);
 	const [sortOption, setSortOption] = useState<'time' | 'pay' | 'hour' | 'shop'>('time');
 	const [showDetailFilter, setShowDetailFilter] = useState(false);
+	const [customNotices, setCustomNotices] = useState(personalNotices.items);
 
 	// 페이지네이션
 	const [notices, setNotices] = useState(initialNotices.items);
@@ -42,17 +54,50 @@ const Posts = ({ initialNotices }: Props) => {
 	const [hasNext, setHasNext] = useState(initialNotices.hasNext);
 	const [totalCount, setTotalCount] = useState(initialNotices.count);
 
-	const currentPage = Math.floor(offset / PAGE_LIMIT) + 1;
-	const totalPages = Math.ceil(totalCount / PAGE_LIMIT);
+	const currentPage = Math.floor(offset / NOTICE_LIMIT) + 1;
+	const totalPages = Math.ceil(totalCount / NOTICE_LIMIT);
 	const pageCount = Math.min(totalPages, 7);
 	const isFirstPage = currentPage === 1;
 	const isLastPage = currentPage === totalPages;
+
+	// 로컬스토리지에서 주소값 가져와서 맞춤공고 렌더링
+	useEffect(() => {
+		const token = localStorage.getItem('accessToken');
+		const userId = localStorage.getItem('userId');
+		if (!token || !userId) return;
+
+		const fetchUserAddress = async () => {
+			try {
+				const res = await getUser(userId, token);
+				const address = res.item.address;
+
+				if (address) {
+					const updatedNotices = await fetchNoticeList({
+						offset: 0,
+						limit: PERSONAL_NOTICE_LIMIT,
+						address: `${address}`,
+					});
+
+					// 유저 주소에 맞는 공고가 없으면 기본값 보여줌
+					if (updatedNotices.items.length > 0) {
+						setCustomNotices(updatedNotices.items);
+					} else {
+						setCustomNotices(personalNotices.items);
+					}
+				}
+			} catch (err) {
+				console.error('유저 정소 불러오기 실패', err);
+				setCustomNotices(personalNotices.items);
+			}
+		};
+		fetchUserAddress();
+	}, []);
 
 	useEffect(() => {
 		if (offset === initialNotices.offset && sortOption === 'time') return;
 		const queryParams = {
 			offset,
-			limit: PAGE_LIMIT,
+			limit: NOTICE_LIMIT,
 			sort: sortOption,
 		};
 		const fetchNotice = async () => {
@@ -65,7 +110,7 @@ const Posts = ({ initialNotices }: Props) => {
 	}, [offset, sortOption]);
 
 	// const handlePageClick = (page: number) => {
-	// 	setOffset((page - 1) * PAGE_LIMIT);
+	// 	setOffset((page - 1) * NOTICE_LIMIT);
 	// };
 
 	return (
@@ -75,7 +120,7 @@ const Posts = ({ initialNotices }: Props) => {
 					<div className={styles.personalPostWrapper}>
 						<p className={styles.title}>맞춤 공고</p>
 						<div className={styles.personalPost}>
-							{notices.map(({ item }: { item: Notice }, idx: number) => (
+							{customNotices.map(({ item }: { item: Notice }, idx: number) => (
 								<SmallNoticePoastCard key={idx} notice={item} />
 							))}
 						</div>
@@ -137,7 +182,7 @@ const Posts = ({ initialNotices }: Props) => {
 						<button
 							disabled={isFirstPage}
 							onClick={() => {
-								setOffset(offset - PAGE_LIMIT);
+								setOffset(offset - NOTICE_LIMIT);
 							}}
 						>
 							<ArrowLeft style={{ fill: isFirstPage ? '#ccc' : '#000' }} />
@@ -149,7 +194,7 @@ const Posts = ({ initialNotices }: Props) => {
 							return (
 								<button
 									key={pageNum}
-									onClick={() => setOffset((pageNum - 1) * PAGE_LIMIT)}
+									onClick={() => setOffset((pageNum - 1) * NOTICE_LIMIT)}
 									className={`${styles.pageButton} ${isActive ? styles.active : ''}`}
 								>
 									{pageNum}
@@ -159,7 +204,7 @@ const Posts = ({ initialNotices }: Props) => {
 
 						<button
 							disabled={isLastPage}
-							onClick={() => setOffset(offset + PAGE_LIMIT)}
+							onClick={() => setOffset(offset + NOTICE_LIMIT)}
 							className={styles.arrowButton}
 						>
 							<ArrowRight style={{ fill: isLastPage ? '#ccc' : '#000' }} />

@@ -154,4 +154,10 @@
 		grid-template-columns: 1fr 1fr 1fr;
 		gap: 16px;
 	}
+
+	.personalPost {
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
+		gap: 16px;
+	}
 }
