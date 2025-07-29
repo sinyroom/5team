@@ -8,23 +8,57 @@ import { DROPDOWN_OPTIONS_MAP } from '@/constants/DropdownOptions';
 
 interface DetailFilterProps {
 	onClose: () => void;
+	onApply: (detailFilterCount: number) => void;
+	detailFilterState: {
+		startsAtGte: string;
+		hourlyPayGte: string;
+		selectedAddresses: string[];
+	};
+	setDetailFilterState: React.Dispatch<
+		React.SetStateAction<{
+			startsAtGte: string;
+			hourlyPayGte: string;
+			selectedAddresses: string[];
+		}>
+	>;
 }
 
-const DetailFilter = ({ onClose }: DetailFilterProps) => {
-	const [startsAtGte, setStartsAtGte] = useState('');
-	const [hourlyPayGte, setHourlyPayGte] = useState('');
-	const [selectedAddresses, setSelectedAddresses] = useState<string[]>([]);
-
+const DetailFilter = ({
+	onClose,
+	onApply,
+	detailFilterState,
+	setDetailFilterState,
+}: DetailFilterProps) => {
+	const { startsAtGte, hourlyPayGte, selectedAddresses } = detailFilterState;
 	const options = DROPDOWN_OPTIONS_MAP['주소'];
 
 	const handleAddressClick = (address: string) => {
 		if (!selectedAddresses.includes(address)) {
-			setSelectedAddresses(prev => [...prev, address]);
+			setDetailFilterState(prev => ({
+				...prev,
+				selectedAddresses: [...prev.selectedAddresses, address],
+			}));
 		}
 	};
 
 	const handleRemoveAddress = (address: string) => {
-		setSelectedAddresses(prev => prev.filter(item => item !== address));
+		setDetailFilterState(prev => ({
+			...prev,
+			selectedAddresses: prev.selectedAddresses.filter(item => item !== address),
+		}));
+	};
+
+	const handleReset = () => {
+		setDetailFilterState({ startsAtGte: '', hourlyPayGte: '', selectedAddresses: [] });
+	};
+
+	const handleApply = () => {
+		let count = selectedAddresses.length;
+		if (startsAtGte.trim() !== '') count += 1;
+		if (hourlyPayGte.trim() !== '') count += 1;
+
+		onApply(count);
+		onClose();
 	};
 
 	return (
@@ -72,8 +106,10 @@ const DetailFilter = ({ onClose }: DetailFilterProps) => {
 							id="startAtGte"
 							label="시작일"
 							value={startsAtGte}
-							onChange={e => setStartsAtGte(e.target.value)}
-							placeholder="입력"
+							onChange={e =>
+								setDetailFilterState(prev => ({ ...prev, startsAtGte: e.target.value }))
+							}
+							placeholder="2025-01-01"
 						/>
 					</div>
 					<div className={styles.devider}></div>
@@ -83,7 +119,7 @@ const DetailFilter = ({ onClose }: DetailFilterProps) => {
 								id="hourlyPayGte"
 								label="금액"
 								value={hourlyPayGte}
-								onChange={value => setHourlyPayGte(value)}
+								onChange={value => setDetailFilterState(prev => ({ ...prev, hourlyPayGte: value }))}
 								placeholder="10000"
 								unitText="원"
 							/>
@@ -93,8 +129,12 @@ const DetailFilter = ({ onClose }: DetailFilterProps) => {
 				</div>
 			</div>
 			<div className={styles.buttons}>
-				<button className={`${buttonStyles.white} ${styles.reset}`}>초기화</button>
-				<button className={`${buttonStyles.red} ${styles.confirm}`}>적용하기</button>
+				<button className={`${buttonStyles.white} ${styles.reset}`} onClick={handleReset}>
+					초기화
+				</button>
+				<button className={`${buttonStyles.red} ${styles.confirm}`} onClick={handleApply}>
+					적용하기
+				</button>
 			</div>
 		</div>
 	);

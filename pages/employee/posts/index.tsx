@@ -25,6 +25,12 @@ interface Props {
 	initialNotices: GetNoticeResponse;
 }
 
+interface DetailFilterState {
+	startsAtGte: string;
+	hourlyPayGte: string;
+	selectedAddresses: string[];
+}
+
 export const getServerSideProps: GetServerSideProps = async () => {
 	const address = '서울시 마포구'; // 로그인 안했을 때 기본값
 
@@ -43,10 +49,17 @@ export const getServerSideProps: GetServerSideProps = async () => {
 };
 
 const Posts = ({ personalNotices, initialNotices }: Props) => {
+	const [customNotices, setCustomNotices] = useState(personalNotices.items);
+
 	const [showFilter, setShowFilter] = useState(false);
 	const [sortOption, setSortOption] = useState<'time' | 'pay' | 'hour' | 'shop'>('time');
 	const [showDetailFilter, setShowDetailFilter] = useState(false);
-	const [customNotices, setCustomNotices] = useState(personalNotices.items);
+	const [detailFilterCount, setDetailFilterCount] = useState(0);
+	const [detailFilterState, setDetailFilterState] = useState<DetailFilterState>({
+		startsAtGte: '',
+		hourlyPayGte: '',
+		selectedAddresses: [],
+	});
 
 	// 페이지네이션
 	const [notices, setNotices] = useState(initialNotices.items);
@@ -161,14 +174,21 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 								</ul>
 							)}
 
-							<button
-								className={styles.detailFilter}
-								onClick={() => setShowDetailFilter(prev => !prev)}
-							>
-								<p>상세 필터</p>
+							<button className={styles.detailFilter} onClick={() => setShowDetailFilter(true)}>
+								<p>상세 필터{detailFilterCount > 0 && ` (${detailFilterCount})`}</p>
 							</button>
 
-							{showDetailFilter && <DetailFilter onClose={() => setShowDetailFilter(false)} />}
+							{showDetailFilter && (
+								<DetailFilter
+									onClose={() => setShowDetailFilter(false)}
+									onApply={(count: number) => {
+										setDetailFilterCount(count);
+										setShowDetailFilter(false);
+									}}
+									detailFilterState={detailFilterState}
+									setDetailFilterState={setDetailFilterState}
+								/>
+							)}
 						</div>
 					</div>
 					<div className={styles.allPost}>

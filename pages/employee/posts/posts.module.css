@@ -90,7 +90,7 @@
 }
 
 .detailFilter {
-	width: 79px;
+	width: fit-content;
 	height: 30px;
 	border-radius: 5px;
 	padding: 6.5px 12px;
