@@ -1,0 +1,157 @@
+.fullWidthSection {
+	width: 100%;
+	background-color: var(--red10);
+}
+
+.innerContent {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	padding: 40px 12px;
+}
+
+.personalPostWrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 32px;
+}
+
+.title {
+	color: var(--black);
+	font-size: 28px;
+	font-weight: 700;
+}
+
+.personalPost {
+	display: flex;
+	gap: 14px;
+}
+
+.allPostContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 32px;
+}
+
+.allPostWrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 16px;
+}
+
+.filterWrapper {
+	position: relative;
+	display: flex;
+	gap: 10px;
+}
+
+.filter {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+
+	width: 105px;
+	height: 30px;
+	border-radius: 5px;
+	padding: 6.5px 12px;
+	background-color: var(--gray10);
+}
+
+.filter > p {
+	color: var(--black);
+	font-size: 14px;
+	font-weight: 700;
+	text-align: center;
+}
+
+.dropdown {
+	position: absolute;
+	top: 35px;
+	background: white;
+	border: 1px solid var(--gray20);
+	border-radius: 4px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	z-index: 10;
+}
+
+.dropdownItem {
+	padding: 12px 20px;
+	border: 1px solid var(--gray20);
+	font-size: 14px;
+	text-align: center;
+	cursor: pointer;
+}
+
+.dropdownItem:hover {
+	background-color: #eee;
+}
+
+.detailFilter {
+	width: 79px;
+	height: 30px;
+	border-radius: 5px;
+	padding: 6.5px 12px;
+	background-color: var(--red30);
+}
+
+.detailFilter > p {
+	color: var(--white);
+	font-size: 14px;
+	font-weight: 700;
+	text-align: center;
+}
+
+.allPost {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 16px;
+}
+
+.pagination {
+	display: flex;
+	align-items: center;
+	gap: 30px;
+	margin: 0 auto;
+}
+
+.pageButton {
+	width: 32px;
+	height: 32px;
+	border-radius: 4px;
+	background-color: var(--white);
+	color: var(--black);
+}
+
+.pageButton.active {
+	background-color: var(--red30);
+	color: var(--white);
+}
+
+@media (min-width: 768px) {
+	.innerContent {
+		padding: 60px 32px;
+	}
+
+	.allPostWrapper {
+		display: flex;
+		flex-direction: row;
+		align-items: flex-start;
+		justify-content: space-between;
+	}
+}
+
+@media (min-width: 1024px) {
+	.innerContent {
+		max-width: 964px;
+		margin: 0 auto;
+	}
+
+	.allPost {
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
+		gap: 16px;
+	}
+}
