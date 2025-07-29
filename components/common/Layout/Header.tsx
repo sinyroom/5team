@@ -17,7 +17,6 @@ export default function Header() {
 	const [mobileScreen, setMobileScreen] = useState(false); // 모바일 화면 상태
 
 	const windowWidth = useWindowWidth();
-	//console.log(windowWidth);
 
 	useEffect(() => {
 		if (windowWidth <= 730) {
@@ -28,7 +27,6 @@ export default function Header() {
 	}, [windowWidth]);
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		//console.log(inputValue);
 		setInputValue(e.target.value);
 	};
 

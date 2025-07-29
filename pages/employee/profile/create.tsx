@@ -36,6 +36,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
 			},
 		};
 	}
+
 	try {
 		const userData = await getUser(userId, token);
 		return {
