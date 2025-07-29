@@ -1,0 +1,168 @@
+.container {
+	position: fixed;
+	display: flex;
+	flex-direction: column;
+	top: var(--headerHeight);
+	left: 0;
+	gap: 24px;
+	width: 100%;
+	height: 700px;
+	padding: 24px 12px;
+	border: 1px solid var(--gray20);
+	background-color: var(--white);
+	z-index: 10;
+}
+
+.withoutButtons {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: 24px;
+
+	overflow-y: auto;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+
+.withoutButtons::-webkit-scrollbar {
+	display: none;
+}
+
+.titleWrapper {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.title {
+	font-size: 20px;
+	font-weight: 700;
+	color: var(--black);
+}
+
+.gap {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.gap2x {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+}
+
+.scroller {
+	width: 100%;
+	height: 258px;
+	overflow-y: auto;
+	border: 1px solid var(--gray20);
+	border-radius: 6px;
+	padding: 20px 28px;
+}
+
+.scroller > ul {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 20px;
+}
+
+.scroller > ul > li {
+	cursor: pointer;
+}
+
+.selected {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.selectedItem {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 4px;
+	width: fit-content;
+	padding: 6px 10px;
+	background-color: var(--red10);
+	border-radius: 20px;
+}
+
+.selectedItem > span {
+	color: var(--primary);
+	font-weight: 700;
+}
+
+.close {
+	display: flex;
+	align-items: center;
+	filter: invert(41%) sepia(57%) saturate(7172%) hue-rotate(355deg) brightness(94%) contrast(95%);
+}
+
+.close > img {
+	width: 20px;
+	height: 20px;
+	cursor: pointer;
+}
+
+.devider {
+	height: 2px;
+	background-color: var(--gray10);
+}
+
+.payWrapper {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 12px;
+}
+
+.pay {
+	width: 50%;
+}
+
+.unit {
+	margin-top: 28px;
+	width: 50%;
+}
+
+.buttons {
+	display: flex;
+	justify-content: center;
+	padding-top: 16px;
+	border-top: 1px solid var(--gray20);
+}
+
+.reset {
+	flex: 1;
+	height: 48px;
+	border-radius: 6px;
+	font-size: 16px;
+	font-weight: 700;
+	margin-right: 8px;
+}
+
+.confirm {
+	flex: 3;
+	height: 48px;
+	border-radius: 6px;
+	font-size: 16px;
+	font-weight: 700;
+}
+
+@media (min-width: 768px) {
+	.container {
+		position: absolute;
+		top: 35px;
+		left: -195px;
+		width: 390px;
+		height: auto;
+		border-radius: 10px;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	}
+
+	.withoutButtons {
+		overflow: visible;
+		height: auto;
+	}
+}
