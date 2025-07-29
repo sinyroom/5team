@@ -156,7 +156,13 @@
 		top: 35px;
 		left: -195px;
 		width: 390px;
+		height: auto;
 		border-radius: 10px;
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	}
+
+	.withoutButtons {
+		overflow: visible;
+		height: auto;
 	}
 }
