@@ -10,6 +10,7 @@ import DetailFilter from '@/components/UI/DetailFilter';
 import ArrowRight from '@/assets/img/rightIcon.svg';
 import ArrowLeft from '@/assets/img/leftIcon.svg';
 import { getUser } from '@/api/users/getUser';
+import { formatToRFC3339 } from '@/utils/dayformatting';
 
 const PERSONAL_NOTICE_LIMIT = 3;
 const NOTICE_LIMIT = 6;
@@ -107,19 +108,31 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 	}, []);
 
 	useEffect(() => {
-		const queryParams = {
-			offset,
-			limit: NOTICE_LIMIT,
-			sort: sortOption,
-		};
 		const fetchNotice = async () => {
+			const queryParams: any = {
+				offset,
+				limit: NOTICE_LIMIT,
+				sort: sortOption,
+			};
+
+			if (detailFilterState.selectedAddresses.length > 0) {
+				queryParams.address = detailFilterState.selectedAddresses[0];
+			}
+			if (detailFilterState.startsAtGte.trim()) {
+				queryParams.startsAtGte = formatToRFC3339(detailFilterState.startsAtGte.trim());
+			}
+			if (detailFilterState.hourlyPayGte.trim()) {
+				queryParams.hourlyPayGte = Number(detailFilterState.hourlyPayGte);
+			}
+
 			const data = await fetchNoticeList(queryParams);
 			setNotices(data.items);
 			setTotalCount(data.count);
 			setHasNext(data.hasNext);
 		};
+
 		fetchNotice();
-	}, [offset, sortOption]);
+	}, [offset, sortOption, detailFilterState]);
 
 	// const handlePageClick = (page: number) => {
 	// 	setOffset((page - 1) * NOTICE_LIMIT);
@@ -164,7 +177,7 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 											onClick={() => {
 												console.log('선택된 정렬 옵션:', value);
 												setSortOption(value as 'time' | 'pay' | 'hour' | 'shop');
-												setOffset(0); // 페이지 초기화
+												setOffset(0);
 												setShowFilter(false);
 											}}
 										>
@@ -183,6 +196,7 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 									onClose={() => setShowDetailFilter(false)}
 									onApply={(count: number) => {
 										setDetailFilterCount(count);
+										setOffset(0);
 										setShowDetailFilter(false);
 									}}
 									detailFilterState={detailFilterState}
