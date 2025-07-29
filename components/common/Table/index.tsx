@@ -6,7 +6,7 @@ import {
 	flexRender,
 	ColumnDef,
 } from '@tanstack/react-table';
-import styles from './WorkTable.module.css';
+import styles from './table.module.css';
 
 type WorkItem = {
 	store: string;
@@ -15,7 +15,7 @@ type WorkItem = {
 	status: '승인 완료' | '거절' | '대기중';
 };
 
-// ✅ 디바이스에 따라 컬럼 필터링을 위한 Hook
+//  디바이스에 따라 컬럼 필터링을 위한 Hook
 function useDeviceType() {
 	const width = typeof window !== 'undefined' ? window.innerWidth : 1024;
 	if (width <= 640) return 'mobile';
@@ -98,7 +98,7 @@ export default function WorkTable() {
 		useDeviceType()
 	);
 
-	// ✅ resize 이벤트 리스너
+	// resize 이벤트 리스너
 	React.useEffect(() => {
 		const handleResize = () => {
 			const width = window.innerWidth;
@@ -112,7 +112,7 @@ export default function WorkTable() {
 		return () => window.removeEventListener('resize', handleResize);
 	}, []);
 
-	// ✅ 현재 화면 타입에 따라 컬럼 필터링
+	// 현재 화면 타입에 따라 컬럼 필터링
 	const columns = baseColumns.filter(col => {
 		const minDevice = col.meta?.responsive ?? 'desktop';
 		if (deviceType === 'mobile') return ['mobile'].includes(minDevice);
