@@ -15,6 +15,7 @@ export default function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [userType, setUserType] = useState<"worker" | "owner" | null>(null);
   const [error, setError] = useState<{ [key: string]: string }>({});
+  const [loading,setLoading]= useState(false);
 
   const validateEmail = () => {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -46,7 +47,8 @@ export default function Register() {
     }
   };
 
-const handleSubmit = async () => {
+const handleSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
   const isEmailValid = validateEmail();
   const isPasswordValid = validatePassword();
   const isConfirmValid = validateConfirm();
@@ -59,10 +61,11 @@ const handleSubmit = async () => {
   }
 
   try {
+    setLoading(true);
     const res = await axiosInstance.post("/users", {
       email,
       password,
-      type: userType === "worker" ? "employee" : "employer", // ✅ 변환
+      type: userType === "worker" ? "employee" : "employer", // 변환
     });
 
     if (res.status === 201) {
@@ -84,6 +87,8 @@ const handleSubmit = async () => {
     } else {
       alert("알 수 없는 오류가 발생했습니다.");
     }
+  } finally{
+    setLoading(false);
   }
 };
 
@@ -94,7 +99,7 @@ const handleSubmit = async () => {
         <Logo/>
       </div>
 
-      <form className={styles.formBox}>
+      <form className={styles.formBox} onSubmit={handleSubmit}>
         <TextInput
         id="email"
         label="이메일"
@@ -164,12 +169,12 @@ const handleSubmit = async () => {
 
         <BaseButton
           type="submit"
-          onClick={handleSubmit}
           color='red'
           size="medium"
           className={styles.submitButton}
+          disabled={loading}
           >
-            가입하기
+            {loading ? "가입 중....." : "가입하기"}
         </BaseButton>
 
         <p className={styles.loginText}>

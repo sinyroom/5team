@@ -1,4 +1,5 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import axiosInstance from "@/api/settings/axiosInstance";
 
 interface User {
   id: string;
@@ -13,20 +14,40 @@ interface User {
 interface UserContextType {
   user: User | null;
   setUser: (user: User | null) => void;
+  isLoading: boolean;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
-export const UserProvider = ({
-  children,
-  initialUser = null,
-}: {
-  children: React.ReactNode;
-  initialUser?: User | null;
-}) => {
-  const [user, setUser] = useState<User | null>(initialUser);
+export const UserProvider = ({ children }: { children: React.ReactNode }) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const token = typeof window !== 'undefined' ? localStorage.getItem("token") : null;
+    if (!token) {
+      setIsLoading(false);
+      return;
+    }
+
+    // 유저 정보 가져오기
+    axiosInstance
+      .get("/users/UserId") // ← 이 엔드포인트는 토큰 기반으로 유저 정보를 반환해야 함
+      .then((res) => {
+        const userData = res.data.item; 
+        setUser(userData);
+      })
+      .catch(() => {    
+        localStorage.removeItem("token");
+        setUser(null);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, []);
+
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, isLoading }}>
       {children}
     </UserContext.Provider>
   );
