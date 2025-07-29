@@ -1,54 +1,64 @@
-//로그인 여부 전역상태로 유지하는 컨텍스트 파일
+import { createContext, useContext, useEffect, useState } from 'react';
+import axiosInstance from '@/api/settings/axiosInstance';
+import { jwtDecode } from 'jwt-decode';
 
+interface User {
+	id: string;
+	email: string;
+	type: 'employee' | 'employer';
+	//   name?: string;
+	//   phone?: string;
+	//   address?: string;
+	//   bio?: string;
+}
 
-// import { createContext, useContext, useEffect, useState } from "react";
+interface UserContextType {
+	user: User | null;
+	setUser: (user: User | null) => void;
+	isLoading: boolean;
+}
 
-// type AuthContextType = {
-//   isAuthenticated: boolean;
-//   accessToken: string | null;
-//   login: (token: string) => void;
-//   logout: () => void;
-// };
+const UserContext = createContext<UserContextType | undefined>(undefined);
 
-// const AuthContext = createContext<AuthContextType>({
-//   isAuthenticated: false,
-//   accessToken: null,
-//   login: () => {},
-//   logout: () => {},
-// });
+export const UserProvider = ({ children }: { children: React.ReactNode }) => {
+	const [user, setUser] = useState<User | null>(null);
+	const [isLoading, setIsLoading] = useState(true);
+	console.log(user);
+	//   useEffect(() => {
+	//     const token = typeof window !== 'undefined' ? localStorage.getItem("token") : null;
+	//     if (!token) {
+	//       setIsLoading(false);
+	//       return;
+	//     }
+	//     const decoded = jwtDecode(token);
+	//     const id = decoded.userId;
+	//     // 유저 정보 가져오기
+	//     console.log(id,user);
+	//     axiosInstance
+	//       .get(`/users/${id}`) // ← 이 엔드포인트는 토큰 기반으로 유저 정보를 반환해야 함
+	//       .then((res) => {
+	//         const userData = res.data.item;
+	//         console.log(userData);
+	//         setUser(userData);
+	//       })
+	//       .catch(() => {
+	//         localStorage.removeItem("token");
+	//         setUser(null);
+	//       })
+	//       .finally(() => {
+	//         setIsLoading(false);
+	//       });
+	//   }, [user?.id]);
 
-// export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-//   const [accessToken, setAccessToken] = useState<string | null>(null);
+	return (
+		<UserContext.Provider value={{ user, setUser, isLoading }}>{children}</UserContext.Provider>
+	);
+};
 
-//   useEffect(() => {
-//     const token = localStorage.getItem("accessToken");
-//     if (token) {
-//       setAccessToken(token);
-//     }
-//   }, []);
-
-//   const login = (token: string) => {
-//     localStorage.setItem("accessToken", token);
-//     setAccessToken(token);
-//   };
-
-//   const logout = () => {
-//     localStorage.removeItem("accessToken");
-//     setAccessToken(null);
-//   };
-
-//   return (
-//     <AuthContext.Provider
-//       value={{
-//         isAuthenticated: !!accessToken,
-//         accessToken,
-//         login,
-//         logout,
-//       }}
-//     >
-//       {children}
-//     </AuthContext.Provider>
-//   );
-// };
-
-// export const useAuth = () => useContext(AuthContext);
+export const useUserContext = () => {
+	const context = useContext(UserContext);
+	if (!context) {
+		throw new Error('useUserContext must be used within a UserProvider');
+	}
+	return context;
+};

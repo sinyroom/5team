@@ -11,3 +11,11 @@ export function formatNoticeTimes(notice: NoticeItem): string {
 
 	return `${startDate} ${startTime}~${endTime}(${notice.workhour}시간)`;
 }
+
+// ISO 8601 (RFC 3339) 형식으로 변환
+export function formatToRFC3339(dateStr: string): string {
+	if (!dateStr || !/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+		throw new Error('Invalid date format. Expected "YYYY-MM-DD"');
+	}
+	return new Date(`${dateStr}T00:00:00Z`).toISOString();
+}
