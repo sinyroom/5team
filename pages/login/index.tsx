@@ -12,11 +12,12 @@ import { useUserContext } from "@/contexts/auth-context";
 
 export default function Login() {
   const router = useRouter();
-  const { setUser } = useUserContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [loading,setLoading] = useState(false);
+  const { setUser } = useUserContext();
 
   const validateForm = () => {
     let isValid = true;
@@ -45,13 +46,17 @@ export default function Login() {
     if (!isFormValid) return;
 
     try {
+      setLoading(true);
       const res = await axiosInstance.post("/token", 
         { email,password },
-        { withCredentials:true } 
-      );
-      const userData = res.data.item.user.item;
+      ); 
 
-      setUser(userData);
+      const token = res.data.item.token;
+      localStorage.setItem("token",token); //JWT토큰 저장
+
+      const userData = res.data.item.user.item;
+      setUser(userData); //유저 정보 Context에 저장
+
       alert("로그인 성공");
       router.push('/');
 
@@ -68,6 +73,8 @@ export default function Login() {
       } else {
         alert("예상치 못한 오류가 발생했습니다.");
       }
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -119,8 +126,9 @@ export default function Login() {
           color='red'
           size="medium"
           className={styles.loginButton}
+          disabled={loading}
           >
-          로그인하기
+          { loading ? "로그인하는중" : "로그인하기" }
         </BaseButton>
         <p className={styles.signupText}>
           회원이 아니신가요?{" "}
