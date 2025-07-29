@@ -94,7 +94,6 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 	}, []);
 
 	useEffect(() => {
-		if (offset === initialNotices.offset && sortOption === 'time') return;
 		const queryParams = {
 			offset,
 			limit: NOTICE_LIMIT,

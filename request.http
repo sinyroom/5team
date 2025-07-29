@@ -3,9 +3,9 @@
 # Content-Type: application/json
 
 # {
-#   "email": "codeit1234@codeit.com",
+#   "email": "codeit@codeit.com",
 #   "password": "qwer1234",
-#   "type": "employee"
+#   "type": "employer"
 # }
 
 # 로그인 요청
@@ -13,35 +13,35 @@
 # Content-Type: application/json
 
 # {
-#   "email": "codeit1234@codeit.com",
+#   "email": "codeit@codeit.com",
 #   "password": "qwer1234"
 # }
 
 # 가게 등록 (POST /shops)
 # POST http://bootcamp-api.codeit.kr/api/16-05/the-julge/shops
-# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjMzMxOWJiZi1kMDVjLTRiMGUtOWM2Yi01MDU4ZWQyNmRmNmUiLCJpYXQiOjE3NTI5ODA4MjV9.lsHs-dH1yJuLdeVcNp117MokE1EOfgGjGHZZ4EUI6Ig
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3MDcyNmUzNS0wNGRhLTQxNmMtYTdhNi0yOGJjZDdmYTQ2NGEiLCJpYXQiOjE3NTM3NjgxMDd9.YJrGsYo4BWZSCs6QIbtpufclITAqZKMOT6AAQzeVSzs
 # Content-Type: application/json
 
 # {
-#   "name": "홍이네 분식",
-#   "category": "분식",
-#   "address1": "서울시 마포구",
-#   "address2": "상수동 123-45",
-#   "description": "떡볶이와 튀김이 맛있는 분식집입니다.",
-#   "imageUrl": "https://example.com/image.jpg",
+#   "name": "카페브리즈",
+#   "category": "카페",
+#   "address1": "서울시 강남구",
+#   "address2": "테헤란로4길 37 1층",
+#   "description": "모던한 감각에 여유로운 카페입니다.",
+#   "imageUrl": "https://picsum.photos/200/300",
 #   "originalHourlyPay": 12000
 # }
 
 # 공고 등록 (POST /shops/{shop_id}/notices)
 # POST http://bootcamp-api.codeit.kr/api/16-05/the-julge/shops/fbd5abfa-c573-4533-91b5-3ececf1ac830/notices
-# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjMzMxOWJiZi1kMDVjLTRiMGUtOWM2Yi01MDU4ZWQyNmRmNmUiLCJpYXQiOjE3NTI5ODA4MjV9.lsHs-dH1yJuLdeVcNp117MokE1EOfgGjGHZZ4EUI6Ig
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3MDcyNmUzNS0wNGRhLTQxNmMtYTdhNi0yOGJjZDdmYTQ2NGEiLCJpYXQiOjE3NTM3NjgxMDd9.YJrGsYo4BWZSCs6QIbtpufclITAqZKMOT6AAQzeVSzs
 # Content-Type: application/json
 
 # {
 #   "hourlyPay": 15000,
-#   "startsAt": "2025-07-24T12:00:00Z",
-#   "workhour": 3,
-#   "description": "기존 알바 친구가 그만둬서 급구 합니다. 떡볶이와 튀김이 맛있는 분식집입니다."
+#   "startsAt": "2025-08-04T12:00:00Z",
+#   "workhour": 4,
+#   "description": "오래 같이할 수 있는 아르바이트생 구합니다. 커피를 매일 무료로 먹을 수 있습니다."
 # }
 
 # 내 정보 수정(PUT /users/{user_id}
@@ -61,8 +61,8 @@
 # Accept: application/json
 
 # # 내 정보 조회 (GET /users/{user_id}
-GET https://bootcamp-api.codeit.kr/api/16-05/the-julge/users/7d36a348-c505-4452-8f29-a6c1fa1d01c6
-Accept: application/json
+# GET https://bootcamp-api.codeit.kr/api/16-05/the-julge/users/7d36a348-c505-4452-8f29-a6c1fa1d01c6
+# Accept: application/json
 
 # # 내 가게 공고 조회 (GET /shops/{shop_id}/notices
 # GET https://bootcamp-api.codeit.kr/api/16-05/the-julge/shops/샵id/notices/0572fcd5-c2f3-43bf-8294-c957bb4520f8
