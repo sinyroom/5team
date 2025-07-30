@@ -82,13 +82,7 @@ export default function ProfilePage() {
 					<div className={styles.profileBlock}>
 						<div className={styles.Title}>내 프로필</div>
 						<div className={styles.profileDetailed}>
-							<div
-								style={{
-									display: 'flex',
-									flexDirection: 'column',
-									justifyContent: 'space-between',
-								}}
-							>
+							<div className={styles.profileDetiledInside}>
 								<div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
 									<div>
 										<div id={styles.name}>이름</div>
@@ -117,7 +111,7 @@ export default function ProfilePage() {
 						</div>
 					</div>
 					<div className={styles.applyListBlock}>
-						<div className={styles.Title} style={{ marginBottom: '32px' }}>
+						<div className={styles.Title} id={styles.applyListTitle}>
 							신청 내역
 						</div>
 						{applyList ? (

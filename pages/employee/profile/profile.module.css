@@ -66,8 +66,65 @@
 	gap: 24px;
 }
 
+.profileDetiledInside {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: 28px;
+}
+
+.Title#applyListTitle {
+	margin-bottom: 32px;
+}
+
 @media screen and (max-width: 1023px) {
+	.profileBlock {
+		flex-direction: column;
+		padding: 60px 32px;
+		gap: 24px;
+	}
+	.profileDetailed {
+		width: 100%;
+	}
+
+	.applyListBlock {
+		padding: 60px 32px;
+	}
 }
 
 @media screen and (max-width: 767px) {
+	.profileBlock {
+		padding: 40px 12px;
+	}
+
+	.Title {
+		font-size: 20px;
+	}
+
+	#name {
+		font-size: 14px;
+	}
+
+	#profileName {
+		font-size: 24px;
+	}
+
+	#phoneNumber {
+		font-size: 14px;
+	}
+
+	#preferLocation {
+		font-size: 14px;
+	}
+
+	.profileDetiledInside {
+		gap: 20px;
+	}
+	.applyListBlock {
+		padding: 80px 12px;
+	}
+
+	.Title#applyListTitle {
+		margin-bottom: 16px;
+	}
 }
