@@ -24,12 +24,22 @@ export default function Header() {
 	const windowWidth = useWindowWidth();
 	const router = useRouter();
 	const { user } = useUserContext();
+
 	useEffect(() => {
-		if (user == null) {
+		const token = localStorage.getItem('token');
+		console.log(user);
+		if (token == null) {
 			setLoginState(false);
 		} else {
+			const existingType = localStorage.getItem('type');
+
+			if (existingType == null) {
+				const valueToStore = user.type;
+				localStorage.setItem('type', valueToStore);
+			}
+
 			setLoginState(true);
-			if (user.type == 'employee') {
+			if (localStorage.getItem('type') == 'employee') {
 				setLoginType('employee');
 			} else {
 				setLoginType('employer');
@@ -50,7 +60,7 @@ export default function Header() {
 	};
 
 	const handleClickLogout = () => {
-		router.push('.');
+		router.push('/');
 		localStorage.clear();
 		setLoginState(false);
 	};
@@ -66,6 +76,10 @@ export default function Header() {
 	const handleClickMyProfile = () => {
 		router.push('./employee/profile');
 	};
+
+	const handleClickLogoInHeader = () => {
+		router.push('/');
+	};
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setInputValue(e.target.value);
 	};
@@ -77,7 +91,9 @@ export default function Header() {
 					{mobileScreen ? (
 						<>
 							<div className={styles.logoStyle}>
-								<LogoImage id={styles.logoItem} />
+								<button onClick={handleClickLogoInHeader}>
+									<LogoImage id={styles.logoItem} />
+								</button>
 							</div>
 							<div className={styles.headerSearchBox}>
 								<div>
@@ -99,7 +115,9 @@ export default function Header() {
 					) : (
 						<div className={styles.headerLogoAndSearch}>
 							<div className={styles.logoStyle}>
-								<LogoImage />
+								<button onClick={handleClickLogoInHeader}>
+									<LogoImage />
+								</button>
 							</div>
 							<div className={styles.headerSearchBox}>
 								<Search />

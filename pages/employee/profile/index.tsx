@@ -43,7 +43,7 @@ export default function ProfilePage() {
 			try {
 				// getUser 함수 호출
 				const res = await getUser(currentUserId, userToken);
-				console.log(res.item);
+				//console.log(res.item);
 				setUserData(res.item);
 
 				if (userData.name == null) {
