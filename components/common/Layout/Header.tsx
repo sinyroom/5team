@@ -73,7 +73,7 @@ export default function Header() {
 							<div className={styles.headerSearchBox}>
 								<Search />
 								<div className={styles.inputTag}>
-									<form>
+									<form onSubmit={handleSubmit}>
 										<input
 											type="text"
 											name="headerSearch"
