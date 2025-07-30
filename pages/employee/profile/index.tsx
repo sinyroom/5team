@@ -35,7 +35,7 @@ export default function ProfilePage() {
 	/****************************************************** */
 
 	useEffect(() => {
-		console.log('useEffect가 실행되었습니다!');
+		//console.log('useEffect가 실행되었습니다!');
 
 		const fetchUserData = async () => {
 			setLoading(true);

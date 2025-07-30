@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import useWindowWidth from '@/hooks/useWindowWidth.tsx';
 import { useRouter } from 'next/router';
+import { useUserContext } from '@/contexts/auth-context';
 
 //style and svg
 import styles from './Header.module.css';
@@ -12,13 +13,29 @@ import Search from '@/assets/img/search.svg';
 //Components
 import DropDownNotification from './DropDownNotification.tsx';
 
+//api
+import axiosInstance from '@/api/settings/axiosinstance.ts';
+
 export default function Header() {
 	const [loginState, setLoginState] = useState(false); //로그인 state <假 데이터>
 	const [inputValue, setInputValue] = useState('');
 	const [mobileScreen, setMobileScreen] = useState(false); // 모바일 화면 상태
-
+	const [loginType, setLoginType] = useState(null);
 	const windowWidth = useWindowWidth();
 	const router = useRouter();
+	const { user } = useUserContext();
+	useEffect(() => {
+		if (user == null) {
+			setLoginState(false);
+		} else {
+			setLoginState(true);
+			if (user.type == 'employee') {
+				setLoginType('employee');
+			} else {
+				setLoginType('employer');
+			}
+		}
+	}, []);
 
 	useEffect(() => {
 		if (windowWidth <= 730) {
@@ -34,12 +51,21 @@ export default function Header() {
 
 	const handleClickLogout = () => {
 		router.push('.');
+		localStorage.clear();
+		setLoginState(false);
 	};
 
 	const handleClickSignup = () => {
-		router.push('./register');
+		router.push('../register');
 	};
 
+	const handleClickMyShop = () => {
+		router.push('./owner/store');
+	};
+
+	const handleClickMyProfile = () => {
+		router.push('./employee/profile');
+	};
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setInputValue(e.target.value);
 	};
@@ -94,7 +120,11 @@ export default function Header() {
 					<div className={styles.headerMenu}>
 						{loginState ? (
 							<>
-								<button>내 가게</button>
+								{loginType === 'employer' ? (
+									<button onClick={handleClickMyShop}>내 가게</button>
+								) : (
+									<button onClick={handleClickMyProfile}>내 프로필</button>
+								)}
 								<button onClick={handleClickLogout}>로그아웃</button>
 								<DropDownNotification />
 							</>
@@ -102,7 +132,7 @@ export default function Header() {
 							<>
 								<div className={styles.noneLogin}>
 									<button onClick={handleClickLogin}>로그인</button>
-									<button>회원가입</button>
+									<button onClick={handleClickSignup}>회원가입</button>
 								</div>
 							</>
 						)}

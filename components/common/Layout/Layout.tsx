@@ -10,8 +10,8 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
 	const router = useRouter();
-	if (router.pathname === '/login' || router.pathname === '/signup') {
-		return <main className={styles.main}>{children}</main>; // '/login' 또는 '/signup' 페이지에서는 아무것도 렌더링하지 않음
+	if (router.pathname === '/login' || router.pathname === '/register') {
+		return <main className={styles.main}>{children}</main>;
 	}
 
 	return (
