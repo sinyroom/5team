@@ -53,7 +53,26 @@ export default function Login() {
 			localStorage.setItem('token', token); //JWT토큰 저장
 
 			const userData = res.data.item.user.item;
-			setUser(userData); //유저 정보 Context에 저장
+			let parsedUser = {
+				id: userData.id,
+				email: userData.email,
+				type: userData.type,
+			};
+			// 사장님이면 shop 정보 추가 요청
+			if (userData.type === 'employer') {
+				const shopRes = await axiosInstance.get(`/users/${userData.id}`);
+				parsedUser = {
+					...parsedUser,
+					shop: shopRes.data.item.shop?.item,
+				};
+			}
+			// 알바면 user정보 추가 요청
+			if (userData.type === 'employee') {
+				const userRes = await axiosInstance.get(`/users/${userData.id}`);
+				parsedUser = userRes.data.item;
+			}
+
+			setUser(parsedUser);
 
 			alert('로그인 성공');
 			router.push('/');
