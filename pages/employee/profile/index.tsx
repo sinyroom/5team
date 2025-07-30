@@ -1,6 +1,8 @@
 //hook
 import { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
+import { useRouter } from 'next/router';
+
 //style
 import styles from './profile.module.css';
 
@@ -17,6 +19,8 @@ import { getUser } from '@/api/users/getUser.ts';
 //받아올 값 : 이름 ,전화번호 ,주소 , 소개
 //employee/profile
 export default function ProfilePage() {
+	const router = useRouter();
+
 	const [userData, setUserData] = useState(null); //實 데이터 상태
 	//const [applyList, setApplyList] = useState(); // 신청 내역 여부입니다. default: false.
 	const [loading, setLoading] = useState(true);
@@ -42,7 +46,7 @@ export default function ProfilePage() {
 				console.log(res.item);
 				setUserData(res.item);
 
-				if (userData == null) {
+				if (userData.name == null) {
 					setExistProfile(false);
 				}
 
@@ -60,6 +64,15 @@ export default function ProfilePage() {
 		};
 		fetchUserData();
 	}, []);
+
+	const handleClickPost = () => {
+		router.push('./post');
+	};
+
+	const handleClickEdit = () => {
+		router.push('./profile/create');
+	};
+
 	const applyList = userData?.shop || false;
 
 	return (
@@ -96,7 +109,7 @@ export default function ProfilePage() {
 								</div>
 							</div>
 							<div>
-								<BaseButton color="white" size="medium">
+								<BaseButton color="white" size="medium" onClick={handleClickEdit}>
 									{/*사이즈 조절 가능한지 여쭤보기 */}
 									편집하기
 								</BaseButton>
@@ -115,7 +128,9 @@ export default function ProfilePage() {
 									아직 신청 내역이 없어요.
 								</div>
 								<div style={{ display: 'flex', justifyContent: 'center' }}>
-									<BaseButton size="large">공고 보러가기</BaseButton>
+									<BaseButton size="large" onClick={handleClickPost}>
+										공고 보러가기
+									</BaseButton>
 								</div>
 							</div>
 						)}
@@ -132,7 +147,9 @@ export default function ProfilePage() {
 								내 프로필을 등록하고 원하는 가게에 지원해 보세요.
 							</div>
 							<div style={{ display: 'flex', justifyContent: 'center' }}>
-								<BaseButton size="large">내 프로필 등록하기</BaseButton>
+								<BaseButton size="large" onClick={handleClickEdit}>
+									내 프로필 등록하기
+								</BaseButton>
 							</div>
 						</div>
 					</div>

@@ -1,6 +1,7 @@
 //Hook
 import React, { useState, useEffect } from 'react';
 import useWindowWidth from '@/hooks/useWindowWidth.tsx';
+import { useRouter } from 'next/router';
 
 //style and svg
 import styles from './Header.module.css';
@@ -12,11 +13,12 @@ import Search from '@/assets/img/search.svg';
 import DropDownNotification from './DropDownNotification.tsx';
 
 export default function Header() {
-	const [loginState, setLoginState] = useState(true); //로그인 state <假 데이터>
+	const [loginState, setLoginState] = useState(false); //로그인 state <假 데이터>
 	const [inputValue, setInputValue] = useState('');
 	const [mobileScreen, setMobileScreen] = useState(false); // 모바일 화면 상태
 
 	const windowWidth = useWindowWidth();
+	const router = useRouter();
 
 	useEffect(() => {
 		if (windowWidth <= 730) {
@@ -25,6 +27,18 @@ export default function Header() {
 			setMobileScreen(false);
 		}
 	}, [windowWidth]);
+
+	const handleClickLogin = () => {
+		router.push('../login');
+	};
+
+	const handleClickLogout = () => {
+		router.push('.');
+	};
+
+	const handleClickSignup = () => {
+		router.push('./register');
+	};
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setInputValue(e.target.value);
@@ -81,13 +95,13 @@ export default function Header() {
 						{loginState ? (
 							<>
 								<button>내 가게</button>
-								<button>로그아웃</button>
+								<button onClick={handleClickLogout}>로그아웃</button>
 								<DropDownNotification />
 							</>
 						) : (
 							<>
 								<div className={styles.noneLogin}>
-									<button>로그인</button>
+									<button onClick={handleClickLogin}>로그인</button>
 									<button>회원가입</button>
 								</div>
 							</>
