@@ -112,7 +112,7 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 			}
 		};
 		fetchUserAddress();
-	}, []);
+	}, [user]);
 
 	// 전체 공고 부분 렌더링 + 검색 기능
 	useEffect(() => {
