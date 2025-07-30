@@ -198,8 +198,8 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 											onClick={() => {
 												// console.log('선택된 정렬 옵션:', value);
 												setSortOption(value as 'time' | 'pay' | 'hour' | 'shop');
-												setOffset(0);
 												setShowFilter(false);
+												setOffset(0);
 											}}
 										>
 											{label}
@@ -217,8 +217,8 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 									onClose={() => setShowDetailFilter(false)}
 									onApply={(count: number) => {
 										setDetailFilterCount(count);
-										setOffset(0);
 										setShowDetailFilter(false);
+										setOffset(0);
 									}}
 									detailFilterState={detailFilterState}
 									setDetailFilterState={setDetailFilterState}
