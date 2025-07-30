@@ -11,6 +11,7 @@ import ArrowRight from '@/assets/img/rightIcon.svg';
 import ArrowLeft from '@/assets/img/leftIcon.svg';
 import { getUser } from '@/api/users/getUser';
 import { formatToRFC3339 } from '@/utils/dayformatting';
+import { useRouter } from 'next/router';
 
 const PERSONAL_NOTICE_LIMIT = 3;
 const NOTICE_LIMIT = 6;
@@ -62,6 +63,10 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 		selectedAddresses: [],
 	});
 
+	// 검색기능
+	const router = useRouter();
+	const searchQuery = typeof router.query.search === 'string' ? router.query.search : '';
+
 	// 페이지네이션
 	const [notices, setNotices] = useState(initialNotices.items);
 	const [offset, setOffset] = useState(initialNotices.offset);
@@ -107,6 +112,7 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 		fetchUserAddress();
 	}, []);
 
+	// 전체 공고 부분 렌더링 + 검색 기능
 	useEffect(() => {
 		const fetchNotice = async () => {
 			const queryParams: any = {
@@ -124,6 +130,9 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 			if (detailFilterState.hourlyPayGte.trim()) {
 				queryParams.hourlyPayGte = Number(detailFilterState.hourlyPayGte);
 			}
+			if (searchQuery) {
+				queryParams.keyword = searchQuery;
+			}
 
 			const data = await fetchNoticeList(queryParams);
 			setNotices(data.items);
@@ -132,7 +141,7 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 		};
 
 		fetchNotice();
-	}, [offset, sortOption, detailFilterState]);
+	}, [offset, sortOption, detailFilterState, searchQuery]);
 
 	// const handlePageClick = (page: number) => {
 	// 	setOffset((page - 1) * NOTICE_LIMIT);

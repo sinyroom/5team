@@ -1,4 +1,5 @@
 //Hook
+import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 import useWindowWidth from '@/hooks/useWindowWidth.tsx';
 
@@ -17,6 +18,7 @@ export default function Header() {
 	const [mobileScreen, setMobileScreen] = useState(false); // 모바일 화면 상태
 
 	const windowWidth = useWindowWidth();
+	const router = useRouter();
 
 	useEffect(() => {
 		if (windowWidth <= 730) {
@@ -28,6 +30,13 @@ export default function Header() {
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setInputValue(e.target.value);
+	};
+
+	// posts 페이지 검색기능 추가
+	const handleSubmit = (e: React.FormEvent) => {
+		e.preventDefault();
+		if (!inputValue.trim()) return;
+		router.push(`/employee/posts?search=${encodeURIComponent(inputValue.trim())}`);
 	};
 
 	return (
@@ -44,7 +53,7 @@ export default function Header() {
 									<Search id={styles.searchItem} />
 								</div>
 								<div className={styles.inputTag}>
-									<form>
+									<form onSubmit={handleSubmit}>
 										<input
 											type="text"
 											name="headerSearch"
