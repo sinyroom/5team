@@ -22,6 +22,12 @@
 	font-weight: 700;
 }
 
+.keyword {
+	color: var(--primary);
+	font-size: 28px;
+	font-weight: 700;
+}
+
 .personalPost {
 	display: flex;
 	gap: 14px;

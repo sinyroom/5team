@@ -149,23 +149,33 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 
 	return (
 		<>
-			<div className={styles.fullWidthSection}>
-				<div className={styles.innerContent}>
-					<div className={styles.personalPostWrapper}>
-						<p className={styles.title}>맞춤 공고</p>
-						<div className={styles.personalPost}>
-							{customNotices.map(({ item }: { item: Notice }, idx: number) => (
-								<SmallNoticePoastCard key={idx} notice={item} />
-							))}
+			{!searchQuery && (
+				<div className={styles.fullWidthSection}>
+					<div className={styles.innerContent}>
+						<div className={styles.personalPostWrapper}>
+							<p className={styles.title}>맞춤 공고</p>
+							<div className={styles.personalPost}>
+								{customNotices.map(({ item }: { item: Notice }, idx: number) => (
+									<SmallNoticePoastCard key={idx} notice={item} />
+								))}
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+			)}
 
 			<div className={styles.innerContent}>
 				<div className={styles.allPostContainer}>
 					<div className={styles.allPostWrapper}>
-						<p className={styles.title}>전체 공고</p>
+						<span className={styles.title}>
+							{searchQuery ? (
+								<>
+									<span className={styles.keyword}>{searchQuery}</span>에 대한 공고 목록
+								</>
+							) : (
+								'전체 공고'
+							)}
+						</span>
 						<div className={styles.filterWrapper}>
 							<button className={styles.filter} onClick={() => setShowFilter(prev => !prev)}>
 								<p>{sortOptions.find(opt => opt.value === sortOption)?.label}</p>
