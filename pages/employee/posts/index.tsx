@@ -175,7 +175,7 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 											key={value}
 											className={styles.dropdownItem}
 											onClick={() => {
-												console.log('선택된 정렬 옵션:', value);
+												// console.log('선택된 정렬 옵션:', value);
 												setSortOption(value as 'time' | 'pay' | 'hour' | 'shop');
 												setOffset(0);
 												setShowFilter(false);
