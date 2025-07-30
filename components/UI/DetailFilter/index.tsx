@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import styles from './DetailFilter.module.css';
 import buttonStyles from '@/components/common/BaseButton/BaseButton.module.css';
+
 import { TextInput } from '@/components/common/inputs/TextInput';
-import { useState } from 'react';
 import { NumberInput } from '@/components/common/inputs/NumberInput';
 import { DROPDOWN_OPTIONS_MAP } from '@/constants/DropdownOptions';
 
