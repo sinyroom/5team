@@ -1,17 +1,17 @@
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
-import styles from './posts.module.css';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+
+import styles from './posts.module.css';
 
 import { Notice, GetNoticeResponse } from '@/types/userNotice';
 import { fetchNoticeList } from '@/api/users/getNotice';
 import SmallNoticePoastCard from '@/components/common/NoticePostCard/SmallNoticePoastCard';
 import DetailFilter from '@/components/UI/DetailFilter';
-import ArrowRight from '@/assets/img/rightIcon.svg';
-import ArrowLeft from '@/assets/img/leftIcon.svg';
 import { getUser } from '@/api/users/getUser';
 import { formatToRFC3339 } from '@/utils/dayformatting';
-import { useRouter } from 'next/router';
+import { useUserContext } from '@/contexts/auth-context';
 
 const PERSONAL_NOTICE_LIMIT = 3;
 const NOTICE_LIMIT = 6;
@@ -63,6 +63,9 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 		selectedAddresses: [],
 	});
 
+	// 유저 정보 가져오기
+	const { user } = useUserContext();
+
 	// 검색기능
 	const router = useRouter();
 	const searchQuery = typeof router.query.search === 'string' ? router.query.search : '';
@@ -81,13 +84,12 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 
 	// 로컬스토리지에서 주소값 가져와서 맞춤공고 렌더링
 	useEffect(() => {
-		const token = localStorage.getItem('accessToken');
-		const userId = localStorage.getItem('userId');
-		if (!token || !userId) return;
+		const token = localStorage.getItem('token');
+		if (!token || !user) return;
 
 		const fetchUserAddress = async () => {
 			try {
-				const res = await getUser(userId, token);
+				const res = await getUser(user.id, token);
 				const address = res.item.address;
 
 				if (address) {

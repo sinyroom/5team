@@ -1,8 +1,6 @@
-import { GetServerSideProps } from 'next';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import Cookies from 'js-cookie';
 
 import { TextInput } from '@/components/common/inputs/TextInput';
 import { DropdownInput } from '@/components/common/inputs/DropdownInput';
@@ -13,47 +11,9 @@ import { updateUser } from '@/api/users/updateUser';
 
 import buttonStyle from '@/components/common/BaseButton/BaseButton.module.css';
 import styles from './create.module.css';
+import { useUserContext } from '@/contexts/auth-context';
 
-export const getServerSideProps: GetServerSideProps = async context => {
-	const { userId, token } = context.req.cookies;
-
-	// 테스트용 쿠키 값 삽입
-	// let { userId, token } = context.req.cookies;
-	// userId = '7d36a348-c505-4452-8f29-a6c1fa1d01c6';
-	// token =
-	// 	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3ZDM2YTM0OC1jNTA1LTQ0NTItOGYyOS1hNmMxZmExZDAxYzYiLCJpYXQiOjE3NTMzNDgzODJ9.G6VJdK55gx8jRPu-eAD0nEdFxCfmv4NRgdniJYffBUo';
-
-	// 디버깅용 코드
-	// console.log('서버사이드 쿠키:', context.req.cookies);
-	// console.log('사용할 userId:', userId);
-	// console.log('사용할 token:', token);
-
-	if (!userId || !token) {
-		return {
-			redirect: {
-				destination: '/login',
-				permanent: false,
-			},
-		};
-	}
-
-	try {
-		const userData = await getUser(userId, token);
-		return {
-			props: {
-				userData,
-			},
-		};
-	} catch (error) {
-		return {
-			props: {
-				userData: null,
-			},
-		};
-	}
-};
-
-const Create = ({ userData }: { userData: any }) => {
+const Create = () => {
 	const [name, setName] = useState('');
 	const [phone, setPhone] = useState('');
 	const [address, setAddress] = useState('');
@@ -62,39 +22,39 @@ const Create = ({ userData }: { userData: any }) => {
 	const [alertMessage, setAlertMessage] = useState('');
 
 	const router = useRouter();
+	const { user } = useUserContext();
+	const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
 
 	useEffect(() => {
-		const userIdCookie = Cookies.get('userId');
-		const tokenCookie = Cookies.get('token');
-		// 테스트용 코드
-		// if (!userIdCookie || !tokenCookie) {
-		// 	Cookies.set('userId', '7d36a348-c505-4452-8f29-a6c1fa1d01c6', {
-		// 		path: '/',
-		// 		sameSite: 'lax',
-		// 		secure: false,
-		// 	});
-		// 	Cookies.set(
-		// 		'token',
-		// 		'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3ZDM2YTM0OC1jNTA1LTQ0NTItOGYyOS1hNmMxZmExZDAxYzYiLCJpYXQiOjE3NTMzNDgzODJ9.G6VJdK55gx8jRPu-eAD0nEdFxCfmv4NRgdniJYffBUo',
-		// 		{ path: '/', sameSite: 'lax', secure: false }
-		// 	);
-		// }
+		if (!user) return;
 
-		const userInfo = userData.item;
-		if (userData) {
-			setName(userInfo.name || '');
-			setPhone(userInfo.phone || '');
-			setAddress(userInfo.address || '');
-			setBio(userInfo.bio || '');
+		if (!token) {
+			router.push('/login');
+			return;
 		}
-	}, []);
+
+		getUser(user.id, token)
+			.then(userData => {
+				if (userData?.item) {
+					const { name, phone, address, bio } = userData.item;
+					setName(name || '');
+					setPhone(phone || '');
+					setAddress(address || '');
+					setBio(bio || '');
+				}
+			})
+			.catch(() => {
+				setAlertMessage('사용자 정보를 불러오는데 실패했습니다.');
+				setIsAlertOpen(true);
+			});
+	}, [user, token]);
 
 	const handleSubmit = async (e: React.FormEvent) => {
-		const userId = Cookies.get('userId');
-		const token = Cookies.get('token');
 		e.preventDefault();
+		if (!user || !user.id) return;
+		if (!token) return;
 		try {
-			await updateUser(userId!, token!, { name, phone, address, bio });
+			await updateUser(user.id, token, { name, phone, address, bio });
 
 			setAlertMessage('등록이 완료되었습니다.');
 			setIsAlertOpen(true);
@@ -105,7 +65,7 @@ const Create = ({ userData }: { userData: any }) => {
 	};
 
 	const handleAlertConfirm = () => {
-		router.push('/profile');
+		router.push('/employee/profile');
 	};
 
 	const handleAlertClose = () => {
@@ -119,7 +79,9 @@ const Create = ({ userData }: { userData: any }) => {
 			<div className={styles.container}>
 				<div className={styles.titleWrapper}>
 					<p className={styles.title}>내 프로필</p>
-					<Image src="/img/icon/closeIcon.svg" alt="프로필 닫기" width={24} height={24} />
+					<button onClick={() => router.push('/profile')}>
+						<Image src="/img/icon/closeIcon.svg" alt="프로필 닫기" width={24} height={24} />
+					</button>{' '}
 				</div>
 				<form onSubmit={handleSubmit} className={styles.form}>
 					<div className={styles.inputWrapper}>
@@ -136,10 +98,10 @@ const Create = ({ userData }: { userData: any }) => {
 						<div className={styles.input}>
 							<TextInput
 								id="phone"
-								label="연락처 (010-0000-0000) "
+								label="연락처 "
 								value={phone}
 								onChange={e => setPhone(e.target.value)}
-								placeholder="입력"
+								placeholder="010-0000-0000"
 								required
 							/>
 						</div>
