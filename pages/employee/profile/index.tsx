@@ -1,6 +1,5 @@
 //hook
 import { useState, useEffect } from 'react';
-import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { useUserContext } from '@/contexts/auth-context';
 
@@ -12,17 +11,18 @@ import PathIcon from '@/assets/img/pathIcon.svg';
 import SmartPhoneIcon from '@/assets/img/smartPhoneIcon.svg';
 
 //Components
-import { BaseButton } from '@/components/common/BaseButton/index.tsx';
+import { BaseButton } from '@/components/common/BaseButton/index';
 
 //api
-import { getUser } from '@/api/users/getUser.ts';
+import { getUser } from '@/api/users/getUser';
+import WorkTable from './WorkTable';
 
 //받아올 값 : 이름 ,전화번호 ,주소 , 소개
 //employee/profile
 export default function ProfilePage() {
 	const router = useRouter();
 
-	const [userData, setUserData] = useState(null); //實 데이터 상태
+	const [userData, setUserData] = useState<any>(null); //實 데이터 상태
 	//const [applyList, setApplyList] = useState(); // 신청 내역 여부입니다. default: false.
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
@@ -123,14 +123,14 @@ export default function ProfilePage() {
 							신청 내역
 						</div>
 						{applyList ? (
-							<div>테이블</div>
+							<WorkTable />
 						) : (
 							<div className={styles.applyListContent}>
 								<div style={{ display: 'flex', justifyContent: 'center' }}>
 									아직 신청 내역이 없어요.
 								</div>
 								<div style={{ display: 'flex', justifyContent: 'center' }}>
-									<BaseButton size="large" onClick={handleClickPost}>
+									<BaseButton size="large" onClick={handleClickPost} color="gray">
 										공고 보러가기
 									</BaseButton>
 								</div>
@@ -149,7 +149,7 @@ export default function ProfilePage() {
 								내 프로필을 등록하고 원하는 가게에 지원해 보세요.
 							</div>
 							<div style={{ display: 'flex', justifyContent: 'center' }}>
-								<BaseButton size="large" onClick={handleClickEdit}>
+								<BaseButton size="large" onClick={handleClickEdit} color="gray">
 									내 프로필 등록하기
 								</BaseButton>
 							</div>

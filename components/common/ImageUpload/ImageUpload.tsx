@@ -4,6 +4,7 @@ import CameraIcon from '@/assets/img/camera.svg';
 import { getPresignedUrl, uploadToS3 } from '@/api/imageRequest';
 import useModal from '@/hooks/useModal';
 import Confirm from '@/components/Modal/Confirm/Confirm';
+import Image from 'next/image';
 
 interface ImageUploadProps {
 	value?: string;
@@ -39,7 +40,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
 		} catch {
 			return { error: 'S3 업로드에 실패했습니다.' };
 		}
-		return { success: true, url: presignedUrl };
+		return { success: true, url: presignedUrl.split('?')[0] };
 	};
 
 	const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,10 +76,11 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
 				onChange={handleChange}
 			/>
 			{(preview && preview.length > 0) || value ? (
-				<img
+				<Image
 					className={styles.image}
 					src={preview || value || ''}
 					alt="미리보기"
+					fill
 					style={{ objectFit: 'cover', width: '100%', height: '100%' }}
 				/>
 			) : (

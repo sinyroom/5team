@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import Notification from '@/assets/img/notification.svg';
 import styles from './DropDownNotification.module.css';
-import NotificationCard from '@/components/Modal/Notification/Notification.tsx';
+import NotificationCard from '@/components/Modal/Notification/Notification';
 
 export default function DropDownMenu() {
 	const [dropdownVisible, setDropdownVisible] = useState(false); //visible 상태

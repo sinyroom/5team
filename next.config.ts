@@ -3,6 +3,16 @@ import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {
 	/* config options here */
 	reactStrictMode: true,
+	images: {
+		remotePatterns: [
+			{
+				protocol: 'https',
+				hostname: 'bootcamp-project-api.s3.ap-northeast-2.amazonaws.com',
+				port: '',
+				pathname: '/**',
+			},
+		],
+	},
 
 	webpack(config) {
 		//svg 설정.(svg 파일을 컴포넌트 형식으로 사용 할 수 있게)
