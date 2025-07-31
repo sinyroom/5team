@@ -15,6 +15,7 @@ import { BaseButton } from '@/components/common/BaseButton/index.tsx';
 
 //api
 import { getUser } from '@/api/users/getUser.ts';
+import WorkTable from './WorkTable';
 
 //받아올 값 : 이름 ,전화번호 ,주소 , 소개
 //employee/profile
@@ -115,7 +116,7 @@ export default function ProfilePage() {
 							신청 내역
 						</div>
 						{applyList ? (
-							<div>테이블</div>
+							<WorkTable />
 						) : (
 							<div className={styles.applyListContent}>
 								<div style={{ display: 'flex', justifyContent: 'center' }}>
