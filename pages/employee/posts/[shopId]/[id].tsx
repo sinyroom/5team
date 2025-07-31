@@ -15,6 +15,7 @@ import { getUser } from '@/api/users/getUser';
 import Confirm from '@/components/Modal/Confirm/Confirm';
 import Action from '@/components/Modal/Action/Action';
 import { applyNotice } from '@/api/applications/applyNotice';
+import { updateApplication } from '@/api/applications/updateApplication';
 
 interface Props {
 	notice: Notice | null;
@@ -53,10 +54,11 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
 const PostDetailPage = ({ viewedNotices, notice, shop }: Props) => {
 	const [newlyNotices, setNewlyNotices] = useState(viewedNotices.items);
-	const [isClosed, setIsClosed] = useState(false);
+	const [applicationId, setApplicationId] = useState<string | null>(null);
 
-	// 신청 여부
+	// 버튼 상태
 	const [isApplied, setIsApplied] = useState(false);
+	const [isClosed, setIsClosed] = useState(false);
 
 	// 모달 관련
 	const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -65,6 +67,7 @@ const PostDetailPage = ({ viewedNotices, notice, shop }: Props) => {
 
 	const router = useRouter();
 	const { user } = useUserContext();
+	console.log(user);
 
 	if (!notice || !shop) return <p>존재하지 않는 공고입니다.</p>;
 
@@ -85,15 +88,15 @@ const PostDetailPage = ({ viewedNotices, notice, shop }: Props) => {
 				setIsConfirmOpen(true);
 				return;
 			}
-			if (isApplied) {
-				console.log('신청 취소 처리');
-				setIsApplied(false);
-				return;
-			}
+			if (isApplied) return;
 
-			await applyNotice(shop.id, notice.id);
-			console.log('신청 처리 완료');
-			setIsApplied(true);
+			const res = await applyNotice(shop.id, notice.id);
+			const newApplicationId = res.item?.id;
+			if (newApplicationId) {
+				setApplicationId(newApplicationId);
+				setIsApplied(true);
+				console.log('신청 처리 완료', newApplicationId);
+			}
 		} catch (err) {
 			console.error('프로필 조회 실패', err);
 			alert('프로필 정보를 불러오는 중 오류가 발생했습니다.');
@@ -103,6 +106,21 @@ const PostDetailPage = ({ viewedNotices, notice, shop }: Props) => {
 	const handleCancleClick = () => {
 		setIsActionOpen(true);
 		setAlertMessage('신청을 취소하겠습니까?');
+	};
+
+	const handleCancleConfirm = async () => {
+		try {
+			if (!applicationId) throw new Error('지원 id 없음');
+			await updateApplication(shop.id, notice.id, applicationId, 'canceled');
+			setIsApplied(false);
+			console.log('취소 처리 완료');
+		} catch (err) {
+			console.error('지원 취소 실패', err);
+			setAlertMessage('신청 취소 처리에 실패했습니다.');
+			setIsConfirmOpen(true);
+		} finally {
+			setIsActionOpen(false);
+		}
 	};
 
 	return (
@@ -144,10 +162,7 @@ const PostDetailPage = ({ viewedNotices, notice, shop }: Props) => {
 					isOpen={isActionOpen}
 					onClose={() => setIsActionOpen(false)}
 					onCancel={() => setIsActionOpen(false)}
-					onConfirm={() => {
-						setIsApplied(false);
-						setIsActionOpen(false);
-					}}
+					onConfirm={handleCancleConfirm}
 					cancelText="아니요"
 					cofirmText="취소하기"
 				/>
