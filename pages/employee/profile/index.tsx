@@ -86,7 +86,9 @@ export default function ProfilePage() {
 			{existProfile ? (
 				<>
 					<div className={styles.profileBlock}>
-						<div className={styles.Title}>내 프로필</div>
+						<div className={styles.Title} id={styles.myProfile}>
+							내 프로필
+						</div>
 						<div className={styles.profileDetailed}>
 							<div className={styles.profileDetiledInside}>
 								<div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
