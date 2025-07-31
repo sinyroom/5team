@@ -28,17 +28,19 @@ const Post = ({ shop }: PostCardProps) => {
 				<div className={styles.responsiveDesignButton}>
 					<li className={styles.buttonGruop}>
 						<BaseButton
-							children={'편집하기'}
 							onClick={() => router.push('/owner/store/edit')}
 							size={'noneSize'}
 							color={'white'}
-						/>
+						>
+							편집하기
+						</BaseButton>
 						<BaseButton
-							children={'공고 등록하기'}
 							onClick={() => router.push('/owner/recruit/create')}
 							size={'noneSize'}
 							color={'red'}
-						/>
+						>
+							공고 등록하기
+						</BaseButton>
 					</li>
 				</div>
 			</div>
