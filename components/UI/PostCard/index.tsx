@@ -12,7 +12,9 @@ const Post = ({ shop }: PostCardProps) => {
 	const router = useRouter();
 	return (
 		<ul className={styles.post}>
-			<li className={styles.postImageUrl}>{shop?.imageUrl}</li>
+			<li className={styles.imageUrl}>
+				<img src={shop.imageUrl} alt={shop.name} />
+			</li>
 			<div className={styles.responsiveDesign}>
 				<div className={styles.responsiveDesignContents}>
 					<li className={styles.postCategory}>{shop?.category}</li>
