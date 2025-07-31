@@ -1,16 +1,17 @@
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
-import styles from './posts.module.css';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+
+import styles from './posts.module.css';
 
 import { Notice, GetNoticeResponse } from '@/types/userNotice';
 import { fetchNoticeList } from '@/api/users/getNotice';
 import SmallNoticePoastCard from '@/components/common/NoticePostCard/SmallNoticePoastCard';
 import DetailFilter from '@/components/UI/DetailFilter';
-import ArrowRight from '@/assets/img/rightIcon.svg';
-import ArrowLeft from '@/assets/img/leftIcon.svg';
 import { getUser } from '@/api/users/getUser';
 import { formatToRFC3339 } from '@/utils/dayformatting';
+import { useUserContext } from '@/contexts/auth-context';
 
 const PERSONAL_NOTICE_LIMIT = 3;
 const NOTICE_LIMIT = 6;
@@ -62,6 +63,13 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 		selectedAddresses: [],
 	});
 
+	// 유저 정보 가져오기
+	const { user } = useUserContext();
+
+	// 검색기능
+	const router = useRouter();
+	const searchQuery = typeof router.query.search === 'string' ? router.query.search : '';
+
 	// 페이지네이션
 	const [notices, setNotices] = useState(initialNotices.items);
 	const [offset, setOffset] = useState(initialNotices.offset);
@@ -76,13 +84,12 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 
 	// 로컬스토리지에서 주소값 가져와서 맞춤공고 렌더링
 	useEffect(() => {
-		const token = localStorage.getItem('accessToken');
-		const userId = localStorage.getItem('userId');
-		if (!token || !userId) return;
+		const token = localStorage.getItem('token');
+		if (!token || !user) return;
 
 		const fetchUserAddress = async () => {
 			try {
-				const res = await getUser(userId, token);
+				const res = await getUser(user.id, token);
 				const address = res.item.address;
 
 				if (address) {
@@ -105,8 +112,9 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 			}
 		};
 		fetchUserAddress();
-	}, []);
+	}, [user]);
 
+	// 전체 공고 부분 렌더링 + 검색 기능
 	useEffect(() => {
 		const fetchNotice = async () => {
 			const queryParams: any = {
@@ -124,6 +132,9 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 			if (detailFilterState.hourlyPayGte.trim()) {
 				queryParams.hourlyPayGte = Number(detailFilterState.hourlyPayGte);
 			}
+			if (searchQuery) {
+				queryParams.keyword = searchQuery;
+			}
 
 			const data = await fetchNoticeList(queryParams);
 			setNotices(data.items);
@@ -132,7 +143,7 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 		};
 
 		fetchNotice();
-	}, [offset, sortOption, detailFilterState]);
+	}, [offset, sortOption, detailFilterState, searchQuery]);
 
 	// const handlePageClick = (page: number) => {
 	// 	setOffset((page - 1) * NOTICE_LIMIT);
@@ -140,23 +151,33 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 
 	return (
 		<>
-			<div className={styles.fullWidthSection}>
-				<div className={styles.innerContent}>
-					<div className={styles.personalPostWrapper}>
-						<p className={styles.title}>맞춤 공고</p>
-						<div className={styles.personalPost}>
-							{customNotices.map(({ item }: { item: Notice }, idx: number) => (
-								<SmallNoticePoastCard key={idx} notice={item} />
-							))}
+			{!searchQuery && (
+				<div className={styles.fullWidthSection}>
+					<div className={styles.innerContent}>
+						<div className={styles.personalPostWrapper}>
+							<p className={styles.title}>맞춤 공고</p>
+							<div className={styles.personalPost}>
+								{customNotices.map(({ item }: { item: Notice }, idx: number) => (
+									<SmallNoticePoastCard key={idx} notice={item} />
+								))}
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+			)}
 
 			<div className={styles.innerContent}>
 				<div className={styles.allPostContainer}>
 					<div className={styles.allPostWrapper}>
-						<p className={styles.title}>전체 공고</p>
+						<span className={styles.title}>
+							{searchQuery ? (
+								<>
+									<span className={styles.keyword}>{searchQuery}</span>에 대한 공고 목록
+								</>
+							) : (
+								'전체 공고'
+							)}
+						</span>
 						<div className={styles.filterWrapper}>
 							<button className={styles.filter} onClick={() => setShowFilter(prev => !prev)}>
 								<p>{sortOptions.find(opt => opt.value === sortOption)?.label}</p>
@@ -175,7 +196,7 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 											key={value}
 											className={styles.dropdownItem}
 											onClick={() => {
-												console.log('선택된 정렬 옵션:', value);
+												// console.log('선택된 정렬 옵션:', value);
 												setSortOption(value as 'time' | 'pay' | 'hour' | 'shop');
 												setOffset(0);
 												setShowFilter(false);
@@ -217,8 +238,9 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 							onClick={() => {
 								setOffset(offset - NOTICE_LIMIT);
 							}}
+							className={styles.arrowButton}
 						>
-							<ArrowLeft style={{ fill: isFirstPage ? '#ccc' : '#000' }} />
+							<img src="/img/icon/leftIcon.svg" alt="이전페이지" />
 						</button>
 
 						{Array.from({ length: pageCount }).map((_, i) => {
@@ -240,7 +262,7 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 							onClick={() => setOffset(offset + NOTICE_LIMIT)}
 							className={styles.arrowButton}
 						>
-							<ArrowRight style={{ fill: isLastPage ? '#ccc' : '#000' }} />
+							<img src="/img/icon/rightIcon.svg" alt="다음페이지" />
 						</button>
 					</div>
 				</div>

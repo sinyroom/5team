@@ -1,7 +1,7 @@
 //Hook
+import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 import useWindowWidth from '@/hooks/useWindowWidth.tsx';
-import { useRouter } from 'next/router';
 import { useUserContext } from '@/contexts/auth-context';
 
 //style and svg
@@ -84,6 +84,13 @@ export default function Header() {
 		setInputValue(e.target.value);
 	};
 
+	// posts 페이지 검색기능 추가
+	const handleSubmit = (e: React.FormEvent) => {
+		e.preventDefault();
+		if (!inputValue.trim()) return;
+		router.push(`/employee/posts?search=${encodeURIComponent(inputValue.trim())}`);
+	};
+
 	return (
 		<>
 			<div className={styles.header}>
@@ -100,7 +107,7 @@ export default function Header() {
 									<Search id={styles.searchItem} />
 								</div>
 								<div className={styles.inputTag}>
-									<form>
+									<form onSubmit={handleSubmit}>
 										<input
 											type="text"
 											name="headerSearch"
@@ -122,7 +129,7 @@ export default function Header() {
 							<div className={styles.headerSearchBox}>
 								<Search />
 								<div className={styles.inputTag}>
-									<form>
+									<form onSubmit={handleSubmit}>
 										<input
 											type="text"
 											name="headerSearch"

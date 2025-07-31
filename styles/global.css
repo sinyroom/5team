@@ -47,7 +47,7 @@
 	--font-size-xxl: 24px;
 }
 
-@media (min-width: 768) {
+@media (min-width: 768px) {
 	:root {
 		--headerHeight: 70px;
 		--footerHeight: 100px;
