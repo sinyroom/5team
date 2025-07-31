@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import styles from './posts.module.css';
 
 import { Notice, GetNoticeResponse } from '@/types/userNotice';
-import { fetchNoticeList } from '@/api/users/getNotice';
+import { fetchNoticeList, NoticeQueryParams } from '@/api/users/getNotice';
 import SmallNoticePoastCard from '@/components/common/NoticePostCard/SmallNoticePoastCard';
 import DetailFilter from '@/components/UI/DetailFilter';
 import { getUser } from '@/api/users/getUser';
@@ -117,7 +117,7 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 	// 전체 공고 부분 렌더링 + 검색 기능
 	useEffect(() => {
 		const fetchNotice = async () => {
-			const queryParams: any = {
+			const queryParams: NoticeQueryParams = {
 				offset,
 				limit: NOTICE_LIMIT,
 				sort: sortOption,
@@ -198,8 +198,8 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 											onClick={() => {
 												// console.log('선택된 정렬 옵션:', value);
 												setSortOption(value as 'time' | 'pay' | 'hour' | 'shop');
-												setOffset(0);
 												setShowFilter(false);
+												setOffset(0);
 											}}
 										>
 											{label}
@@ -217,8 +217,8 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 									onClose={() => setShowDetailFilter(false)}
 									onApply={(count: number) => {
 										setDetailFilterCount(count);
-										setOffset(0);
 										setShowDetailFilter(false);
+										setOffset(0);
 									}}
 									detailFilterState={detailFilterState}
 									setDetailFilterState={setDetailFilterState}
