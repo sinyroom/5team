@@ -53,7 +53,7 @@ export default function Login() {
 			localStorage.setItem('token', token); //JWT토큰 저장
 
 			const userData = res.data.item.user.item;
-			let parsedUser = {
+			let parsedUser: any = {
 				id: userData.id,
 				email: userData.email,
 				type: userData.type,

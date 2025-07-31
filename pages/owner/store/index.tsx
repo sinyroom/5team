@@ -12,7 +12,7 @@ import { useUserContext } from '@/contexts/auth-context';
 export default function StorePage() {
 	const router = useRouter();
 	const { user, isLoading: userLoading } = useUserContext();
-	const [shop, setShop] = useState<Shop | null>(null);
+	const [shop, setShop] = useState<any | null>(null);
 	const [notices, setNotices] = useState<NoticeItem[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(false);
