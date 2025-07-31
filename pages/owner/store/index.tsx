@@ -96,7 +96,7 @@ export default function StorePage() {
 								<div
 									key={notice.id}
 									className={styles.noticeItem}
-									onClick={() => !closed && router.push(`/owner/recruit/${notice.id}`)}
+									onClick={() => !closed && router.push(`/owner/recruit/${shop.id}/${notice.id}`)}
 									aria-disabled={closed}
 								>
 									<SmallNoticePoastCard notice={{ ...notice, closed }} />
