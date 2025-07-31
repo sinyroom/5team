@@ -1,4 +1,4 @@
-import styles from './create.module.css';
+import styles from './create.edit.module.css';
 import buttonStyles from '@/components/common/BaseButton/BaseButton.module.css';
 import { useForm, Controller } from 'react-hook-form';
 import { TextInput } from '@/components/common/inputs/TextInput';
@@ -7,7 +7,7 @@ import { NumberInput } from '@/components/common/inputs/NumberInput';
 import { ImageInput } from '@/components/common/inputs/ImageInput';
 import { TextareaInput } from '@/components/common/inputs/TextareaInput';
 import { useState } from 'react';
-import { registerShop } from '@/api/registerShop';
+import { registerShop } from '@/api/saveShop';
 import useModal from '@/hooks/useModal';
 import Alert from '@/components/Modal/Alert/Alert';
 import Confirm from '@/components/Modal/Confirm/Confirm';
@@ -22,7 +22,7 @@ interface FormInputs {
 	imageUrl: string;
 	originalHourlyPay: number;
 }
-
+// TODO:이미 가게 등록 되어 있으면 가게 정보 상세 페이지로 이동
 const Create = () => {
 	const resultModal = useModal();
 	const errorModal = useModal();

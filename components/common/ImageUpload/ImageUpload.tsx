@@ -39,7 +39,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
 		} catch {
 			return { error: 'S3 업로드에 실패했습니다.' };
 		}
-		return { success: true, url: presignedUrl };
+		return { success: true, url: presignedUrl.split('?')[0] };
 	};
 
 	const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
