@@ -1,7 +1,7 @@
 //Hook
 import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
-import useWindowWidth from '@/hooks/useWindowWidth.tsx';
+import useWindowWidth from '@/hooks/useWindowWidth';
 import { useUserContext } from '@/contexts/auth-context';
 
 //style and svg
@@ -11,16 +11,15 @@ import LogoImageSmall from '@/assets/img/logoSmall.svg';
 import Search from '@/assets/img/search.svg';
 
 //Components
-import DropDownNotification from './DropDownNotification.tsx';
+import DropDownNotification from './DropDownNotification';
 
 //api
-import axiosInstance from '@/api/settings/axiosinstance.ts';
 
 export default function Header() {
 	const [loginState, setLoginState] = useState(false); //로그인 state <假 데이터>
 	const [inputValue, setInputValue] = useState('');
 	const [mobileScreen, setMobileScreen] = useState(false); // 모바일 화면 상태
-	const [loginType, setLoginType] = useState(null);
+	const [loginType, setLoginType] = useState<string | null>(null);
 	const windowWidth = useWindowWidth();
 	const router = useRouter();
 	const { user } = useUserContext();
@@ -34,7 +33,7 @@ export default function Header() {
 			const existingType = localStorage.getItem('type');
 
 			if (existingType == null) {
-				const valueToStore = user?.type; // 서버 진입 시 발생한 오류 때문에 옵셔널로 설정해둠
+				const valueToStore: any = user?.type; // 서버 진입 시 발생한 오류 때문에 옵셔널로 설정해둠
 				localStorage.setItem('type', valueToStore);
 			}
 
