@@ -5,7 +5,7 @@ import { MyNotification } from '@/types/notification';
 import CloseIcon from '@/assets/img/closeIcon.svg';
 
 interface NotificationProps {
-	notifications: MyNotification[];
+	notifications: any;
 	onClose: () => void;
 	children?: ReactNode;
 }

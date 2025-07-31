@@ -33,24 +33,24 @@ function useDeviceType(): 'mobile' | 'tablet' | 'desktop' {
 	return deviceType;
 }
 
-const baseColumns: ColumnDef<Applicant>[] = [
+const baseColumns: any[] = [
 	{
 		accessorKey: 'name',
 		header: '신청자',
 		meta: { responsive: 'mobile' },
-		cell: info => info.getValue(),
+		cell: (info: any) => info.getValue(),
 	},
 	{
 		accessorKey: 'bio',
 		header: '소개',
 		meta: { responsive: 'tablet' },
-		cell: info => info.getValue() || '-',
+		cell: (info: any) => info.getValue() || '-',
 	},
 	{
 		accessorKey: 'phone',
 		header: '전화번호',
 		meta: { responsive: 'desktop' },
-		cell: info => info.getValue() || '-',
+		cell: (info: any) => info.getValue() || '-',
 	},
 	{
 		id: 'actions',

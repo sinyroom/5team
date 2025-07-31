@@ -27,7 +27,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
 		const res = await getNoticeId(shopId as string, noticeId as string);
 		const notice = res.item;
 
-		let shop = null;
+		let shop: any = null;
 		const viewedNotices = await fetchNoticeList({
 			offset: 0,
 			limit: 6,

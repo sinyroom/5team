@@ -40,7 +40,7 @@ function useDeviceType(): 'mobile' | 'tablet' | 'desktop' {
 
 //전체 컬럼 정의
 // 각 컬럼마다 meta.responsive를 추가하여 어느 디바이스에서 보일지 지정함
-const baseColumns: ColumnDef<WorkItem>[] = [
+const baseColumns: any[] = [
 	{
 		accessorKey: 'store',
 		header: '가게',
@@ -60,7 +60,7 @@ const baseColumns: ColumnDef<WorkItem>[] = [
 		accessorKey: 'status',
 		header: '상태',
 		meta: { responsive: 'mobile' },
-		cell: ({ getValue }) => {
+		cell: ({ getValue }: { getValue: any }) => {
 			const value = getValue() as WorkItem['status'];
 			const statusClass = {
 				'승인 완료': styles.badgeBlue,
