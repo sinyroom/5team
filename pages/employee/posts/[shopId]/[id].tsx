@@ -23,8 +23,8 @@ import Action from '@/components/Modal/Action/Action';
 import { useUserContext } from '@/contexts/auth-context';
 
 interface Props {
-	notice: Notice | null;
-	shop: Shop | null;
+	notice: Notice;
+	shop: Shop;
 	viewedNotices: GetNoticeResponse;
 }
 
@@ -34,16 +34,21 @@ export const getServerSideProps: GetServerSideProps = async context => {
 		const res = await getNoticeId(shopId as string, noticeId as string);
 		const notice = res.item;
 
-		let shop: any = null;
+		let shop: Shop;
 		const viewedNotices = await fetchNoticeList({
 			offset: 0,
 			limit: 6,
 		});
+
 		if (notice?.shop?.item) {
 			shop = notice.shop.item;
 		} else {
 			const shopRes = await getShopById(shopId as string);
+			if (!shopRes.item) throw new Error('Shop not found');
 			shop = shopRes.item;
+		}
+		if (!notice || !shop) {
+			return { notFound: true };
 		}
 		return {
 			props: {
