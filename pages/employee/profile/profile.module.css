@@ -10,7 +10,6 @@
 	padding-right: 245px;
 	display: flex;
 	justify-content: space-between;
-	gap: 180px;
 }
 
 .profileDetailed {
@@ -75,6 +74,11 @@
 
 .Title#applyListTitle {
 	margin-bottom: 32px;
+}
+
+.Title#myProfile {
+	width: 112px;
+	margin-right: 70px;
 }
 
 @media screen and (max-width: 1023px) {
