@@ -70,14 +70,13 @@
 .pagination button {
 	padding: 0.4rem 0.8rem;
 	border: none;
-	background: #eee;
 	border-radius: 6px;
 	cursor: pointer;
 	transition: background-color 0.2s;
 }
 
 .pagination button.active {
-	background-color: #ff8364;
+	background-color: #ff8d72;
 	color: white;
 	font-weight: 600;
 }

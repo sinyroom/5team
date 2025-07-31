@@ -18,12 +18,25 @@ type WorkItem = {
 //테이블에 들어갈 한 줄 타입
 // 가게이름, 일자 , 시급, 상태
 
-function useDeviceType() {
-	const width = typeof window !== 'undefined' ? window.innerWidth : 1024;
-	if (width <= 640) return 'mobile';
-	if (width <= 1024) return 'tablet';
-	return 'desktop';
-} //브라우저 창 너비에 따라 디바이스 타입 구분
+function useDeviceType(): 'mobile' | 'tablet' | 'desktop' {
+	const [deviceType, setDeviceType] = useState<'mobile' | 'tablet' | 'desktop'>('desktop');
+
+	useEffect(() => {
+		const handleResize = () => {
+			const width = window.innerWidth;
+			if (width <= 640) setDeviceType('mobile');
+			else if (width <= 1024) setDeviceType('tablet');
+			else setDeviceType('desktop');
+		};
+
+		handleResize(); // 처음에 한 번 실행
+		window.addEventListener('resize', handleResize);
+		return () => window.removeEventListener('resize', handleResize);
+	}, []);
+
+	return deviceType;
+}
+//브라우저 창 너비에 따라 디바이스 타입 구분
 
 //전체 컬럼 정의
 // 각 컬럼마다 meta.responsive를 추가하여 어느 디바이스에서 보일지 지정함
@@ -90,6 +103,91 @@ const data: WorkItem[] = [
 		wage: '15,000원',
 		status: '대기중',
 	},
+	{
+		store: '분명',
+		date: '2024-01-12 10:00 ~ 1200 (2시간)',
+		wage: '13,000원',
+		status: '대기중',
+	},
+	{
+		store: '분명',
+		date: '2024-01-12 10:00 ~ 1200 (2시간)',
+		wage: '13,000원',
+		status: '대기중',
+	},
+	{
+		store: '분명',
+		date: '2024-01-12 10:00 ~ 1200 (2시간)',
+		wage: '13,000원',
+		status: '대기중',
+	},
+	{
+		store: '분명',
+		date: '2024-01-12 10:00 ~ 1200 (2시간)',
+		wage: '13,000원',
+		status: '대기중',
+	},
+	{
+		store: '분명',
+		date: '2024-01-12 10:00 ~ 1200 (2시간)',
+		wage: '13,000원',
+		status: '대기중',
+	},
+	{
+		store: '분명',
+		date: '2024-01-12 10:00 ~ 1200 (2시간)',
+		wage: '13,000원',
+		status: '대기중',
+	},
+
+	{
+		store: '분명',
+		date: '2024-01-12 10:00 ~ 1200 (2시간)',
+		wage: '13,000원',
+		status: '대기중',
+	},
+	{
+		store: '분명',
+		date: '2024-01-12 10:00 ~ 1200 (2시간)',
+		wage: '13,000원',
+		status: '대기중',
+	},
+	{
+		store: '분명',
+		date: '2024-01-12 10:00 ~ 1200 (2시간)',
+		wage: '13,000원',
+		status: '대기중',
+	},
+	{
+		store: '분명',
+		date: '2024-01-12 10:00 ~ 1200 (2시간)',
+		wage: '13,000원',
+		status: '대기중',
+	},
+	{
+		store: '분명',
+		date: '2024-01-12 10:00 ~ 1200 (2시간)',
+		wage: '13,000원',
+		status: '대기중',
+	},
+	{
+		store: '분명',
+		date: '2024-01-12 10:00 ~ 1200 (2시간)',
+		wage: '13,000원',
+		status: '대기중',
+	},
+	{
+		store: '분명',
+		date: '2024-01-12 10:00 ~ 1200 (2시간)',
+		wage: '13,000원',
+		status: '대기중',
+	},
+	{
+		store: '분명',
+		date: '2024-01-12 10:00 ~ 1200 (2시간)',
+		wage: '13,000원',
+		status: '대기중',
+	},
 ];
 
 export default function WorkTable() {
@@ -121,8 +219,13 @@ export default function WorkTable() {
 		columns,
 		getCoreRowModel: getCoreRowModel(),
 		getPaginationRowModel: getPaginationRowModel(),
+		initialState: {
+			pagination: {
+				pageSize: 5,
+			},
+		},
 	});
-    //pagination, row model, column 등 구성
+	//pagination, row model, column 등 구성
 
 	return (
 		<div className={styles.container}>
@@ -139,7 +242,7 @@ export default function WorkTable() {
 					))}
 				</thead>
 				<tbody>
-					{table.getRowModel().rows.map(row => (
+					{table.getPaginationRowModel().rows.map(row => (
 						<tr key={row.id}>
 							{row.getVisibleCells().map(cell => (
 								<td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
