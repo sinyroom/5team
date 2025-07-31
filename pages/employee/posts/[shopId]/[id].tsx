@@ -14,6 +14,7 @@ import { useUserContext } from '@/contexts/auth-context';
 import { getUser } from '@/api/users/getUser';
 import Confirm from '@/components/Modal/Confirm/Confirm';
 import useModal from '@/hooks/useModal';
+import Action from '@/components/Modal/Action/Action';
 
 interface Props {
 	notice: Notice | null;
@@ -52,16 +53,21 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
 const PostDetailPage = ({ viewedNotices, notice, shop }: Props) => {
 	const [newlyNotices, setNewlyNotices] = useState(viewedNotices.items);
+
+	// 신청 여부
+	const [isApplied, setIsApplied] = useState(false);
+
+	// 모달 관련
 	const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+	const [isActionOpen, setIsActionOpen] = useState(false);
 	const [alertMessage, setAlertMessage] = useState('');
 
 	const router = useRouter();
 	const { user } = useUserContext();
-	const confirmModal = useModal();
 
 	if (!notice || !shop) return <p>존재하지 않는 공고입니다.</p>;
 
-	const handleClick = async () => {
+	const handleApplyClick = async () => {
 		const token = localStorage.getItem('token');
 		if (!token) {
 			setAlertMessage('로그인이 필요합니다');
@@ -79,20 +85,38 @@ const PostDetailPage = ({ viewedNotices, notice, shop }: Props) => {
 				return;
 			}
 
+			if (isApplied) {
+				console.log('신청 취소 처리');
+				setIsApplied(false);
+				return;
+			}
+
 			console.log('신청 처리');
+			setIsApplied(true);
 		} catch (err) {
 			console.error('프로필 조회 실패', err);
 			alert('프로필 정보를 불러오는 중 오류가 발생했습니다.');
 		}
 	};
 
+	const handleCancleClick = () => {
+		setIsActionOpen(true);
+		setAlertMessage('신청을 취소하겠습니까?');
+	};
+
 	return (
 		<div>
 			<div>
 				<NoticePostCard notice={notice}>
-					<button className={`${styles.button} ${BtnStyles.red}`} onClick={handleClick}>
-						신청하기
-					</button>
+					{isApplied ? (
+						<button className={`${styles.button} ${BtnStyles.white}`} onClick={handleCancleClick}>
+							취소하기
+						</button>
+					) : (
+						<button className={`${styles.button} ${BtnStyles.red}`} onClick={handleApplyClick}>
+							신청하기
+						</button>
+					)}
 				</NoticePostCard>
 			</div>
 			<div className={styles.newlyPost}>
@@ -107,6 +131,20 @@ const PostDetailPage = ({ viewedNotices, notice, shop }: Props) => {
 					isOpen={isConfirmOpen}
 					onClose={() => setIsConfirmOpen(false)}
 					onConfirm={() => setIsConfirmOpen(false)}
+				/>
+			)}
+			{isActionOpen && (
+				<Action
+					message={alertMessage}
+					isOpen={isActionOpen}
+					onClose={() => setIsActionOpen(false)}
+					onCancel={() => setIsActionOpen(false)}
+					onConfirm={() => {
+						setIsApplied(false);
+						setIsActionOpen(false);
+					}}
+					cancelText="아니요"
+					cofirmText="취소하기"
 				/>
 			)}
 		</div>
