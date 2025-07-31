@@ -1,0 +1,11 @@
+.newlyPost {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 16px;
+}
+
+@media (min-width: 1024px) {
+	.newlyPost {
+		grid-template-columns: 1fr 1fr 1fr;
+	}
+}
