@@ -23,7 +23,11 @@ const NoticePostCard = ({ notice, children }: NoticePostCardProps) => {
 			<span className={styles.category}>{notice?.shop?.item?.category}</span>
 			<h2 className={styles.shopName}>{notice?.shop?.item?.name}</h2>
 			<ul className={styles.JopPostCard}>
-				<li className={styles.imageUrl}>{notice?.shop?.item?.imageUrl}</li>
+				<li className={styles.imageUrl}>
+					<div className={styles.imageWrapper}>
+						<img src={notice.shop.item.imageUrl} alt={notice.shop.item.name} />
+					</div>
+				</li>
 				<div className={styles.responsiveDesign}>
 					<li className={styles.category}>시급</li>
 					<li className={styles.houlyPay}>
