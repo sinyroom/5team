@@ -2,8 +2,8 @@
 	border-radius: 12px;
 	overflow: hidden;
 	background: white;
-	padding: 0; /* 패딩 제거하고 내부 요소에서 padding 조절 */
-	box-shadow: 0 0 0 1px #eee; /* 은은한 테두리 느낌 */
+	padding: 0;
+	box-shadow: 0 0 0 1px #eee;
 }
 
 /* 테이블 */
@@ -34,29 +34,25 @@
 	border-bottom: 1px solid #eee;
 }
 
-/* 상태 뱃지 */
-.badge {
-	padding: 6px 12px;
-	border-radius: 16px;
-	font-size: 0.875rem;
-	font-weight: 500;
-	display: inline-block;
-	width: fit-content;
+/* 액션 버튼 그룹 */
+.actions {
+	display: flex;
+	gap: 8px;
 }
 
-.badgeBlue {
-	background-color: #d6eaff;
-	color: #0070f3;
+.refuse,
+.admit {
+	width: 92px;
+	height: 38px;
+	border-color: #ea3c12;
+	color: #ea3c12;
 }
 
-.badgeRed {
-	background-color: #ffe2e2;
-	color: #ff4d4f;
-}
-
-.badgeGreen {
-	background-color: #d4fbdc;
-	color: #13c96c;
+.admit {
+	width: 92px;
+	height: 38px;
+	border-color: #0080ff;
+	color: #0080ff;
 }
 
 /* 페이지네이션 */

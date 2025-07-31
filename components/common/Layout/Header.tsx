@@ -34,7 +34,7 @@ export default function Header() {
 			const existingType = localStorage.getItem('type');
 
 			if (existingType == null) {
-				const valueToStore = user.type;
+				const valueToStore = user?.type; // 서버 진입 시 발생한 오류 때문에 옵셔널로 설정해둠
 				localStorage.setItem('type', valueToStore);
 			}
 
