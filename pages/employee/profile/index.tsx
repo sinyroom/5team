@@ -115,9 +115,9 @@ export default function ProfilePage() {
 						<div className={styles.Title} id={styles.applyListTitle}>
 							신청 내역
 						</div>
-						{/* {applyList ? ( */}
-						<WorkTable />
-						{/* ) : (
+						{applyList ? (
+							<WorkTable />
+						) : (
 							<div className={styles.applyListContent}>
 								<div style={{ display: 'flex', justifyContent: 'center' }}>
 									아직 신청 내역이 없어요.
@@ -128,7 +128,7 @@ export default function ProfilePage() {
 									</BaseButton>
 								</div>
 							</div>
-						)} */}
+						)}
 					</div>
 				</>
 			) : (
