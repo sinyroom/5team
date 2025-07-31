@@ -13,8 +13,8 @@ import BtnStyles from '@/components/common/BaseButton/BaseButton.module.css';
 import { useUserContext } from '@/contexts/auth-context';
 import { getUser } from '@/api/users/getUser';
 import Confirm from '@/components/Modal/Confirm/Confirm';
-import useModal from '@/hooks/useModal';
 import Action from '@/components/Modal/Action/Action';
+import { applyNotice } from '@/api/applications/applyNotice';
 
 interface Props {
 	notice: Notice | null;
@@ -53,6 +53,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
 const PostDetailPage = ({ viewedNotices, notice, shop }: Props) => {
 	const [newlyNotices, setNewlyNotices] = useState(viewedNotices.items);
+	const [isClosed, setIsClosed] = useState(false);
 
 	// 신청 여부
 	const [isApplied, setIsApplied] = useState(false);
@@ -84,14 +85,14 @@ const PostDetailPage = ({ viewedNotices, notice, shop }: Props) => {
 				setIsConfirmOpen(true);
 				return;
 			}
-
 			if (isApplied) {
 				console.log('신청 취소 처리');
 				setIsApplied(false);
 				return;
 			}
 
-			console.log('신청 처리');
+			await applyNotice(shop.id, notice.id);
+			console.log('신청 처리 완료');
 			setIsApplied(true);
 		} catch (err) {
 			console.error('프로필 조회 실패', err);
@@ -108,7 +109,11 @@ const PostDetailPage = ({ viewedNotices, notice, shop }: Props) => {
 		<div>
 			<div>
 				<NoticePostCard notice={notice}>
-					{isApplied ? (
+					{isClosed ? (
+						<button className={`${styles.button} ${BtnStyles.gray}`} disabled>
+							신청 불가
+						</button>
+					) : isApplied ? (
 						<button className={`${styles.button} ${BtnStyles.white}`} onClick={handleCancleClick}>
 							취소하기
 						</button>
