@@ -55,7 +55,7 @@ export default function Header() {
 	}, [windowWidth]);
 
 	const handleClickLogin = () => {
-		router.push('../login');
+		router.push('/login');
 	};
 
 	const handleClickLogout = () => {
@@ -65,15 +65,15 @@ export default function Header() {
 	};
 
 	const handleClickSignup = () => {
-		router.push('../register');
+		router.push('/register');
 	};
 
 	const handleClickMyShop = () => {
-		router.push('./owner/store');
+		router.push('/owner/store');
 	};
 
 	const handleClickMyProfile = () => {
-		router.push('./employee/profile');
+		router.push('/employee/profile');
 	};
 
 	const handleClickLogoInHeader = () => {

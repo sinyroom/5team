@@ -1,6 +1,7 @@
 //hook
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { useUserContext } from '@/contexts/auth-context';
 
 //style
 import styles from './profile.module.css';
@@ -25,36 +26,31 @@ export default function ProfilePage() {
 	//const [applyList, setApplyList] = useState(); // 신청 내역 여부입니다. default: false.
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
-	const [existProfile, setExistProfile] = useState(true);
+	const [existProfile, setExistProfile] = useState(false);
+	const { user } = useUserContext();
 
-	/****************************************************** */
-	/* 테스트 환경 */
-	const currentUserId = '7d36a348-c505-4452-8f29-a6c1fa1d01c6'; // 실제 사용자 ID
-	const userToken =
-		'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3ZDM2YTM0OC1jNTA1LTQ0NTItOGYyOS1hNmMxZmExZDAxYzYiLCJpYXQiOjE3NTMzNDgzODJ9.G6VJdK55gx8jRPu-eAD0nEdFxCfmv4NRgdniJYffBUo'; // 실제 인증 토큰
-	/****************************************************** */
+	let currentUserId; // 실제 사용자 ID
+	let userToken; // 실제 인증 토큰
 
 	useEffect(() => {
 		//console.log('useEffect가 실행되었습니다!');
+		userToken = localStorage.getItem('token');
+
+		if (user != null) {
+			currentUserId = user.id;
+		}
 
 		const fetchUserData = async () => {
 			setLoading(true);
 			setError(null);
 			try {
 				// getUser 함수 호출
+				console.log(`userID : ${currentUserId}, userToken : ${userToken}`);
 				const res = await getUser(currentUserId, userToken);
-				//console.log(res.item);
-				setUserData(res.item);
 
-				if (userData.name == null) {
-					setExistProfile(false);
-				}
-
-				return {
-					props: {
-						userData,
-					},
-				};
+				const resitem = res.item;
+				console.log(resitem);
+				setUserData(resitem);
 			} catch (err) {
 				setError('사용자 정보를 가져오는데 실패했습니다.');
 				console.error(err);
@@ -64,6 +60,16 @@ export default function ProfilePage() {
 		};
 		fetchUserData();
 	}, []);
+
+	useEffect(() => {
+		console.log(`resItem : ${userData}`);
+
+		if (userData != null) {
+			setExistProfile(true);
+		} else {
+			setExistProfile(false);
+		}
+	}, [userData]);
 
 	const handleClickPost = () => {
 		router.push('./post');
