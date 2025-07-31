@@ -1,0 +1,84 @@
+/* 공통 스타일 */
+.button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	white-space: nowrap;
+	border-radius: 6px;
+	cursor: pointer;
+}
+
+.disabled {
+	background-color: var(--gray50);
+	color: var(--white);
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+/* === 색상 === */
+.red {
+	background-color: var(--primary);
+	color: var(--white);
+	border: 0;
+}
+
+.white {
+	background-color: var(--white);
+	color: var(--primary);
+	border: 1px solid var(--primary);
+}
+
+.gray {
+	background-color: var(--gray40);
+	color: var(--white);
+	border: 0;
+}
+
+/* === 크기 === */
+.small {
+	width: 82px;
+	height: 32px;
+	padding: 8px 12px;
+	font-size: 14px;
+	font-weight: 400;
+}
+
+.medium {
+	width: 108px;
+	height: 37px;
+	padding: 10px 20px;
+	font-size: 16px;
+	font-weight: 700;
+}
+
+.large {
+	width: 350px;
+	height: 48px;
+	padding: 14px 136px;
+	font-size: 18px;
+	font-weight: 700;
+}
+
+.noneSize {
+	font-size: 14px;
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
+/* 예외 스타일 - gray 계열은 크기별 오버라이드 */
+.grayMedium {
+	width: 95px;
+	height: 37px;
+	padding: 10px 20px;
+	font-size: 16px;
+	font-weight: 700;
+}
+
+.grayLarge {
+	width: 335px;
+	height: 48px;
+	padding: 14px 136px;
+	font-size: 18px;
+	font-weight: 700;
+}

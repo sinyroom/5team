@@ -1,0 +1,130 @@
+.Title {
+	font-weight: bold;
+	font-size: 28px;
+}
+
+.profileBlock {
+	padding-top: 60px;
+	padding-bottom: 60px;
+	padding-left: 238px;
+	padding-right: 245px;
+	display: flex;
+	justify-content: space-between;
+	gap: 180px;
+}
+
+.profileDetailed {
+	width: 665px;
+	height: 256px;
+	display: flex;
+	justify-content: space-between;
+	padding: 32px;
+	background-color: var(--red10);
+	border-radius: 12px;
+}
+
+#name {
+	color: var(--primary);
+	font-weight: bold;
+	font-size: 16px;
+}
+
+#profileName {
+	font-weight: bold;
+	color: var(--black);
+	font-size: 28px;
+}
+
+#phoneNumber {
+	color: var(--gray50);
+	display: flex;
+	gap: 6px;
+}
+
+#preferLocation {
+	color: var(--gray50);
+	display: flex;
+	gap: 6px;
+}
+
+.applyListBlock {
+	padding: 60px 238px 120px 238px;
+}
+
+.applyListContent {
+	width: 100%;
+	height: 217px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding-top: 60px;
+	padding-bottom: 60px;
+	border: solid;
+	border-width: 1px;
+	border-radius: 12px;
+	border-color: var(--gray20);
+	gap: 24px;
+}
+
+.profileDetiledInside {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: 28px;
+}
+
+.Title#applyListTitle {
+	margin-bottom: 32px;
+}
+
+@media screen and (max-width: 1023px) {
+	.profileBlock {
+		flex-direction: column;
+		padding: 60px 32px;
+		gap: 24px;
+	}
+	.profileDetailed {
+		width: 100%;
+	}
+
+	.applyListBlock {
+		padding: 60px 32px;
+	}
+}
+
+@media screen and (max-width: 767px) {
+	.profileBlock {
+		padding: 40px 12px;
+	}
+
+	.Title {
+		font-size: 20px;
+	}
+
+	#name {
+		font-size: 14px;
+	}
+
+	#profileName {
+		font-size: 24px;
+	}
+
+	#phoneNumber {
+		font-size: 14px;
+	}
+
+	#preferLocation {
+		font-size: 14px;
+	}
+
+	.profileDetiledInside {
+		gap: 20px;
+	}
+	.applyListBlock {
+		padding: 80px 12px;
+	}
+
+	.Title#applyListTitle {
+		margin-bottom: 16px;
+	}
+}

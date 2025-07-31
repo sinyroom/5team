@@ -1,0 +1,136 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding: 40px 12px;
+}
+
+.JopPostCard {
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	padding: 20px;
+	gap: 8px;
+	border-radius: 20px;
+	background-color: #ffffff;
+	border: 1px solid #e5e4e7;
+}
+
+.imageUrl {
+	width: 312px;
+	height: 177px;
+	border-radius: 12px;
+}
+
+.shopName {
+	font-size: 20px;
+	font-weight: 700;
+	color: #111322;
+}
+
+.category {
+	font-size: 14px;
+	font-weight: 700;
+	color: #ea3c12;
+}
+
+.houlyPay {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	font-size: 24px;
+	font-weight: 700;
+	color: #111322;
+}
+
+.houlyPayBadge {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 2px;
+	padding: 4px 8px;
+	background-color: #ea3c12;
+	border-radius: 20px;
+	color: #ffffff;
+	font-size: 12px;
+	line-height: 16px;
+	font-weight: 400;
+}
+
+.startsAt {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 14px;
+	font-weight: 400;
+	color: #7d7986;
+}
+
+.address1 {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 14px;
+	font-weight: 400;
+	color: #7d7986;
+}
+
+.description {
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 22px;
+	color: #000000;
+}
+
+.descriptionContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	border-radius: 12px;
+	background-color: #f2f2f3;
+	padding: 20px;
+}
+
+.noticeLabel {
+	font-size: 14px;
+	font-weight: 700;
+	color: #111322;
+}
+
+.noticeDescription {
+	font-size: 14px;
+	font-weight: 400;
+	color: #111322;
+	line-height: 22px;
+}
+
+.editButton {
+	margin-top: 16px;
+	display: flex;
+	gap: 8px;
+	height: 38px;
+}
+
+.responsiveDesign {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: 12px;
+}
+
+@media (min-width: 1024px) {
+	.JopPostCard {
+		flex-direction: row;
+
+		gap: 8px;
+		height: 308px;
+	}
+
+	.imageUrl {
+		width: 539px;
+	}
+
+	.responsiveDesign {
+		width: 346px;
+	}
+}

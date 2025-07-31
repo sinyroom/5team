@@ -1,0 +1,19 @@
+.unitInputContainer {
+	position: relative;
+	width: 100%;
+}
+
+.withUnitPadding {
+	padding-right: 50px;
+}
+
+.unitText {
+	position: absolute;
+	right: 20px;
+	bottom: 16px;
+	color: var(--black);
+	font-size: 16px;
+	white-space: nowrap;
+	pointer-events: none;
+	line-height: 26px;
+}

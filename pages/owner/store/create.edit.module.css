@@ -1,0 +1,64 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.title {
+	font-size: 20px;
+	font-weight: 700;
+	color: var(--black);
+}
+
+.form {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+}
+
+.formSection {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.button {
+	width: 100%;
+	height: 48px;
+	align-self: center;
+}
+
+@media screen and (min-width: 768px) {
+	.form {
+		gap: 32px;
+	}
+
+	.formSection {
+		gap: 24px;
+	}
+
+	.button {
+		width: 312px;
+	}
+
+	.formRow {
+		display: flex;
+		gap: 20px;
+	}
+
+	.formRow > * {
+		flex: 1;
+	}
+}
+
+.imageToDelete {
+	position: relative;
+	width: 100%;
+	height: 30vh;
+	max-width: 483px;
+	max-height: 276px;
+}
+
+.imageLabel {
+	font-size: 16px;
+}

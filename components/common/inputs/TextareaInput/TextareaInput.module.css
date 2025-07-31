@@ -1,0 +1,24 @@
+.textareaInputContainer {
+	width: 100%;
+	position: relative;
+}
+
+.textarea {
+	width: 100%;
+	padding: 16px 20px;
+	border: 1px solid var(--gray30);
+	border-radius: 6px;
+	font-size: 16px;
+	line-height: 26px;
+	resize: vertical;
+}
+
+.textarea:focus {
+	outline: none;
+	border-color: #0080ff;
+	box-shadow: 0 0 0 3px #cce6ff;
+}
+
+.errorBorder {
+	border-color: var(--red40);
+}

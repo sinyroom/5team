@@ -1,0 +1,4 @@
+.main {
+	margin-top: var(--headerHeight);
+	margin-bottom: var(--footerHeight);
+}
