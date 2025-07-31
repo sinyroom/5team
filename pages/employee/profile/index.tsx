@@ -72,7 +72,7 @@ export default function ProfilePage() {
 	}, [userData]);
 
 	const handleClickPost = () => {
-		router.push('./post');
+		router.push('./posts');
 	};
 
 	const handleClickEdit = () => {
