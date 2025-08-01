@@ -35,7 +35,7 @@ interface DetailFilterState {
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
-	const address = '서울시 마포구'; // 로그인 안했을 때 기본값
+	const address = '서울시 용산구'; // 로그인 안했을 때 기본값
 
 	const personalNotices = await fetchNoticeList({
 		offset: 0,
@@ -86,6 +86,13 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 	// 로컬스토리지에서 주소값 가져와서 맞춤공고 렌더링
 	useEffect(() => {
 		const token = localStorage.getItem('token');
+		const type = localStorage.getItem('type');
+
+		if (type === 'employer') {
+			setCustomNotices(personalNotices.items);
+			return;
+		}
+
 		if (!token || !user) return;
 
 		const fetchUserAddress = async () => {
