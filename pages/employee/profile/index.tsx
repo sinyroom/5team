@@ -11,7 +11,6 @@ import PathIcon from '@/assets/img/pathIcon.svg';
 import SmartPhoneIcon from '@/assets/img/smartPhoneIcon.svg';
 
 //Components
-
 import { BaseButton } from '@/components/common/BaseButton/index';
 
 //api
@@ -37,7 +36,7 @@ export default function ProfilePage() {
 		//console.log('useEffect가 실행되었습니다!');
 		userToken = localStorage.getItem('token');
 
-		if (user != null) {
+		if (user) {
 			currentUserId = user.id;
 		}
 
@@ -46,11 +45,11 @@ export default function ProfilePage() {
 			setError(null);
 			try {
 				// getUser 함수 호출
-				console.log(`userID : ${currentUserId}, userToken : ${userToken}`);
+				//	console.log(`userID : ${currentUserId}, userToken : ${userToken}`); 토큰, 유저 아이디 값 확인
 				const res = await getUser(currentUserId, userToken);
 
 				const resitem = res.item;
-				console.log(resitem);
+				//console.log(resitem); 값 잘 왔는지 확인. 객체 나오면 성공
 				setUserData(resitem);
 			} catch (err) {
 				setError('사용자 정보를 가져오는데 실패했습니다.');
@@ -63,8 +62,7 @@ export default function ProfilePage() {
 	}, []);
 
 	useEffect(() => {
-		console.log(`resItem : ${userData}`);
-
+		//console.log(`resItem : ${userData}`);
 		if (userData != null) {
 			setExistProfile(true);
 		} else {
@@ -73,15 +71,24 @@ export default function ProfilePage() {
 	}, [userData]);
 
 	const handleClickPost = () => {
-		router.push('./posts');
+		router.push('/posts');
 	};
 
 	const handleClickEdit = () => {
 		router.push('./profile/create');
 	};
 
+	if (loading) {
+		return (
+			<div className={styles.applyListContent} style={{ paddingTop: '100px' }}>
+				<div className={styles.Title} style={{ display: 'flex', justifyContent: 'center' }}>
+					불러오는 중 입니다.
+				</div>
+			</div>
+		);
+	}
 	const applyList = userData?.shop || false;
-
+	console.log(applyList);
 	return (
 		<>
 			{existProfile ? (
@@ -131,7 +138,7 @@ export default function ProfilePage() {
 									아직 신청 내역이 없어요.
 								</div>
 								<div style={{ display: 'flex', justifyContent: 'center' }}>
-									<BaseButton size="large" onClick={handleClickPost} color="gray">
+									<BaseButton size="large" onClick={handleClickPost} color="red">
 										공고 보러가기
 									</BaseButton>
 								</div>
@@ -150,7 +157,7 @@ export default function ProfilePage() {
 								내 프로필을 등록하고 원하는 가게에 지원해 보세요.
 							</div>
 							<div style={{ display: 'flex', justifyContent: 'center' }}>
-								<BaseButton size="large" onClick={handleClickEdit} color="gray">
+								<BaseButton size="large" onClick={handleClickEdit} color="red">
 									내 프로필 등록하기
 								</BaseButton>
 							</div>

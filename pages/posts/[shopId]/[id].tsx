@@ -23,6 +23,8 @@ import { useUserContext } from '@/contexts/auth-context';
 import { getNoticeById } from '@/api/applications/getNoticeId';
 import { isClosed } from '@/utils/closedNotice';
 
+import { getRecentShops, saveRecentShops } from './recentShopList'; //Helper Func - 최근 방문 공고 로컬스토리지 저장
+
 const PostDetailPage = () => {
 	const router = useRouter();
 	const { user } = useUserContext();
@@ -39,6 +41,8 @@ const PostDetailPage = () => {
 	const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 	const [isActionOpen, setIsActionOpen] = useState(false);
 	const [alertMessage, setAlertMessage] = useState('');
+
+	const [recentShops, setRecentShops] = useState([]);
 
 	// 최초 렌더링
 	useEffect(() => {
@@ -74,6 +78,10 @@ const PostDetailPage = () => {
 		};
 
 		fetchData();
+
+		if (shopId) {
+			saveRecentShops(shopId);
+		}
 	}, [shopId, noticeId]);
 
 	// 로컬스토리지 확인해서 사장님이면 리다이렉트 처리
@@ -107,6 +115,12 @@ const PostDetailPage = () => {
 
 		checkIfAlreadyApplied();
 	}, [user, shopId, noticeId]);
+
+	useEffect(() => {
+		const shopIds = getRecentShops();
+		setRecentShops(shopIds);
+		console.log(`recentShops => ${recentShops}`);
+	}, []);
 
 	if (isLoading) return null;
 	if (!notice || !shop) return <p>존재하지 않는 공고입니다.</p>;
