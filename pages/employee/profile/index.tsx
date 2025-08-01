@@ -13,6 +13,7 @@ import SmartPhoneIcon from '@/assets/img/smartPhoneIcon.svg';
 
 //Components
 import { BaseButton } from '@/components/common/BaseButton/index.tsx';
+import { WorkTable } from '@/components/common/Table/index.tsx';
 
 //api
 import { getUser } from '@/api/users/getUser.ts';
@@ -123,7 +124,7 @@ export default function ProfilePage() {
 							신청 내역
 						</div>
 						{applyList ? (
-							<div>테이블</div>
+							<>테이블</>
 						) : (
 							<div className={styles.applyListContent}>
 								<div style={{ display: 'flex', justifyContent: 'center' }}>

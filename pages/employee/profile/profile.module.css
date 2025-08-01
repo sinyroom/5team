@@ -76,7 +76,7 @@
 }
 
 .Title#myProfile {
-	width: 112px;
+	min-width: 112px;
 	margin-right: 100px;
 }
 
