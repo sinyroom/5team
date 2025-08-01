@@ -9,6 +9,8 @@ import { isValidEmail, isValidPassword } from '@/utils/validators';
 import { TextInput } from '@/components/common/inputs/TextInput';
 import { BaseButton } from '@/components/common/BaseButton';
 import { useUserContext } from '@/contexts/auth-context';
+import useModal from '@/hooks/useModal';
+import Alert from '@/components/Modal/Alert/Alert';
 
 export default function Login() {
 	const router = useRouter();
@@ -18,6 +20,7 @@ export default function Login() {
 	const [passwordError, setPasswordError] = useState('');
 	const [loading, setLoading] = useState(false);
 	const { setUser } = useUserContext();
+	const pwModal = useModal();
 
 	const validateForm = () => {
 		let isValid = true;
@@ -81,8 +84,7 @@ export default function Login() {
 				const status = error.response?.status;
 
 				if (status === 404) {
-					alert('이메일 또는 비밀번호가 틀렸습니다.');
-					console.log(error.response?.data);
+					pwModal.openModal();
 				} else {
 					alert('로그인 중 오류가 발생했습니다.');
 				}
@@ -95,6 +97,10 @@ export default function Login() {
 	};
 	return (
 		<div className={styles.container}>
+			{pwModal.renderModal(Alert, {
+				message: '비밀번호가 일치하지 않습니다.',
+				onConfirm: pwModal.closeModal,
+			})}
 			<div className={styles.imgcontainer}>
 				<Logo />
 			</div>
