@@ -189,10 +189,13 @@ const PostDetailPage = () => {
 					)}
 				</NoticePostCard>
 			</div>
-			<div className={styles.newlyPost}>
-				{newlyNotices.map(({ item }: { item: Notice }, idx: number) => (
-					<SmallNoticePoastCard key={idx} notice={item} />
-				))}
+			<div className={styles.newlyPostWrapper}>
+				<span className={styles.title}>최근에 본 공고</span>
+				<div className={styles.newlyPost}>
+					{newlyNotices.map(({ item }: { item: Notice }, idx: number) => (
+						<SmallNoticePoastCard key={idx} notice={item} />
+					))}
+				</div>
 			</div>
 
 			{isConfirmOpen && (
