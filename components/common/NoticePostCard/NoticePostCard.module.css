@@ -139,6 +139,16 @@
 	gap: 12px;
 }
 
+@media (min-width: 768px) {
+	.shopName {
+		font-size: 28px;
+	}
+
+	.category {
+		font-size: 16px;
+	}
+}
+
 @media (min-width: 1024px) {
 	.JopPostCard {
 		flex-direction: row;

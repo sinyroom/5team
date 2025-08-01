@@ -7,9 +7,9 @@ import styles from './posts.module.css';
 
 import { Notice, GetNoticeResponse } from '@/types/userNotice';
 import { fetchNoticeList, NoticeQueryParams } from '@/api/users/getNotice';
+import { getUser } from '@/api/users/getUser';
 import SmallNoticePoastCard from '@/components/common/NoticePostCard/SmallNoticePoastCard';
 import DetailFilter from '@/components/UI/DetailFilter';
-import { getUser } from '@/api/users/getUser';
 import { formatToRFC3339 } from '@/utils/dayformatting';
 import { useUserContext } from '@/contexts/auth-context';
 
