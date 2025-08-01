@@ -1,0 +1,59 @@
+### 회원가입 요청
+POST https://bootcamp-api.codeit.kr/api/16-05/the-julge/users
+Content-Type: application/json
+
+{
+  "email": "text7@test.com",
+  "password": "12345678",
+  "type": "employer"
+}
+
+### 로그인 요청
+POST https://bootcamp-api.codeit.kr/api/16-05/the-julge/token
+Content-Type: application/json
+
+{
+  "email": "text7@test.com",
+  "password": "12345678"
+}
+
+### 가게 등록 (POST /shops)
+POST http://bootcamp-api.codeit.kr/api/16-05/the-julge/shops
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4ZjQzZTFjYS1mZjA1LTQ1YzItYWQ1ZS05NWNiODJlNWQwMzAiLCJpYXQiOjE3NTM5NTYyNzN9.5NVIe07BKvdVGIxxnu88ROA3sARNdXaJ1_3lmBbc9Hk
+Content-Type: application/json
+
+{
+  "name": "족발집",
+  "category": "분식",
+  "address1": "서울시 마포구",
+  "address2": "상수동 123-45",
+  "description": "족발 맛집입니다 족발 맛집입니다족발 맛집입니다족발 맛집입니다족발 맛집입니다족발 맛집입니다족발 맛집입니다족발 맛집입니다족발 맛집입니다족발 맛집입니다족발 맛집입니다족발 맛집입니다족발 맛집입니다족발 맛집입니다족발 맛집입니다족발 맛집입니다족발 맛집입니다족발 맛집입니다족발 맛집입니다족발 맛집입니다족발 맛집입니다족발 맛집입니다족발 맛집입니다족발 맛집입니다",
+  "imageUrl": "https://picsum.photos/200/300",
+  "originalHourlyPay": 10000
+}
+
+### 공고 등록 (POST /shops/{shop_id}/notices)
+POST http://bootcamp-api.codeit.kr/api/16-05/the-julge/shops/ac279310-c031-427c-82c5-f5cd417cfdfa/notices
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4ZjQzZTFjYS1mZjA1LTQ1YzItYWQ1ZS05NWNiODJlNWQwMzAiLCJpYXQiOjE3NTM5NTYyNzN9.5NVIe07BKvdVGIxxnu88ROA3sARNdXaJ1_3lmBbc9Hk
+Content-Type: application/json
+
+{
+  "hourlyPay": 20000,
+  "startsAt": "2025-07-31T18:07:00Z",
+  "workhour": 4,
+  "description": "공고 등록 테스트공고 등록 테스트공고 등록 테스트공고 등록 테스트공고 등록 테스트공고 등록 테스트공고 등록 테스트공고 등록 테스트공고 등록 테스트공고 등록 테스트공고 등록 테스트공고 등록 테스트공고 등록 테스트공고 등록 테스트공고 등록 테스트공고 등록 테스트공고 등록 테스트공고 등록 테스트공고 등록 테스트공고 등록 테스트"
+}
+
+### 가게 정보 조회 (GET /shops/{shop_id}
+GET https://bootcamp-api.codeit.kr/api/16-05/the-julge/shops/ac279310-c031-427c-82c5-f5cd417cfdfa
+Accept: application/json
+
+### 내 정보 조회 (GET /users/{user_id}
+GET https://bootcamp-api.codeit.kr/api/16-05/the-julge/users/8f43e1ca-ff05-45c2-ad5e-95cb82e5d030
+Accept: application/json
+
+### 내 가게 공고 조회 (GET /shops/{shop_id}/notices/{}
+GET https://bootcamp-api.codeit.kr/api/16-05/the-julge/shops/ac279310-c031-427c-82c5-f5cd417cfdfa/notices/72df9fed-4710-473d-a9ed-51d0948809e6
+Accept: application/json
+
+### 내 가게 특정 공고 조회 id : 0572fcd5-c2f3-43bf-8294-c957bb4520f8

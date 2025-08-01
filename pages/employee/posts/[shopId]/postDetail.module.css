@@ -1,0 +1,36 @@
+.noticePost {
+	padding: 0;
+}
+
+.newlyPost {
+	padding: 40px 12px;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 16px;
+}
+
+.button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	border-radius: 6px;
+	font-weight: 700;
+}
+
+@media (min-width: 768px) {
+	.newlyPost {
+		padding: 60px 32px;
+	}
+}
+
+@media (min-width: 1024px) {
+	.container {
+		width: 963px;
+		margin: 0 auto;
+	}
+
+	.newlyPost {
+		grid-template-columns: 1fr 1fr 1fr;
+	}
+}

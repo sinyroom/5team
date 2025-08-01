@@ -7,9 +7,6 @@ import { DROPDOWN_OPTIONS_MAP } from '@/constants/DropdownOptions';
 import { BaseInput } from '../_base/BaseInput';
 import { InputCore } from '../_base/InputCore';
 
-import ArrowDown from '@/assets/img/icon/arrowdown.svg';
-import ArrowUp from '@/assets/img/icon/arrowup.svg';
-
 interface DropdownInputProps {
 	id: string;
 	label: string;

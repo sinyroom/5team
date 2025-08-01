@@ -1,0 +1,82 @@
+.container {
+	border-radius: 12px;
+	overflow: hidden;
+	background: white;
+	padding: 0;
+	box-shadow: 0 0 0 1px #eee;
+}
+
+/* 테이블 */
+.table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.table thead tr th:first-child {
+	border-top-left-radius: 12px;
+}
+.table thead tr th:last-child {
+	border-top-right-radius: 12px;
+}
+
+.table th {
+	background-color: #ffebe7;
+	text-align: left;
+	padding: 16px;
+	font-weight: 600;
+	font-size: 0.95rem;
+	border-bottom: 1px solid #ddd;
+}
+
+.table td {
+	padding: 16px;
+	font-size: 0.9rem;
+	border-bottom: 1px solid #eee;
+}
+
+/* 액션 버튼 그룹 */
+.actions {
+	display: flex;
+	gap: 8px;
+}
+
+.refuse,
+.admit {
+	width: 92px;
+	height: 38px;
+	border-color: #ea3c12;
+	color: #ea3c12;
+}
+
+.admit {
+	width: 92px;
+	height: 38px;
+	border-color: #0080ff;
+	color: #0080ff;
+}
+
+/* 페이지네이션 */
+.pagination {
+	display: flex;
+	justify-content: center;
+	gap: 0.5rem;
+	padding: 1rem;
+}
+
+.pagination button {
+	padding: 0.4rem 0.8rem;
+	border: none;
+	border-radius: 6px;
+	cursor: pointer;
+	transition: background-color 0.2s;
+}
+
+.pagination button.active {
+	background-color: #ff8d72;
+	color: white;
+	font-weight: 600;
+}
+
+.pagination button:hover {
+	background-color: #ffd5cc;
+}
