@@ -1,4 +1,3 @@
-import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -12,7 +11,7 @@ import { applyNotice } from '@/api/applications/applyNotice';
 import { updateApplication } from '@/api/applications/updateApplication';
 import { getUser } from '@/api/users/getUser';
 
-import { GetNoticeResponse, Notice } from '@/types/userNotice';
+import { Notice } from '@/types/userNotice';
 import { Shop } from '@/types';
 
 import SmallNoticePoastCard from '@/components/common/NoticePostCard/SmallNoticePoastCard';
@@ -22,6 +21,7 @@ import Action from '@/components/Modal/Action/Action';
 
 import { useUserContext } from '@/contexts/auth-context';
 import { getNoticeById } from '@/api/applications/getNoticeId';
+import { isClosed } from '@/utils/closedNotice';
 
 const PostDetailPage = () => {
 	const router = useRouter();
@@ -30,15 +30,12 @@ const PostDetailPage = () => {
 
 	const [notice, setNotice] = useState<Notice | null>(null);
 	const [shop, setShop] = useState<Shop | null>(null);
-	const [newlyNotices, setNewlyNotices] = useState<GetNoticeResponse['items']>([]);
+	const [newlyNotices, setNewlyNotices] = useState<Notice[]>([]);
 	const [applicationId, setApplicationId] = useState<string | null>(null);
+
 	const [isLoading, setIsLoading] = useState(true);
-
-	// 버튼 상태
 	const [isApplied, setIsApplied] = useState(false);
-	const [isClosed, setIsClosed] = useState(false);
 
-	// 모달 관련
 	const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 	const [isActionOpen, setIsActionOpen] = useState(false);
 	const [alertMessage, setAlertMessage] = useState('');
@@ -61,16 +58,13 @@ const PostDetailPage = () => {
 					shopItem = shopRes.item;
 				}
 
-				const listRes: GetNoticeResponse = await fetchNoticeList({ offset: 0, limit: 6 });
+				const listRes = await fetchNoticeList({ offset: 0, limit: 6 });
 
-				if (!noticeItem || !shopItem) {
-					throw new Error('데이터 없음');
-				}
+				if (!noticeItem || !shopItem) throw new Error('데이터 없음');
 
-				setNotice(noticeItem);
+				setNotice({ ...noticeItem, closed: isClosed(noticeItem) });
 				setShop(shopItem);
-				setIsClosed(noticeItem.closed);
-				setNewlyNotices(listRes.items);
+				setNewlyNotices(listRes.items.map(({ item }) => ({ ...item, closed: isClosed(item) })));
 			} catch (err) {
 				setAlertMessage('페이지 정보를 불러오지 못했습니다.');
 				setIsConfirmOpen(true);
@@ -82,15 +76,14 @@ const PostDetailPage = () => {
 		fetchData();
 	}, [shopId, noticeId]);
 
-	// 로컬스토리지 확인해서 리다이렉트 처리
+	// 로컬스토리지 확인해서 사장님이면 리다이렉트 처리
 	useEffect(() => {
 		if (!shop || !notice) return;
 		if (typeof window === 'undefined') return;
 
-		const token = localStorage.getItem('token');
 		const type = localStorage.getItem('type');
-		if (token && type === 'employer') {
-			router.replace(`/owner/recruit/${shop.id}/${notice.id}`);
+		if (type === 'employer') {
+			router.push(`/owner/recruit/${shop.id}/${notice.id}`);
 		}
 	}, [shop, notice, router]);
 
@@ -98,9 +91,6 @@ const PostDetailPage = () => {
 	useEffect(() => {
 		const checkIfAlreadyApplied = async () => {
 			if (!user || !shopId || !noticeId) return;
-
-			const token = localStorage.getItem('token');
-			if (!token) return;
 
 			try {
 				const res = await getNoticeById(shopId as string, noticeId as string);
@@ -122,15 +112,18 @@ const PostDetailPage = () => {
 	if (!notice || !shop) return <p>존재하지 않는 공고입니다.</p>;
 
 	const handleApplyClick = async () => {
-		const token = localStorage.getItem('token');
-		if (!token) {
+		if (!user) {
 			setAlertMessage('로그인이 필요합니다');
 			setIsConfirmOpen(true);
 			return;
 		}
 
 		try {
-			const profileRes = await getUser(user!.id, token);
+			const type = localStorage.getItem('type');
+			const token = localStorage.getItem('token');
+			if (!token || !type) return;
+
+			const profileRes = await getUser(user.id, token);
 			const { name, phone, address, bio } = profileRes.item;
 
 			if (!name || !phone || !address || !bio) {
@@ -174,7 +167,7 @@ const PostDetailPage = () => {
 		<div className={styles.container}>
 			<div>
 				<NoticePostCard notice={notice}>
-					{isClosed ? (
+					{notice.closed ? (
 						<button className={`${styles.button} ${btnStyles.gray}`} disabled>
 							신청 불가
 						</button>
@@ -192,7 +185,7 @@ const PostDetailPage = () => {
 			<div className={styles.newlyPostWrapper}>
 				<span className={styles.title}>최근에 본 공고</span>
 				<div className={styles.newlyPost}>
-					{newlyNotices.map(({ item }: { item: Notice }, idx: number) => (
+					{newlyNotices.map((item, idx) => (
 						<SmallNoticePoastCard key={idx} notice={item} />
 					))}
 				</div>
