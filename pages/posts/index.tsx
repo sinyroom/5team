@@ -11,6 +11,7 @@ import { getUser } from '@/api/users/getUser';
 import SmallNoticePoastCard from '@/components/common/NoticePostCard/SmallNoticePoastCard';
 import DetailFilter from '@/components/UI/DetailFilter';
 import { formatToRFC3339 } from '@/utils/dayformatting';
+import { isClosed } from '@/utils/closedNotice';
 import { useUserContext } from '@/contexts/auth-context';
 
 const PERSONAL_NOTICE_LIMIT = 3;
@@ -145,10 +146,6 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 		fetchNotice();
 	}, [offset, sortOption, detailFilterState, searchQuery]);
 
-	// const handlePageClick = (page: number) => {
-	// 	setOffset((page - 1) * NOTICE_LIMIT);
-	// };
-
 	return (
 		<>
 			{!searchQuery && (
@@ -157,9 +154,11 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 						<div className={styles.personalPostWrapper}>
 							<p className={styles.title}>맞춤 공고</p>
 							<div className={styles.personalPost}>
-								{customNotices.map(({ item }: { item: Notice }, idx: number) => (
-									<SmallNoticePoastCard key={idx} notice={item} />
-								))}
+								{customNotices
+									.filter(({ item }: { item: Notice }) => !isClosed(item))
+									.map(({ item }: { item: Notice }, idx: number) => (
+										<SmallNoticePoastCard key={idx} notice={item} />
+									))}
 							</div>
 						</div>
 					</div>
@@ -227,9 +226,10 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 						</div>
 					</div>
 					<div className={styles.allPost}>
-						{notices.map(({ item }: { item: Notice }, idx: number) => (
-							<SmallNoticePoastCard key={idx} notice={item} />
-						))}
+						{notices.map(({ item }: { item: Notice }, idx: number) => {
+							const closed = isClosed(item);
+							return <SmallNoticePoastCard key={idx} notice={{ ...item, closed }} />;
+						})}
 					</div>
 
 					<div className={styles.pagination}>
