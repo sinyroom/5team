@@ -11,6 +11,7 @@ import PathIcon from '@/assets/img/pathIcon.svg';
 import SmartPhoneIcon from '@/assets/img/smartPhoneIcon.svg';
 
 //Components
+
 import { BaseButton } from '@/components/common/BaseButton/index';
 
 //api
@@ -72,7 +73,7 @@ export default function ProfilePage() {
 	}, [userData]);
 
 	const handleClickPost = () => {
-		router.push('./post');
+		router.push('./posts');
 	};
 
 	const handleClickEdit = () => {
