@@ -29,6 +29,10 @@
 	font-weight: 700;
 }
 
+.button:disabled {
+	cursor: not-allowed;
+}
+
 @media (min-width: 768px) {
 	.newlyPostWrapper {
 		gap: 32px;
