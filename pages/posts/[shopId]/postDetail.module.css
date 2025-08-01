@@ -2,8 +2,19 @@
 	padding: 0;
 }
 
-.newlyPost {
+.title {
+	font-size: 20px;
+	font-weight: 700;
+}
+
+.newlyPostWrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
 	padding: 40px 12px;
+}
+
+.newlyPost {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	gap: 16px;
@@ -19,8 +30,13 @@
 }
 
 @media (min-width: 768px) {
-	.newlyPost {
+	.newlyPostWrapper {
+		gap: 32px;
 		padding: 60px 32px;
+	}
+
+	.title {
+		font-size: 28px;
 	}
 }
 
@@ -28,6 +44,10 @@
 	.container {
 		width: 963px;
 		margin: 0 auto;
+	}
+
+	.newlyPostWrapper {
+		padding: 60px 32px;
 	}
 
 	.newlyPost {

@@ -1,6 +1,6 @@
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import styles from './postDetail.module.css';
 import btnStyles from '@/components/common/BaseButton/BaseButton.module.css';
@@ -21,50 +21,18 @@ import Confirm from '@/components/Modal/Confirm/Confirm';
 import Action from '@/components/Modal/Action/Action';
 
 import { useUserContext } from '@/contexts/auth-context';
+import { getNoticeById } from '@/api/applications/getNoticeId';
 
-interface Props {
-	notice: Notice;
-	shop: Shop;
-	viewedNotices: GetNoticeResponse;
-}
+const PostDetailPage = () => {
+	const router = useRouter();
+	const { user } = useUserContext();
+	const { shopId, id: noticeId } = router.query;
 
-export const getServerSideProps: GetServerSideProps = async context => {
-	const { shopId, id: noticeId } = context.params!;
-	try {
-		const res = await getNoticeId(shopId as string, noticeId as string);
-		const notice = res.item;
-
-		let shop: Shop;
-		const viewedNotices = await fetchNoticeList({
-			offset: 0,
-			limit: 6,
-		});
-
-		if (notice?.shop?.item) {
-			shop = notice.shop.item;
-		} else {
-			const shopRes = await getShopById(shopId as string);
-			if (!shopRes.item) throw new Error('Shop not found');
-			shop = shopRes.item;
-		}
-		if (!notice || !shop) {
-			return { notFound: true };
-		}
-		return {
-			props: {
-				notice,
-				shop,
-				viewedNotices,
-			},
-		};
-	} catch (error) {
-		return { props: { notice: null } };
-	}
-};
-
-const PostDetailPage = ({ viewedNotices, notice, shop }: Props) => {
-	const [newlyNotices, setNewlyNotices] = useState(viewedNotices.items);
+	const [notice, setNotice] = useState<Notice | null>(null);
+	const [shop, setShop] = useState<Shop | null>(null);
+	const [newlyNotices, setNewlyNotices] = useState<GetNoticeResponse['items']>([]);
 	const [applicationId, setApplicationId] = useState<string | null>(null);
+	const [isLoading, setIsLoading] = useState(true);
 
 	// 버튼 상태
 	const [isApplied, setIsApplied] = useState(false);
@@ -75,9 +43,82 @@ const PostDetailPage = ({ viewedNotices, notice, shop }: Props) => {
 	const [isActionOpen, setIsActionOpen] = useState(false);
 	const [alertMessage, setAlertMessage] = useState('');
 
-	const router = useRouter();
-	const { user } = useUserContext();
+	// 최초 렌더링
+	useEffect(() => {
+		if (!shopId || !noticeId) return;
 
+		const fetchData = async () => {
+			try {
+				const noticeRes = await getNoticeId(shopId as string, noticeId as string);
+				const noticeItem = noticeRes.item;
+
+				let shopItem: Shop;
+				if (noticeItem?.shop?.item) {
+					shopItem = noticeItem.shop.item;
+				} else {
+					const shopRes = await getShopById(shopId as string);
+					if (!shopRes.item) throw new Error('Shop not found');
+					shopItem = shopRes.item;
+				}
+
+				const listRes: GetNoticeResponse = await fetchNoticeList({ offset: 0, limit: 6 });
+
+				if (!noticeItem || !shopItem) {
+					throw new Error('데이터 없음');
+				}
+
+				setNotice(noticeItem);
+				setShop(shopItem);
+				setIsClosed(noticeItem.closed);
+				setNewlyNotices(listRes.items);
+			} catch (err) {
+				setAlertMessage('페이지 정보를 불러오지 못했습니다.');
+				setIsConfirmOpen(true);
+			} finally {
+				setIsLoading(false);
+			}
+		};
+
+		fetchData();
+	}, [shopId, noticeId]);
+
+	// 로컬스토리지 확인해서 리다이렉트 처리
+	useEffect(() => {
+		if (!shop || !notice) return;
+		if (typeof window === 'undefined') return;
+
+		const token = localStorage.getItem('token');
+		const type = localStorage.getItem('type');
+		if (token && type === 'employer') {
+			router.replace(`/owner/recruit/${shop.id}/${notice.id}`);
+		}
+	}, [shop, notice, router]);
+
+	// 기존 지원 여부 기록
+	useEffect(() => {
+		const checkIfAlreadyApplied = async () => {
+			if (!user || !shopId || !noticeId) return;
+
+			const token = localStorage.getItem('token');
+			if (!token) return;
+
+			try {
+				const res = await getNoticeById(shopId as string, noticeId as string);
+				const app = res.item.currentUserApplication;
+
+				if (app?.item) {
+					setIsApplied(true);
+					setApplicationId(app.item.id);
+				}
+			} catch (err) {
+				console.error('지원 여부 확인 실패', err);
+			}
+		};
+
+		checkIfAlreadyApplied();
+	}, [user, shopId, noticeId]);
+
+	if (isLoading) return null;
 	if (!notice || !shop) return <p>존재하지 않는 공고입니다.</p>;
 
 	const handleApplyClick = async () => {
@@ -106,7 +147,7 @@ const PostDetailPage = ({ viewedNotices, notice, shop }: Props) => {
 				setIsApplied(true);
 			}
 		} catch (err) {
-			setAlertMessage('프로필 정보를 불러오지 못했습니다.');
+			setAlertMessage('프로필 정보를 불러오지 못했거나, 신청 처리에 실패했습니다.');
 			setIsConfirmOpen(true);
 		}
 	};
@@ -130,7 +171,7 @@ const PostDetailPage = ({ viewedNotices, notice, shop }: Props) => {
 	};
 
 	return (
-		<div>
+		<div className={styles.container}>
 			<div>
 				<NoticePostCard notice={notice}>
 					{isClosed ? (
@@ -148,10 +189,13 @@ const PostDetailPage = ({ viewedNotices, notice, shop }: Props) => {
 					)}
 				</NoticePostCard>
 			</div>
-			<div className={styles.newlyPost}>
-				{newlyNotices.map(({ item }: { item: Notice }, idx: number) => (
-					<SmallNoticePoastCard key={idx} notice={item} />
-				))}
+			<div className={styles.newlyPostWrapper}>
+				<span className={styles.title}>최근에 본 공고</span>
+				<div className={styles.newlyPost}>
+					{newlyNotices.map(({ item }: { item: Notice }, idx: number) => (
+						<SmallNoticePoastCard key={idx} notice={item} />
+					))}
+				</div>
 			</div>
 
 			{isConfirmOpen && (
