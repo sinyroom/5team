@@ -98,7 +98,7 @@ export default function Register() {
 	return (
 		<div className={styles.container}>
 			{pwModal.renderModal(Alert, {
-				message: '중복된 이메일 입니다',
+				message: '이미 사용중인 이메일 입니다',
 				onConfirm: pwModal.closeModal,
 			})}
 			<div className={styles.imgcontainer}>
