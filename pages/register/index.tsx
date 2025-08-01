@@ -7,6 +7,8 @@ import { TextInput } from '@/components/common/inputs/TextInput';
 import { BaseButton } from '@/components/common/BaseButton';
 import axios from 'axios';
 import axiosInstance from '@/api/settings/axiosInstance';
+import useModal from '@/hooks/useModal';
+import Alert from '@/components/Modal/Alert/Alert';
 
 export default function Register() {
 	const router = useRouter();
@@ -16,6 +18,7 @@ export default function Register() {
 	const [userType, setUserType] = useState<'worker' | 'owner' | null>(null);
 	const [error, setError] = useState<{ [key: string]: string }>({});
 	const [loading, setLoading] = useState(false);
+	const pwModal = useModal();
 
 	const validateEmail = () => {
 		if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -80,7 +83,7 @@ export default function Register() {
 				if (status === 400) {
 					alert(message || '요청 형식이 올바르지 않습니다.');
 				} else if (status === 409) {
-					alert('이미 존재하는 이메일입니다.');
+					pwModal.openModal();
 				} else {
 					alert('회원가입 중 문제가 발생했습니다.');
 				}
@@ -94,6 +97,10 @@ export default function Register() {
 
 	return (
 		<div className={styles.container}>
+			{pwModal.renderModal(Alert, {
+				message: '중복된 이메일 입니다',
+				onConfirm: pwModal.closeModal,
+			})}
 			<div className={styles.imgcontainer}>
 				<Logo />
 			</div>

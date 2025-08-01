@@ -79,10 +79,10 @@ export default function Login() {
 		} catch (error: unknown) {
 			if (axios.isAxiosError(error)) {
 				const status = error.response?.status;
-				const message = error.response?.data?.message;
 
 				if (status === 404) {
-					alert(message || '이메일 또는 비밀번호가 틀렸습니다.');
+					alert('이메일 또는 비밀번호가 틀렸습니다.');
+					console.log(error.response?.data);
 				} else {
 					alert('로그인 중 오류가 발생했습니다.');
 				}
