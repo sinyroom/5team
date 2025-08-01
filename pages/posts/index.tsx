@@ -153,6 +153,13 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 		fetchNotice();
 	}, [offset, sortOption, detailFilterState, searchQuery]);
 
+	const handleCardClick = (notice: Notice) => {
+		const shopId = notice.shop?.item?.id;
+		if (shopId) {
+			router.push(`/posts/${shopId}/${notice.id}`);
+		}
+	};
+
 	return (
 		<>
 			{!searchQuery && (
@@ -164,7 +171,11 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 								{customNotices
 									.filter(({ item }: { item: Notice }) => !isClosed(item))
 									.map(({ item }: { item: Notice }, idx: number) => (
-										<SmallNoticePoastCard key={idx} notice={item} />
+										<SmallNoticePoastCard
+											key={idx}
+											notice={item}
+											onClick={() => handleCardClick(item)}
+										/>
 									))}
 							</div>
 						</div>
@@ -235,7 +246,13 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 					<div className={styles.allPost}>
 						{notices.map(({ item }: { item: Notice }, idx: number) => {
 							const closed = isClosed(item);
-							return <SmallNoticePoastCard key={idx} notice={{ ...item, closed }} />;
+							return (
+								<SmallNoticePoastCard
+									key={idx}
+									notice={{ ...item, closed }}
+									onClick={() => handleCardClick(item)}
+								/>
+							);
 						})}
 					</div>
 
