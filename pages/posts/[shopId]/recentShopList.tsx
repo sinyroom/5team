@@ -7,6 +7,7 @@ export const saveRecentShops = shopId => {
 	let shops = storedData ? JSON.parse(storedData) : []; //json 문자열 -> 값
 
 	shops = shops.filter(id => id !== shopId);
+
 	shops.unshift(shopId);
 
 	if (shops.length > MAX_ITEMS) {
@@ -14,10 +15,10 @@ export const saveRecentShops = shopId => {
 		shops.pop();
 	}
 
-	localStorage.setItem('recent_shop', JSON.stringify(shops)); //값 -> json 의 문자열
+	localStorage.setItem('recent_shops', JSON.stringify(shops)); //값 -> json 의 문자열
 };
 
-export const getRecentShops = () => {
+export const getRecentShops = (): string[] => {
 	const storedData = localStorage.getItem('recent_shops');
 	return storedData ? JSON.parse(storedData) : []; //json 문자열 -> 값
 };

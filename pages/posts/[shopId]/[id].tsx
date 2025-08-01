@@ -42,7 +42,7 @@ const PostDetailPage = () => {
 	const [isActionOpen, setIsActionOpen] = useState(false);
 	const [alertMessage, setAlertMessage] = useState('');
 
-	const [recentShops, setRecentShops] = useState([]);
+	const [recentShops, setRecentShops] = useState<string[]>([]);
 
 	// 최초 렌더링
 	useEffect(() => {
@@ -62,13 +62,20 @@ const PostDetailPage = () => {
 					shopItem = shopRes.item;
 				}
 
+				const test = await fetchNoticeList({ offset: 0, limit: 100 });
+				const allNotices = test.items.map(({ item }) => ({ ...item, closed: isClosed(item) }));
+				const filteredNotices = allNotices.filter(notice =>
+					recentShops.includes(String(notice.id))
+				);
+
 				const listRes = await fetchNoticeList({ offset: 0, limit: 6 });
 
 				if (!noticeItem || !shopItem) throw new Error('데이터 없음');
 
 				setNotice({ ...noticeItem, closed: isClosed(noticeItem) });
 				setShop(shopItem);
-				setNewlyNotices(listRes.items.map(({ item }) => ({ ...item, closed: isClosed(item) })));
+				//setNewlyNotices(listRes.items.map(({ item }) => ({ ...item, closed: isClosed(item) })));
+				setNewlyNotices(filteredNotices);
 			} catch (err) {
 				setAlertMessage('페이지 정보를 불러오지 못했습니다.');
 				setIsConfirmOpen(true);
@@ -79,8 +86,8 @@ const PostDetailPage = () => {
 
 		fetchData();
 
-		if (shopId) {
-			saveRecentShops(shopId);
+		if (noticeId) {
+			saveRecentShops(noticeId);
 		}
 	}, [shopId, noticeId]);
 
@@ -119,8 +126,11 @@ const PostDetailPage = () => {
 	useEffect(() => {
 		const shopIds = getRecentShops();
 		setRecentShops(shopIds);
-		console.log(`recentShops => ${recentShops}`);
 	}, []);
+
+	useEffect(() => {
+		console.log(recentShops);
+	}, [recentShops]);
 
 	if (isLoading) return null;
 	if (!notice || !shop) return <p>존재하지 않는 공고입니다.</p>;
