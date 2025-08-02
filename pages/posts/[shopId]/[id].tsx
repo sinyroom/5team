@@ -23,6 +23,8 @@ import { useUserContext } from '@/contexts/auth-context';
 import { getNoticeById } from '@/api/applications/getNoticeId';
 import { isClosed } from '@/utils/closedNotice';
 
+import { getRecentShops, saveRecentShops } from './recentShopList'; //Helper Func - 최근 방문 공고 로컬스토리지 저장
+
 const PostDetailPage = () => {
 	const router = useRouter();
 	const { user } = useUserContext();
@@ -39,6 +41,8 @@ const PostDetailPage = () => {
 	const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 	const [isActionOpen, setIsActionOpen] = useState(false);
 	const [alertMessage, setAlertMessage] = useState('');
+
+	const [recentShops, setRecentShops] = useState<string[]>([]);
 
 	// 최초 렌더링
 	useEffect(() => {
@@ -58,13 +62,20 @@ const PostDetailPage = () => {
 					shopItem = shopRes.item;
 				}
 
+				const test = await fetchNoticeList({ offset: 0, limit: 100 });
+				const allNotices = test.items.map(({ item }) => ({ ...item, closed: isClosed(item) }));
+				const filteredNotices = allNotices.filter(notice =>
+					recentShops.includes(String(notice.id))
+				);
+
 				const listRes = await fetchNoticeList({ offset: 0, limit: 6 });
 
 				if (!noticeItem || !shopItem) throw new Error('데이터 없음');
 
 				setNotice({ ...noticeItem, closed: isClosed(noticeItem) });
 				setShop(shopItem);
-				setNewlyNotices(listRes.items.map(({ item }) => ({ ...item, closed: isClosed(item) })));
+				//setNewlyNotices(listRes.items.map(({ item }) => ({ ...item, closed: isClosed(item) })));
+				setNewlyNotices(filteredNotices);
 			} catch (err) {
 				setAlertMessage('페이지 정보를 불러오지 못했습니다.');
 				setIsConfirmOpen(true);
@@ -74,6 +85,10 @@ const PostDetailPage = () => {
 		};
 
 		fetchData();
+
+		if (noticeId) {
+			saveRecentShops(noticeId);
+		}
 	}, [shopId, noticeId]);
 
 	// 로컬스토리지 확인해서 사장님이면 리다이렉트 처리
@@ -107,6 +122,15 @@ const PostDetailPage = () => {
 
 		checkIfAlreadyApplied();
 	}, [user, shopId, noticeId]);
+
+	useEffect(() => {
+		const shopIds = getRecentShops();
+		setRecentShops(shopIds);
+	}, []);
+
+	useEffect(() => {
+		console.log(recentShops);
+	}, [recentShops]);
 
 	if (isLoading) return null;
 	if (!notice || !shop) return <p>존재하지 않는 공고입니다.</p>;
