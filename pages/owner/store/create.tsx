@@ -13,6 +13,7 @@ import Alert from '@/components/Modal/Alert/Alert';
 import Confirm from '@/components/Modal/Confirm/Confirm';
 import { useRouter } from 'next/navigation';
 import { useUserContext } from '@/contexts/auth-context';
+import Image from 'next/image';
 
 interface FormInputs {
 	name: string;
@@ -44,9 +45,7 @@ const Create = () => {
 		setIsSubmitting(true);
 		try {
 			const shopData = { ...data };
-			// console.log('Submitting shop data:', shopData);
 			const res = await registerShop(shopData);
-			// console.log('Register shop response:', res);
 			if (typeof res === 'object' && 'item' in res) {
 				// user context update
 				if (user) {
@@ -77,7 +76,12 @@ const Create = () => {
 
 	return (
 		<div className={styles.container}>
-			<h1 className={styles.title}>가게 정보</h1>
+			<div className={styles.header}>
+				<h1 className={styles.title}>가게 정보</h1>
+				<button onClick={() => router.back()}>
+					<Image src="/img/icon/closeIcon.svg" alt="가게 편집 닫기" width={32} height={32} />
+				</button>
+			</div>
 			<form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
 				<div className={styles.formSection}>
 					<div className={styles.formRow}>
