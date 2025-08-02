@@ -20,6 +20,7 @@ const Create = () => {
 	const [bio, setBio] = useState('');
 	const [isAlertOpen, setIsAlertOpen] = useState(false);
 	const [alertMessage, setAlertMessage] = useState('');
+	const [phoneError, setPhoneError] = useState('');
 
 	const router = useRouter();
 	const { user } = useUserContext();
@@ -52,6 +53,19 @@ const Create = () => {
 			});
 	}, [user, token]);
 
+	const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const value = e.target.value;
+		setPhone(value);
+
+		if (value === '') {
+			setPhoneError('');
+		} else if (!/^\d{3}-\d{4}-\d{4}$/.test(value)) {
+			setPhoneError('연락처를 형식에 맞게 입력해주세요. (010-0000-0000)');
+		} else {
+			setPhoneError('');
+		}
+	};
+
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		if (!user || !user.id) return;
@@ -75,8 +89,7 @@ const Create = () => {
 		setIsAlertOpen(false);
 	};
 
-	const isDisabled: boolean = !name || !phone || !address || !bio;
-
+	const isDisabled: boolean = !name || !phone || !address || !bio || !!phoneError;
 	return (
 		<>
 			<div className={styles.container}>
@@ -103,9 +116,10 @@ const Create = () => {
 								id="phone"
 								label="연락처 "
 								value={phone}
-								onChange={e => setPhone(e.target.value)}
+								onChange={handlePhoneChange}
 								placeholder="010-0000-0000"
 								required
+								error={phoneError}
 							/>
 						</div>
 						<div className={styles.input}>
