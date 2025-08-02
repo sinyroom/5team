@@ -25,10 +25,13 @@ interface FormInputs {
 }
 // TODO:이미 가게 등록 되어 있으면 가게 정보 상세 페이지로 이동
 const Create = () => {
+	const { user, setUser } = useUserContext();
 	const resultModal = useModal();
 	const errorModal = useModal();
 	const [errorMessage, setErrorMessage] = useState('');
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const router = useRouter();
+
 	const {
 		handleSubmit,
 		control,
@@ -36,8 +39,6 @@ const Create = () => {
 	} = useForm<FormInputs>({
 		mode: 'onChange',
 	});
-	const router = useRouter();
-	const [shopId, setShopId] = useState<string | null>(null);
 
 	const onSubmit = async (data: FormInputs) => {
 		setIsSubmitting(true);
@@ -47,11 +48,20 @@ const Create = () => {
 			const res = await registerShop(shopData);
 			// console.log('Register shop response:', res);
 			if (typeof res === 'object' && 'item' in res) {
-				setShopId(res.item.id);
+				// user context update
+				if (user) {
+					const updatedUser = {
+						...user,
+						shop: {
+							item: res.item,
+							href: `/shops/${res.item.id}`,
+						},
+					};
+					setUser(updatedUser);
+				}
 			}
 			resultModal.openModal();
 		} catch (error: unknown) {
-			// console.error('Submit error:', error);
 			const err = error as { status?: number; message?: string };
 			if (err.status === 401 || err.status === 409) {
 				setErrorMessage(err.message || '알 수 없는 오류가 발생했습니다.');

@@ -86,7 +86,7 @@ const Edit = () => {
 		setIsSubmitting(true);
 		try {
 			const shopData = { ...data };
-			console.log('Submitting shop data:', shopData);
+			// console.log('Submitting shop data:', shopData);
 			await editShop(shopData, shopId);
 			resultModal.openModal();
 		} catch (error: unknown) {
