@@ -124,18 +124,18 @@ const Create = () => {
 							placeholder="입력"
 						/>
 					</div>
-					<div className={styles.buttonWrapper}>
-						<button
-							type="submit"
-							disabled={isDisabled}
-							className={`${buttonStyle.button} ${
-								isDisabled ? buttonStyle.disabled : buttonStyle.red
-							} ${styles.button}`}
-						>
-							등록하기
-						</button>
-					</div>
 				</form>
+				<div className={styles.buttonWrapper}>
+					<button
+						type="submit"
+						disabled={isDisabled}
+						className={`${buttonStyle.button} ${
+							isDisabled ? buttonStyle.disabled : buttonStyle.red
+						} ${styles.button}`}
+					>
+						등록하기
+					</button>
+				</div>
 
 				<Alert
 					isOpen={isAlertOpen}
