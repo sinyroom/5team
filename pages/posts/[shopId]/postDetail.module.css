@@ -36,7 +36,6 @@
 @media (min-width: 768px) {
 	.newlyPostWrapper {
 		gap: 32px;
-		padding: 60px 32px;
 	}
 
 	.title {
@@ -46,12 +45,7 @@
 
 @media (min-width: 1024px) {
 	.container {
-		width: 963px;
-		margin: 0 auto;
-	}
-
-	.newlyPostWrapper {
-		padding: 60px 32px;
+		width: 964px;
 	}
 
 	.newlyPost {
