@@ -14,7 +14,7 @@ import { formatToRFC3339 } from '@/utils/dayformatting';
 import { isClosed } from '@/utils/closedNotice';
 import { useUserContext } from '@/contexts/auth-context';
 
-const PERSONAL_NOTICE_LIMIT = 3;
+const PERSONAL_NOTICE_LIMIT = 30;
 const NOTICE_LIMIT = 6;
 const sortOptions = [
 	{ label: '마감임박순', value: 'time' },
@@ -35,13 +35,14 @@ interface DetailFilterState {
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
-	const address = '서울시 용산구'; // 로그인 안했을 때 기본값
+	const address = '서울시 마포구'; // 로그인 안했을 때 기본값
 
 	const personalNotices = await fetchNoticeList({
 		offset: 0,
 		limit: PERSONAL_NOTICE_LIMIT,
 		address,
 	});
+
 	const initialNotices = await fetchNoticeList({ offset: 0, limit: NOTICE_LIMIT });
 	return {
 		props: {
@@ -52,8 +53,11 @@ export const getServerSideProps: GetServerSideProps = async () => {
 };
 
 const Posts = ({ personalNotices, initialNotices }: Props) => {
-	const [customNotices, setCustomNotices] = useState(personalNotices.items);
+	const initialCustomNotices = personalNotices.items
+		.filter(({ item }) => !isClosed(item))
+		.slice(0, 3);
 
+	const [customNotices, setCustomNotices] = useState(initialCustomNotices);
 	const [showFilter, setShowFilter] = useState(false);
 	const [sortOption, setSortOption] = useState<'time' | 'pay' | 'hour' | 'shop'>('time');
 	const [showDetailFilter, setShowDetailFilter] = useState(false);
@@ -86,20 +90,23 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 	// 로컬스토리지에서 주소값 가져와서 맞춤공고 렌더링
 	useEffect(() => {
 		const token = localStorage.getItem('token');
-		const type = localStorage.getItem('type');
+		const isLoggedIn = !!token && !!user;
 
-		if (type === 'employer') {
-			setCustomNotices(personalNotices.items);
+		// 로그인 상태가 아닐 경우의 로직
+		if (!isLoggedIn) {
+			const nonLoggedInNotices = personalNotices.items
+				.filter(({ item }) => !isClosed(item))
+				.slice(0, 3);
+			setCustomNotices(nonLoggedInNotices);
 			return;
 		}
 
-		if (!token || !user) return;
-
 		const fetchUserAddress = async () => {
 			try {
-				const res = await getUser(user.id, token);
+				const res = await getUser(user.id, token as string);
 				const address = res.item.address;
 
+				// 사용자 주소가 있으면 해당 주소의 공고 목록 불러오기
 				if (address) {
 					const updatedNotices = await fetchNoticeList({
 						offset: 0,
@@ -107,20 +114,36 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 						address: `${address}`,
 					});
 
-					// 유저 주소에 맞는 공고가 없으면 기본값 보여줌
-					if (updatedNotices.items.length > 0) {
-						setCustomNotices(updatedNotices.items);
+					// 마감되지 않은 공고 필터링
+					const filteredUpdatedNotices = updatedNotices.items.filter(({ item }) => !isClosed(item));
+
+					// 필터링된 공고가 있는 경우 3개까지 보여줌
+					if (filteredUpdatedNotices.length > 0) {
+						const finalNotices = filteredUpdatedNotices.slice(0, 3);
+						setCustomNotices(finalNotices);
 					} else {
-						setCustomNotices(personalNotices.items);
+						// 사용자 주소에 맞는 공고가 없으면 기본공고 렌더링
+						const fallbackNotices = personalNotices.items
+							.filter(({ item }) => !isClosed(item))
+							.slice(0, 3);
+						setCustomNotices(fallbackNotices);
 					}
+				} else {
+					// 사용자 주소가 없으면, 기본공고 렌더링
+					const fallbackNotices = personalNotices.items
+						.filter(({ item }) => !isClosed(item))
+						.slice(0, 3);
+					setCustomNotices(fallbackNotices);
 				}
 			} catch (err) {
-				console.error('유저 정소 불러오기 실패', err);
-				setCustomNotices(personalNotices.items);
+				const fallbackNotices = personalNotices.items
+					.filter(({ item }) => !isClosed(item))
+					.slice(0, 3);
+				setCustomNotices(fallbackNotices);
 			}
 		};
 		fetchUserAddress();
-	}, [user]);
+	}, [user, personalNotices]);
 
 	// 전체 공고 부분 렌더링 + 검색 기능
 	useEffect(() => {
@@ -168,22 +191,20 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 						<div className={styles.personalPostWrapper}>
 							<p className={styles.title}>맞춤 공고</p>
 							<div className={styles.personalPost}>
-								{customNotices
-									.filter(({ item }: { item: Notice }) => !isClosed(item))
-									.map(({ item }: { item: Notice }, idx: number) => (
-										<SmallNoticePoastCard
-											key={idx}
-											notice={item}
-											onClick={() => handleCardClick(item)}
-										/>
-									))}
+								{customNotices.map(({ item }: { item: Notice }, idx: number) => (
+									<SmallNoticePoastCard
+										key={idx}
+										notice={item}
+										onClick={() => handleCardClick(item)}
+									/>
+								))}
 							</div>
 						</div>
 					</div>
 				</div>
 			)}
 
-			<div className={styles.innerContent}>
+			<div className={styles.allNotices}>
 				<div className={styles.allPostContainer}>
 					<div className={styles.allPostWrapper}>
 						<span className={styles.title}>
