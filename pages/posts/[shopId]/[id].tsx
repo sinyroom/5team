@@ -220,7 +220,7 @@ const PostDetailPage = () => {
 					message={alertMessage}
 					isOpen={isConfirmOpen}
 					onClose={() => setIsConfirmOpen(false)}
-					onConfirm={() => setIsConfirmOpen(false)}
+					onConfirm={() => router.push('/employee/profile/create')}
 				/>
 			)}
 			{isActionOpen && (
