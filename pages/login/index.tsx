@@ -11,6 +11,7 @@ import { BaseButton } from '@/components/common/BaseButton';
 import { useUserContext } from '@/contexts/auth-context';
 import useModal from '@/hooks/useModal';
 import Alert from '@/components/Modal/Alert/Alert';
+import { ShopWrapper } from '@/types';
 
 export default function Login() {
 	const router = useRouter();
@@ -66,7 +67,7 @@ export default function Login() {
 				const shopRes = await axiosInstance.get(`/users/${userData.id}`);
 				parsedUser = {
 					...parsedUser,
-					shop: shopRes.data.item.shop?.item,
+					shop: shopRes.data.item.shop,
 				};
 			}
 			// 알바면 user정보 추가 요청
