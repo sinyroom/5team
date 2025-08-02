@@ -337,7 +337,7 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 							}}
 							className={styles.arrowButton}
 						>
-							<img src="/img/icon/leftIcon.svg" alt="이전페이지" />
+							<img src="/img/icon/leftIcon.svg" alt="이전페이지" width={9} height={16} />
 						</button>
 
 						{Array.from({ length: pageCount }).map((_, i) => {
@@ -359,7 +359,7 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 							onClick={() => setOffset(offset + NOTICE_LIMIT)}
 							className={styles.arrowButton}
 						>
-							<img src="/img/icon/rightIcon.svg" alt="다음페이지" />
+							<img src="/img/icon/rightIcon.svg" alt="다음페이지" width={9} height={16} />
 						</button>
 					</div>
 				</div>
