@@ -8,17 +8,13 @@ import {
 import styles from './VolunteerListTable.module.css';
 import axiosInstance from '@/api/settings/axiosInstance';
 
-// ------------------ 타입 정의 ------------------
 interface Applicant {
 	id: string;
-	applyid: string;
 	name?: string;
 	phone?: string;
 	bio?: string;
 	status: string;
 	createdAt: string;
-	shopId: string;
-	noticeId: string;
 }
 
 interface VolunteerListTableProps {
@@ -26,7 +22,13 @@ interface VolunteerListTableProps {
 	noticeId: string;
 }
 
-// ------------------ 유틸 함수 ------------------
+async function fetchApplicants(shopId: string, noticeId: string, offset: number, limit: number) {
+	const res = await axiosInstance.get(`shops/${shopId}/notices/${noticeId}/applications`, {
+		params: { offset, limit },
+	});
+	return res.data;
+}
+
 function useDeviceType(): 'mobile' | 'tablet' | 'desktop' {
 	const [deviceType, setDeviceType] = useState<'mobile' | 'tablet' | 'desktop'>('desktop');
 
@@ -45,30 +47,6 @@ function useDeviceType(): 'mobile' | 'tablet' | 'desktop' {
 	return deviceType;
 }
 
-async function fetchApplicants(shopId: string, noticeId: string, offset: number, limit: number) {
-	const [applyId, setApplyId] = useState(false);
-	const res = await axiosInstance.get(`shops/${shopId}/notices/${noticeId}/applications`, {
-		params: { offset, limit },
-	});
-	return res.data;
-}
-
-async function updateApplicationStatus(
-	shopId: string,
-	noticeId: string,
-	applyId: string,
-	status: 'accepted' | 'rejected'
-) {
-	try {
-		await axiosInstance.put(`shops/${shopId}/notices/${noticeId}/applications/${applyId}`, {
-			status,
-		});
-	} catch (error) {
-		console.log('catch 에러다임마', error);
-	}
-}
-
-// ------------------ 컬럼 정의 ------------------
 const baseColumns: any[] = [
 	{
 		accessorKey: 'name',
@@ -92,55 +70,15 @@ const baseColumns: any[] = [
 		id: 'actions',
 		header: '상태',
 		meta: { responsive: 'mobile' },
-		cell: ({ row }: any) => {
-			const status = row.original.status;
-			const applyid = row.original.applyid;
-			const [loading, setLoading] = useState(false);
-			const [localStatus, setLocalStatus] = useState(status);
-
-			const onClickStatusChange = async (newStatus: 'accepted' | 'rejected') => {
-				setLoading(true);
-				try {
-					await updateApplicationStatus(
-						row.original.shopId,
-						row.original.noticeId,
-						applyid,
-						newStatus
-					);
-					setLocalStatus(newStatus);
-				} catch (e) {
-					alert('상태 변경 실패: ' + e);
-				} finally {
-					setLoading(false);
-				}
-			};
-
-			if (localStatus === 'accepted') return <span>승인완료</span>;
-			if (localStatus === 'rejected') return <span>거절됨</span>;
-
-			return (
-				<div className={styles.actions}>
-					<button
-						className={styles.refuse}
-						disabled={loading}
-						onClick={() => onClickStatusChange('rejected')}
-					>
-						거절하기
-					</button>
-					<button
-						className={styles.admit}
-						disabled={loading}
-						onClick={() => onClickStatusChange('accepted')}
-					>
-						승인하기
-					</button>
-				</div>
-			);
-		},
+		cell: () => (
+			<div className={styles.actions}>
+				<button className={styles.refuse}>거절하기</button>
+				<button className={styles.admit}>승인하기</button>
+			</div>
+		),
 	},
 ];
 
-// ------------------ 컴포넌트 ------------------
 const VolunteerListTable = ({ shopId, noticeId }: VolunteerListTableProps) => {
 	const [applications, setApplicants] = useState<Applicant[]>([]);
 	const [offset, setOffset] = useState(0);
@@ -163,10 +101,12 @@ const VolunteerListTable = ({ shopId, noticeId }: VolunteerListTableProps) => {
 		const loadApplicants = async () => {
 			try {
 				const res = await fetchApplicants(shopId, noticeId, offset, limit);
-				if (!res.items) return;
-
+				if (!res.items) {
+					return;
+				}
 				const mapped = res.items.map((application: any) => {
 					const user = application.item.user?.item;
+
 					return {
 						id: application.item.id,
 						applyid: application.id,
@@ -175,8 +115,6 @@ const VolunteerListTable = ({ shopId, noticeId }: VolunteerListTableProps) => {
 						bio: user?.bio ?? '자기소개 없음',
 						status: application.item.status,
 						createdAt: application.item.createdAt,
-						shopId,
-						noticeId,
 					};
 				});
 				setApplicants(mapped);
@@ -234,9 +172,7 @@ const VolunteerListTable = ({ shopId, noticeId }: VolunteerListTableProps) => {
 				>
 					&lt;
 				</button>
-				<button onClick={() => setOffset(prev => prev + limit)} disabled={!hasNext}>
-					&gt;
-				</button>
+				<button onClick={() => setOffset(prev => prev + limit)} disabled={!hasNext}></button>
 			</div>
 		</div>
 	);
