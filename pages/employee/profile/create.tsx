@@ -23,7 +23,6 @@ const Create = () => {
 
 	const router = useRouter();
 	const { user } = useUserContext();
-	console.log(user);
 	const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
 
 	useEffect(() => {
@@ -116,6 +115,7 @@ const Create = () => {
 								value={address}
 								onSelectOption={value => setAddress(value)}
 								placeholder="선택"
+								required
 							/>
 						</div>
 					</div>
@@ -126,6 +126,7 @@ const Create = () => {
 							value={bio}
 							onChange={e => setBio(e.target.value)}
 							placeholder="입력"
+							required
 						/>
 					</div>
 					<div className={styles.buttonWrapper}>
