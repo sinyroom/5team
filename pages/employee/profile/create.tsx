@@ -26,7 +26,10 @@ const Create = () => {
 	const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
 
 	useEffect(() => {
-		if (!user) return;
+		if (!user) {
+			router.push('/login');
+			return;
+		}
 
 		if (!token) {
 			router.push('/login');
