@@ -51,7 +51,7 @@ const Create = () => {
 				setAlertMessage('사용자 정보를 불러오는데 실패했습니다.');
 				setIsAlertOpen(true);
 			});
-	}, [user, token]);
+	}, [user, token, router]);
 
 	const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const value = e.target.value;

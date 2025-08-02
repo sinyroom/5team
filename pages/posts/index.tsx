@@ -67,7 +67,6 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 	const [sortOption, setSortOption] = useState<'time' | 'pay' | 'hour' | 'shop'>('time');
 	const [showDetailFilter, setShowDetailFilter] = useState(false);
 	const [detailFilterCount, setDetailFilterCount] = useState(0);
-	const confirmModal = useModal();
 
 	// 검색 관련 상태관리
 	const [detailFilterState, setDetailFilterState] = useState<DetailFilterState>({
@@ -153,7 +152,7 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 						.slice(0, 3);
 					setCustomNotices(fallbackNotices);
 				}
-			} catch (err) {
+			} catch {
 				const fallbackNotices = personalNotices.items
 					.filter(({ item }) => !isClosed(item))
 					.slice(0, 3);
@@ -270,7 +269,6 @@ const Posts = ({ personalNotices, initialNotices }: Props) => {
 											key={value}
 											className={styles.dropdownItem}
 											onClick={() => {
-												// console.log('선택된 정렬 옵션:', value);
 												setSortOption(value as 'time' | 'pay' | 'hour' | 'shop');
 												setShowFilter(false);
 												setOffset(0);
