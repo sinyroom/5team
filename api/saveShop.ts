@@ -52,7 +52,6 @@ export const editShop = async (shopData: ReqShop, shopId): Promise<ResShop | str
 		return res.data;
 	} catch (err: unknown) {
 		const error = err as AxiosError;
-		console.log(error);
 		if (error.status === 401 || error.status === 403 || error.status === 404) {
 			let errorMessage: string;
 			switch (error.status) {

@@ -14,6 +14,7 @@ import Confirm from '@/components/Modal/Confirm/Confirm';
 import { useRouter } from 'next/router';
 import { Shop } from '@/types/shop';
 import { useUserContext } from '@/contexts/auth-context';
+import Image from 'next/image';
 
 interface FormInputs {
 	name: string;
@@ -37,14 +38,6 @@ const Edit = () => {
 
 	useEffect(() => {
 		if (user && user.shop) {
-			console.log('=== EDIT PAGE DEBUG ===');
-			console.log('user:', user);
-			console.log('user.shop:', user.shop);
-			console.log('user.shop.item:', user.shop.item);
-			console.log('user.shop.item type:', typeof user.shop.item);
-			console.log('========================');
-
-			// user.shop은 ShopWrapper 형태이므로 .item으로 접근
 			setMyShop(user.shop.item);
 			setShopId(user.shop.item.id);
 		}
@@ -86,7 +79,6 @@ const Edit = () => {
 		setIsSubmitting(true);
 		try {
 			const shopData = { ...data };
-			// console.log('Submitting shop data:', shopData);
 			await editShop(shopData, shopId);
 			resultModal.openModal();
 		} catch (error: unknown) {
@@ -105,7 +97,12 @@ const Edit = () => {
 
 	return (
 		<div className={styles.container}>
-			<h1 className={styles.title}>가게 정보</h1>
+			<div className={styles.header}>
+				<h1 className={styles.title}>가게 정보</h1>
+				<button onClick={() => router.back()}>
+					<Image src="/img/icon/closeIcon.svg" alt="가게 편집 닫기" width={32} height={32} />
+				</button>
+			</div>
 			<form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
 				<div className={styles.formSection}>
 					<div className={styles.formRow}>
