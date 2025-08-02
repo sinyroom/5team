@@ -12,6 +12,7 @@ import useModal from '@/hooks/useModal';
 import Alert from '@/components/Modal/Alert/Alert';
 import Confirm from '@/components/Modal/Confirm/Confirm';
 import { useRouter } from 'next/navigation';
+import { useUserContext } from '@/contexts/auth-context';
 
 interface FormInputs {
 	name: string;
@@ -201,7 +202,7 @@ const Create = () => {
 				message: '등록이 완료되었습니다.',
 				onConfirm: () => {
 					resultModal.closeModal();
-					router.push(`/owner/store/${shopId}`);
+					router.push(`/owner/store`);
 				},
 			})}
 			{errorModal.renderModal(Confirm, {
