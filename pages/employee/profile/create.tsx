@@ -82,7 +82,7 @@ const Create = () => {
 			<div className={styles.container}>
 				<div className={styles.titleWrapper}>
 					<p className={styles.title}>내 프로필</p>
-					<button onClick={() => router.push('/profile')}>
+					<button onClick={() => router.push('/employee/profile')}>
 						<Image src="/img/icon/closeIcon.svg" alt="프로필 닫기" width={24} height={24} />
 					</button>{' '}
 				</div>
